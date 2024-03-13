@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\InitController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\NoticiaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +19,34 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', InicioController::class)->name('inicio');
 
-Route::get('noticias', [InitController::class, 'noticias'])->name('noticias');
 
-Route::get('reset',[InitController::class, 'reset'])->name('Restablecer');
-
-Route::get('menu',[InitController::class, 'menu'])->name(('menu'));
+//login
 
 
+//RUTA PARA EL MENU
+Route::get('menu',[MenuController::class, 'menu'])->name('menu');
+
+
+//para noticias
+Route::get('menu/noticias', [NoticiaController::class, 'noticias'])->name('noticias');
+Route::post('agregar', [NoticiaController::class, 'agregar'])->name('agregar');
+
+Route::put('menu/noticias/{id}/editar', [NoticiaController::class, 'updateNoticia'])->name('actualizar.noticia');
+
+Route::delete('menu/noticias/{id}/eliminar', [NoticiaController::class, 'eliminarNoticia'])->name('eliminar.noticia');
+
+//
+
+
+
+
+
+//temporal el doctoro  osea eso se va a cambiar
+Route::get('menu/agregardoctor',[InitController::class, 'agregardoc'])->name('agregar_doctor');
+
+
+
+
+//Route::get('menu/edit', [InitController::class, 'editar'])->name('editar');
 
 

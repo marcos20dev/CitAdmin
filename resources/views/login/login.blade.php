@@ -1,4 +1,4 @@
-@extends('layouts.plantilla')
+@extends('login.plantillalogin')
 
 @section('title', 'Login ')
 
@@ -31,11 +31,6 @@
           </label>
         </div>
 
-        <div class="text-sm">
-          <a href="{{ route('Restablecer') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
-            ¿Olvidaste tu contraseña?
-          </a>
-        </div>
       </div>
 
       <div>
