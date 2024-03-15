@@ -10,8 +10,9 @@
 
 <body>
 
-
     @yield('login') <!-- Contenido del login -->
+
+
 
 </body>
 

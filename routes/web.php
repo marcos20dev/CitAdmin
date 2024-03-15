@@ -24,28 +24,21 @@ Route::get('/', InicioController::class)->name('inicio');
 //login
 
 //LOGIN DE SOPORTE
-
 Route::get('login/soporte', [SoporteController::class, 'soporte'])->name('soporte');
 Route::get('menu/soporte', [SoporteController::class, 'MenuSoporte'])->name('añadircuentas');
-
+//--------------------------------------------------------------------------------------------------
 
 
 //RUTA PARA EL MENU
 Route::get('menu',[MenuController::class, 'menu'])->name('menu');
 
 
-//para noticias
+//para noticias------------------------------------------------------------------------------------------------------
 Route::get('menu/noticias', [NoticiaController::class, 'noticias'])->name('noticias');
-Route::post('agregar', [NoticiaController::class, 'agregar'])->name('agregar');
-
+Route::post('menu/noticias/agregar', [NoticiaController::class, 'agregar'])->name('agregar');
 Route::put('menu/noticias/{id}/editar', [NoticiaController::class, 'updateNoticia'])->name('actualizar.noticia');
-
 Route::delete('menu/noticias/{id}/eliminar', [NoticiaController::class, 'eliminarNoticia'])->name('eliminar.noticia');
-
-//
-
-
-
+//--------------------------------------------------------------------------------------------------------------------
 
 
 //temporal el doctoro  osea eso se va a cambiar

@@ -2,7 +2,10 @@
 
 @section('title', 'añadircuent')
 
+
+
 @section('content')
+
 
 
 <div class="flex"> <!-- Contenedor principal con flexbox -->

@@ -12,8 +12,8 @@ class NoticiaController extends Controller
         $noticias = Noticias::all(); // Obtener todas las noticias desde la base de datos
         return view('init.noticias.AñadirNoticia', compact('noticias'));
     }
-    public function agregar(Request $request)
-    {
+    
+    public function agregar(Request $request){
 
         // Validar la solicitud y los datos del formulario
         $request->validate([

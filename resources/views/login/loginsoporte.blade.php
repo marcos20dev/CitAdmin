@@ -1,94 +1,65 @@
-@extends('layouts.plantilla')
+@extends('login.plantillalogin')
 
-@section('title', 'añadircuent')
+@section('title', 'Login ')
 
-@section('content')
 
-<div class="flex justify-center"> <!-- Contenedor principal con flexbox y centrado -->
-    <div class="max-w-md w-full py-8 px-4"> <!-- Contenedor del formulario -->
-        <h1 class="text-3xl font-bold text-white mb-6 text-center">Añadir Cuenta</h1> <!-- Título centrado -->
+@section('login')
 
-        <form action="{{ route('agregar') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-            @csrf
-
-            <!-- Campo de Nombre -->
-            <div>
-                <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-                <input type="text" name="nombre" value="{{ old('nombre') }}"
-                    class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                @error('nombre')
-                    <p class="text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Campo de Apellido -->
-            <div>
-                <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido</label>
-                <input type="text" name="apellido" value="{{ old('apellido') }}"
-                    class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                @error('apellido')
-                    <p class="text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Campo de Correo -->
-            <div>
-                <label for="correo" class="block text-sm font-medium text-gray-700">Correo</label>
-                <input type="email" name="correo" value="{{ old('correo') }}"
-                    class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                @error('correo')
-                    <p class="text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Campo de Contraseña -->
-            <div class="relative">
-                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                <input type="password" name="password" id="password"
-                    class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                <!-- Icono de ojo para mostrar/ocultar contraseña -->
-                <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
-                    <svg onclick="togglePasswordVisibility()" class="w-6 h-6 cursor-pointer" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM12 14l9-5-9-5-9 5 9 5z"></path>
-                    </svg>
-                </div>
-                @error('password')
-                    <p class="text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Campo de Foto -->
-            <div>
-                <label for="foto" class="block text-sm font-medium text-gray-700">Foto</label>
-                <input type="file" name="foto" id="foto" accept="image/*"
-                    class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                @error('foto')
-                    <p class="text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Botón de Publicar -->
-            <div>
-                <button type="submit"
-                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">
-                    Guardar cuenta
-                </button>
-            </div>
-        </form>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Iniciar sesión
+      </h2>
     </div>
-</div>
+    <div class="mt-8 space-y-6">
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="email-address" class="sr-only">Email</label>
+          <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email">
+        </div>
+        <div>
+          <label for="password" class="sr-only">Contraseña</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Contraseña">
+        </div>
+      </div>
 
-<script>
-    function togglePasswordVisibility() {
-        var passwordInput = document.getElementById("password");
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-        } else {
-            passwordInput.type = "password";
-        }
-    }
-</script>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+          <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+            Recordarme
+          </label>
+        </div>
+
+      </div>
+
+      <div>
+        <a href="{{ route('añadircuentas') }}" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <!-- Heroicon name: solid/lock-closed -->
+            <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+              <path fill-rule="evenodd" d="M4 8V7a6 6 0 1112 0v1h1a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1v-8a1 1 0 011-1hz" clip-rule="evenodd" />
+            </svg>
+          </span>
+          Iniciar sesión
+        </a>
+      </div>
+
+      <!-- Nuevo botón agregado -->
+      <div>
+        <a href="{{ route('inicio') }}" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <!-- Icono para el otro botón -->
+          </span>
+          HOME
+        </a>
+      </div>
+      <!-- Fin del nuevo botón -->
+
+    </div>
+  </div>
+</div>
 
 @endsection
