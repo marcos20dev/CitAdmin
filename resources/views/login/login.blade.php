@@ -30,7 +30,6 @@
             Recordarme
           </label>
         </div>
-
       </div>
 
       <div>
@@ -39,14 +38,30 @@
             <!-- Heroicon name: solid/lock-closed -->
             <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-              <path fill-rule="evenodd" d="M4 8V7a6 6 0 1112 0v1h1a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1v-8a1 1 0 011-1h1z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M4 8V7a6 6 0 1112 0v1h1a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1v-8a1 1 0 011-1hz" clip-rule="evenodd" />
             </svg>
           </span>
           Iniciar sesión
         </a>
       </div>
+          <!-- Nuevo botón de Soporte -->
+          <div class="flex justify-start" style="position: relative; top: -20px;">
+            <a href="{{ route('soporte') }}" class="group relative flex items-center py-2 px-4 border border-transparent text-sm font-medium text-gray-600 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+              <span class="pl-3">
+                <!-- Icono para el otro botón -->
+              </span>
+              SOPORTE
+            </a>
+          </div>
+          <!-- Fin del nuevo botón -->
     </div>
   </div>
 </div>
 
+
+
+
 @endsection
+
+
+

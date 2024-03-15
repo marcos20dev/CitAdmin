@@ -4,6 +4,7 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\InitController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoticiaController;
+use App\Http\Controllers\SoporteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,12 @@ Route::get('/', InicioController::class)->name('inicio');
 
 
 //login
+
+//LOGIN DE SOPORTE
+
+Route::get('login/soporte', [SoporteController::class, 'soporte'])->name('soporte');
+Route::get('menu/soporte', [SoporteController::class, 'MenuSoporte'])->name('añadircuentas');
+
 
 
 //RUTA PARA EL MENU
@@ -48,5 +55,6 @@ Route::get('menu/agregardoctor',[InitController::class, 'agregardoc'])->name('ag
 
 
 //Route::get('menu/edit', [InitController::class, 'editar'])->name('editar');
+
 
 
