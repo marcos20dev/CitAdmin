@@ -25,6 +25,8 @@ class NoticiaController extends Controller
 
         // Crear una nueva instancia del modelo Noticias
         $noticia = new Noticias();
+         
+        
         $noticia->titulo = $request->titulo;
         $noticia->descripcion = $request->descripcion;
 

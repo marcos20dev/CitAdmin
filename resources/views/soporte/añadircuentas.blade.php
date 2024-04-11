@@ -2,11 +2,7 @@
 
 @section('title', 'añadircuent')
 
-
-
 @section('content')
-
-
 
 <div class="flex"> <!-- Contenedor principal con flexbox -->
     <div class="max-w-2xl mx-auto py-8 px-4 flex-grow"> <!-- Primer div más grande -->
