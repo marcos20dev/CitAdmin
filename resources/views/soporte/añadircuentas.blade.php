@@ -1,6 +1,6 @@
 @extends('layouts.plantilla')
 
-@section('title', 'añadircuent')
+@section('title', 'añadircuentas')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold text-white mb-6">Añadir Cuentas</h1>
         <!-- Cambio de color del título a blanco -->
 
-        <form action="{{ route('agregar') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+        <form action="{{ route('crearcuentas') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
 
             @csrf
 

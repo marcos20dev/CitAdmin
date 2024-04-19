@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\InitController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoticiaController;
+use App\Http\Controllers\RegistrarDoctorController;
 use App\Http\Controllers\SoporteController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +28,22 @@ Route::get('/', InicioController::class)->name('inicio');
 //LOGIN DE SOPORTE
 Route::get('login/soporte', [SoporteController::class, 'soporte'])->name('soporte');
 Route::get('menu/soporte', [SoporteController::class, 'MenuSoporte'])->name('añadircuentas');
+Route::post('/procesar', [SoporteController::class, 'agregarcuentas'])->name('crearcuentas');
+
+
 //--------------------------------------------------------------------------------------------------
 
+//RUTAS PARA AGREGAR AL DOCTOR
 
+Route::get('menu/doctor', [DoctorController::class, 'doctor'])->name('doctor'); 
+Route::post('menu/doctor/agregar', [DoctorController::class, 'añadirdoctor'])->name('añadirdoctor');
+
+
+//hola
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
 //RUTA PARA EL MENU
 Route::get('menu',[MenuController::class, 'menu'])->name('menu');
 
