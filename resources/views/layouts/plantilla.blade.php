@@ -7,6 +7,8 @@
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Incluir bb-rich-text-editor -->
+
 
     <style>
         /* Estilo para el menú fijo */
@@ -49,7 +51,7 @@
             left: 17%;
             /* Ajuste del espacio para el menú */
             right: 0;
-            z-index: 9999;
+            z-index: 1000;
             /* Asegura que el encabezado esté por encima de otros elementos */
             background-color: rgb(46, 49, 54);
             /* Color de fondo del encabezado */
@@ -58,6 +60,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             /* Sombra del encabezado */
         }
+
+       
 
         /* Estilo para el contenido principal */
         .content-main {
@@ -118,6 +122,7 @@
             /* Ajusta el valor según sea necesario */
         }
     </style>
+    
 </head>
 
 <body>

@@ -6,22 +6,17 @@
     @include('menu.menu')
 @endsection
 
-
 @section('submenu')
     @include('init.noticias.nav')
 @endsection
 
-
 @section('content')
-
-
     <div class="flex"> <!-- Contenedor principal con flexbox -->
         <div class="max-w-2xl mx-auto py-8 px-4 flex-grow"> <!-- Primer div más grande -->
             <h1 class="text-3xl font-bold text-white mb-6">Ingresar Noticias</h1>
             <!-- Cambio de color del título a blanco -->
 
             <form action="{{ route('agregar') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-
                 @csrf
 
                 <div>
@@ -65,25 +60,14 @@
                     <button type="submit"
                         class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">Publicar</button>
                 </div>
-
             </form>
         </div>
-
-      
-    
     </div>
 
+    <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
     <script>
-        // Función para ajustar la altura del textarea dinámicamente
-        function autoSizeTextarea() {
-            const textarea = document.getElementById('descripcion');
-            textarea.style.height = 'auto'; // Restablecer la altura para recalcular
-            textarea.style.height = textarea.scrollHeight + 'px'; // Ajustar la altura según el contenido
-        }
-
-        // Llamar a la función al cargar la página y en cada cambio de contenido
-        window.addEventListener('DOMContentLoaded', autoSizeTextarea);
-        document.getElementById('descripcion').addEventListener('input', autoSizeTextarea);
+        // Iniciar CKEditor en el textarea de descripción
+        CKEDITOR.replace('descripcion');
 
         function previewImage(event) {
             const preview = document.getElementById('preview');
@@ -101,6 +85,4 @@
             }
         }
     </script>
-
-
 @endsection

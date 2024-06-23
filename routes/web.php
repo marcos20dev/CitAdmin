@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\InitController;
 use App\Http\Controllers\MenuController;
@@ -41,11 +43,15 @@ Route::delete('menu/noticias/{id}/eliminar', [NoticiaController::class, 'elimina
 //--------------------------------------------------------------------------------------------------------------------
 
 
-//temporal el doctoro  osea eso se va a cambiar
-Route::get('menu/agregardoctor',[InitController::class, 'agregardoc'])->name('agregar_doctor');
+//rutas para el doctoro
+Route::get('menu/doctor', [DoctorController::class, 'doctor'])->name('añadirdoctor');
+Route::post('menu/doctor/agregar', [DoctorController::class, 'agregar'])->name('agregarDoctor');
+Route::put('menu/doctor/{id}/editardoctor', [DoctorController::class, 'update'])->name('actualizar.Doctor');
+Route::delete('menu/doctor/{id}/eliminardoctor', [DoctorController::class, 'eliminarDoctor'])->name('eliminar.Doctor');
+//--------------------------------------------------------------------------------------------------------------------
 
-
-
+//rutas para el horaurio
+Route::get('menu/horairo', [HorarioController::class, 'horario'])->name('añadirhorario');
 
 //Route::get('menu/edit', [InitController::class, 'editar'])->name('editar');
 
