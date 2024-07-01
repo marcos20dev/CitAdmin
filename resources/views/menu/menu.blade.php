@@ -4,6 +4,7 @@
 
 @section('menu')
 
+
 <a href="{{ route('menu') }}" class="mx-auto mt-4 mb-8">
   <img src="{{ asset('logo/logo.png') }}" alt="Logo" class="w-24 md:w-32">
 </a>

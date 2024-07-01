@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('apellido');
             $table->string('correo')->unique();
             $table->string('password');
-            $table->string('foto')->nullable();
+            $table->longText('foto')->nullable();
             $table->timestamps();
         });
     }

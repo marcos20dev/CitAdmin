@@ -52,6 +52,10 @@ Route::delete('menu/doctor/{id}/eliminardoctor', [DoctorController::class, 'elim
 
 //rutas para el horaurio
 Route::get('menu/horairo', [HorarioController::class, 'horario'])->name('añadirhorario');
+// Agrega esta ruta en tu archivo de rutas web.php
+Route::post('/buscardoctor', [HorarioController::class, 'buscardoctor'])->name('buscardoctor');
+Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
+
 
 //Route::get('menu/edit', [InitController::class, 'editar'])->name('editar');
 
