@@ -9,7 +9,7 @@ class InicioController extends Controller
     public function __invoke()
     {
 
-        return view('login.login');
+        return view('login.administrador.login');
         
     }
 }

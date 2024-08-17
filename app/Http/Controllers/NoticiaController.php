@@ -10,7 +10,7 @@ class NoticiaController extends Controller
     public function noticias()
     {
         $noticias = Noticias::all(); // Obtener todas las noticias desde la base de datos
-        return view('init.noticias.AñadirNoticia', compact('noticias'));
+        return view('vistas.administrador.noticias.AñadirNoticia', compact('noticias'));
     }
     
     public function agregar(Request $request){

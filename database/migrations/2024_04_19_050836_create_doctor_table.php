@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('correo')->unique();
             $table->string('dni')->unique();
             $table->string('especialidad');
+            $table->string('password');
             $table->timestamps();
         });
     }

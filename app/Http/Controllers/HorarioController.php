@@ -13,7 +13,7 @@ class HorarioController extends Controller
     public function horario()
     {
 
-        return view('init.horario.AñadirHorario');
+        return view('vistas.administrador.horario.AñadirHorario');
     }
 
     public function buscardoctor(Request $request)

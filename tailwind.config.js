@@ -2,8 +2,19 @@
 export default {
   content: [],
   theme: {
-    extend: {},
+    extend: {
+      
+    },
   },
   plugins: [],
 }
 
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        'custom-color': 'rgb(3, 194, 194)'
+      }
+    }
+  }
+}
