@@ -26,25 +26,12 @@
                     class="absolute top-0 left-0 h-full bg-red-500 {{ request()->routeIs('doctor.dashboard') || Str::startsWith(request()->url(), route('doctor.dashboard')) || request()->routeIs('editar') || request()->routeIs('eliminar') ? 'block' : 'hidden' }}"
                     style="width: 3px;"></div>
                 <i class="fas fa-newspaper mr-2 text-gray-600"></i>
-                Dashboard
-            </a>
-            <hr class="border-b border-gray-200 my-2">
-        </div>
-
-
-        <!-- Botón "Agregar Doctor" -->
-        <div class="w-full mb-2">
-            <a href="{{ route('doctor.cita')}}" id="btnDoctor"
-                class="inline-block text-black font-normal py-2 px-4 transition-all transform hover:scale-105 @if (request()->routeIs('doctor.cita')
-                 || request()->routeIs('guardardoctor')) bg-gray-300  @else bg-transparent @endif w-full relative">
-                <div id="bar-btnDoctor"
-                    class="absolute top-0 left-0 h-full bg-red-500 {{ request()->routeIs('doctor.cita') || request()->routeIs('guardardoctor') ? 'block' : 'hidden' }}"
-                    style="width: 3px;"></div>
-                <i class="fas fa-user-md mr-2 text-gray-600"></i>
                 Ver citas
             </a>
             <hr class="border-b border-gray-200 my-2">
         </div>
+
+
 
 
         <!-- Botón "Agregar Horario" -->

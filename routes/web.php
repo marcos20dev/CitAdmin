@@ -89,5 +89,21 @@ Route::middleware('auth:doctor')->group(function () {
     Route::put('citas/{id}/atendida', [CitaController::class, 'marcarAtendida'])->name('citas.atender');
     Route::get('citas/filtrar', [CitaController::class, 'filtrar'])->name('citas.filtrar');
     Route::post('doctor/logout', [DoctorController::class, 'logout'])->name('doctor.logout');
+
+
+// web.php
+Route::get('doctor/dashboard', [DoctorController::class, 'mostrarCitas'])->name('doctor.dashboard');
+Route::post('cita/{id}/actualizar', [DoctorController::class, 'actualizarEstado'])->name('cita.actualizar');
+
+
+
+
+
+Route::get('doctor/historial', [DoctorController::class, 'historial1'])->name('doctor.historial');
+Route::get('doctor/citas/historial', [DoctorController::class, 'historial1'])->name('historial.citas');
+Route::get('doctor/ver-todo', [DoctorController::class, 'verTodo'])->name('doctor.ver-todo');
+
+
+
 });
 //-----------------------------------------------

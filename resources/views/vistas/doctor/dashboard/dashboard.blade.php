@@ -20,93 +20,63 @@
     <!-- Contenedores sobre la imagen -->
     <div class="absolute inset-x-8 z-20 pt-20">
         <!-- Contenedor de datos -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
             <!-- Contenedor 1 -->
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
                 <i class="fas fa-calendar-alt text-blue-500 text-2xl"></i>
                 <div>
-                    <h3 class="text-lg font-semibold">Citas</h3>
-                    <p class="text-gray-600">15</p>
+                    <h3 class="text-lg font-semibold">Citas Programadas</h3>
+                    <p class="text-gray-600" id="count-programadas">{{ $citasTotales->where('estado', 0)->count() }}</p>
                 </div>
             </div>
-
-            <!-- Contenedor 2 -->
+            
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
                 <i class="fas fa-user-md text-green-500 text-2xl"></i>
                 <div>
-                    <h3 class="text-lg font-semibold">Doctores</h3>
-                    <p class="text-gray-600">8</p>
+                    <h3 class="text-lg font-semibold">Citas Atendidas</h3>
+                    <p class="text-gray-600" id="count-atendidas">{{ $citasTotales->where('estado', 1)->count() }}</p>
                 </div>
-            </div>
-
-            <!-- Contenedor 3 -->
-            <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-                <i class="fas fa-hospital text-red-500 text-2xl"></i>
-                <div>
-                    <h3 class="text-lg font-semibold">Hospitales</h3>
-                    <p class="text-gray-600">5</p>
-                </div>
-            </div>
-                   <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-                <i class="fas fa-hospital text-red-500 text-2xl"></i>
-                <div>
-                    <h3 class="text-lg font-semibold">Hospitales</h3>
-                    <p class="text-gray-600">5</p>
-                </div>
+       
             </div>
         </div>
-
     </div>
-
 </div>
 
 <!-- Contenedor central blanco -->
 <div class="absolute inset-x-8 top-3/4 transform -translate-y-2/3 mx-auto max-w-8xl bg-white p-6 shadow-lg rounded-lg z-30">
- 
-        <h2 class="mb-4 text-3xl font-bold text-gray-900">Mis Pacientes</h2>
-        <div class="w-full max-w-4xl bg-white rounded-lg shadow-md">
-            <div class="p-6 border-b border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800">Citas Programadas</h3>
-            </div>
-            <div class="p-6 space-y-4">
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow hover:bg-gray-100">
-                    <div class="flex items-center">
-                        <img class="w-12 h-12 rounded-full" src="https://placehold.co/48x48/eeeeee/4B5563/png?text=Paciente" alt="Paciente">
-                        <div class="ml-4">
-                            <h4 class="text-lg font-medium text-gray-800">Juan Pérez</h4>
-                            <p class="text-sm text-gray-500">Fecha: 2023-10-15</p>
-                            <p class="text-sm text-gray-500">Hora: 10:00 AM</p>
-                        </div>
-                    </div>
-                    <button class="text-blue-600 hover:underline">Ver Detalles</button>
-                </div>
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow hover:bg-gray-100">
-                    <div class="flex items-center">
-                        <img class="w-12 h-12 rounded-full" src="https://placehold.co/48x48/eeeeee/4B5563/png?text=Paciente" alt="Paciente">
-                        <div class="ml-4">
-                            <h4 class="text-lg font-medium text-gray-800">María López</h4>
-                            <p class="text-sm text-gray-500">Fecha: 2023-10-16</p>
-                            <p class="text-sm text-gray-500">Hora: 11:30 AM</p>
-                        </div>
-                    </div>
-                    <button class="text-blue-600 hover:underline">Ver Detalles</button>
-                </div>
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow hover:bg-gray-100">
-                    <div class="flex items-center">
-                        <img class="w-12 h-12 rounded-full" src="https://placehold.co/48x48/eeeeee/4B5563/png?text=Paciente" alt="Paciente">
-                        <div class="ml-4">
-                            <h4 class="text-lg font-medium text-gray-800">Carlos Martínez</h4>
-                            <p class="text-sm text-gray-500">Fecha: 2023-10-17</p>
-                            <p class="text-sm text-gray-500">Hora: 2:00 PM</p>
-                        </div>
-                    </div>
-                    <button class="text-blue-600 hover:underline">Ver Detalles</button>
-                </div>
-            </div>
-        </div>
+    <h2 class="mb-4 text-3xl font-bold text-gray-900">Mis Pacientes</h2>
 
+    <!-- Botón de alternancia dentro del contenedor de citas -->
+    <div class="flex justify-end mb-4">
+        <button id="toggle-citas" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+            Mostrar Citas Atendidas
+        </button>
+    </div>
+
+    <!-- Contenedor de citas -->
+    <h3 class="text-xl font-semibold text-gray-800">Citas</h3>
+    <div class="p-6 space-y-4" id="citas-container">
+        <!-- Inicialmente se muestran las citas con estado 0 (programadas) -->
+        @include('partials.citas', ['citas' => $citas])
+    </div>
 </div>
-@endsection
 
-<!-- Asegúrate de incluir FontAwesome en tu proyecto para los íconos -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const button = document.getElementById('toggle-citas');
+        let currentState = '{{ request('estado') == 1 ? 1 : 0 }}';
+
+        button.addEventListener('click', function() {
+            let newState = currentState == 1 ? 0 : 1;
+            currentState = newState; // Actualiza el estado actual
+
+            fetch('{{ url('doctor/dashboard') }}?estado=' + newState)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('citas-container').innerHTML = new DOMParser().parseFromString(html, 'text/html').querySelector('#citas-container').innerHTML;
+                    button.textContent = newState == 1 ? 'Mostrar Citas Programadas' : 'Mostrar Citas Atendidas';
+                });
+        });
+    });
+</script>
+@endsection

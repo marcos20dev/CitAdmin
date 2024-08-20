@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Cita extends Model
@@ -13,14 +12,16 @@ class Cita extends Model
     {
         return $this->belongsTo(Doctor::class);
     }
-
-    public function users()
+    
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id');
     }
-
-    public function horarios()
+    
+    public function horario()
     {
         return $this->belongsTo(Horario::class, 'horario_id');
     }
 }
+
+
