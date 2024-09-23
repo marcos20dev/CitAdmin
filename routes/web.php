@@ -37,6 +37,14 @@ Route::post('login/soporte', [SoporteController::class, 'inicio'])->name('soport
 
 Route::middleware('auth:soporte')->group(function () {
     Route::get('menu/soporte', [SoporteController::class, 'MenuSoporte'])->name('añadircuentas');
+
+    // Rutas en web.php
+    Route::get('/ver-doctores', [SoporteController::class, 'verCuentasDoctor'])->name('ver.doctores');
+    Route::delete('/soporte/doctores/{id}', [SoporteController::class, 'destroyDoctor'])->name('soporte.eliminarDoctor');
+
+    Route::get('/ver-administradores', [SoporteController::class, 'verCunetasAdministrador'])->name('ver.administradores');
+    Route::delete('/soporte/administradores/{id}', [SoporteController::class, 'destroyAdministrador'])->name('soporte.eliminarAdministrador');
+
     Route::post('/soporte/añadircuentas', [SoporteController::class, 'store'])->name('soporte.store');
 });
 
@@ -85,25 +93,26 @@ Route::middleware('auth:doctor')->group(function () {
 
 
 
+
+
+
+    
     Route::delete('citas/{cita}', [CitaController::class, 'destroy'])->name('citas.destroy');
     Route::put('citas/{id}/atendida', [CitaController::class, 'marcarAtendida'])->name('citas.atender');
     Route::get('citas/filtrar', [CitaController::class, 'filtrar'])->name('citas.filtrar');
     Route::post('doctor/logout', [DoctorController::class, 'logout'])->name('doctor.logout');
 
 
-// web.php
-Route::get('doctor/dashboard', [DoctorController::class, 'mostrarCitas'])->name('doctor.dashboard');
-Route::post('cita/{id}/actualizar', [DoctorController::class, 'actualizarEstado'])->name('cita.actualizar');
+    // web.php
+    Route::get('doctor/dashboard', [DoctorController::class, 'mostrarCitas'])->name('doctor.dashboard');
+    Route::post('cita/{id}/actualizar', [DoctorController::class, 'actualizarEstado'])->name('cita.actualizar');
 
 
 
 
 
-Route::get('doctor/historial', [DoctorController::class, 'historial1'])->name('doctor.historial');
-Route::get('doctor/citas/historial', [DoctorController::class, 'historial1'])->name('historial.citas');
-Route::get('doctor/ver-todo', [DoctorController::class, 'verTodo'])->name('doctor.ver-todo');
-
-
-
+    Route::get('doctor/historial', [DoctorController::class, 'historial1'])->name('doctor.historial');
+    Route::get('doctor/citas/historial', [DoctorController::class, 'historial1'])->name('historial.citas');
+    Route::get('doctor/ver-todo', [DoctorController::class, 'verTodo'])->name('doctor.ver-todo');
 });
 //-----------------------------------------------

@@ -28,7 +28,7 @@
 
         .fixed-submenu {
             position: fixed;
-            top: 60px;
+            top: 81px;
             right: 0;
             bottom: 0;
             width: 25%;
@@ -50,7 +50,7 @@
             left: 17%;
             /* Ajuste del espacio para el menú */
             right: 0;
-            z-index: 1000;
+         
             /* Asegura que el encabezado esté por encima de otros elementos */
             background-color: rgb(46, 49, 54);
             /* Color de fondo del encabezado */

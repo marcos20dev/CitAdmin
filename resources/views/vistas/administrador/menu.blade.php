@@ -59,17 +59,6 @@
             <hr class="border-b border-gray-300 my-2">
         </div>
 
-        <!-- Botón "Agregar Fotos" -->
-        <div class="w-full mb-2">
-            <a href="" id="btnFotos"
-                class="inline-block text-white font-normal py-2 px-4 transition-all transform hover:scale-105 bg-transparent w-full relative">
-                <div id="bar-btnFotos" class="absolute top-0 left-0 h-full bg-red-400 hidden" style="width: 3px;"></div>
-                <!-- Barra roja vertical -->
-                <i class="far fa-images mr-2 text-white"></i> <!-- Icono de Font Awesome -->
-                +boton nuevo+
-            </a>
-            <hr class="border-b border-gray-300 my-2">
-        </div>
 
     </div>
 

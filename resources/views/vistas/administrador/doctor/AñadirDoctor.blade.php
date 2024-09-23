@@ -6,14 +6,11 @@
     @include('vistas.administrador.menu')
 @endsection
 
-
 @section('submenu')
-@include('vistas.administrador.doctor.nav')
+    @include('vistas.administrador.doctor.nav')
 @endsection
 
-
 @section('content')
-
 
     <div class="flex"> <!-- Contenedor principal con flexbox -->
         <div class="max-w-2xl mx-auto py-8 px-4 flex-grow"> <!-- Primer div más grande -->
@@ -28,7 +25,6 @@
                         <span class="text-white">Nombre:</span>
                         <input type="text" name="nombre" value="{{ old('nombre') }}"
                             class="mt-1 block w-full rounded-md border-red-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-base px-3 py-2">
-                        <!-- Tamaño de texto base y padding moderado -->
                     </label>
                     @error('nombre')
                         <p class="text-red-500">{{ $message }}</p>
@@ -40,21 +36,17 @@
                         <span class="text-white">Apellido:</span>
                         <input type="text" name="apellido" value="{{ old('apellido') }}"
                             class="mt-1 block w-full rounded-md border-red-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-base px-3 py-2">
-                        <!-- Tamaño de texto base y padding moderado -->
                     </label>
                     @error('apellido')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
             
-               
-            
                 <div>
                     <label class="block">
                         <span class="text-white">DNI:</span>
                         <input type="text" name="dni" value="{{ old('dni') }}"
                             class="mt-1 block w-full rounded-md border-red-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-base px-3 py-2">
-                        <!-- Tamaño de texto base y padding moderado -->
                     </label>
                     @error('dni')
                         <p class="text-red-500">{{ $message }}</p>
@@ -70,24 +62,24 @@
                             <option value="Cardiología">Cardiología</option>
                             <option value="Dermatología">Dermatología</option>
                             <option value="Gastroenterología">Gastroenterología</option>
-                            <!-- Agrega más opciones según sea necesario -->
                         </select>
                     </label>
                     @error('especialidad')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
+                
                 <div>
                     <label class="block">
                         <span class="text-white">Correo electrónico:</span>
                         <input type="email" name="correo" value="{{ old('correo') }}"
                             class="mt-1 block w-full rounded-md border-red-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-base px-3 py-2">
-                        <!-- Tamaño de texto base y padding moderado -->
                     </label>
                     @error('correo')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
+                
                 <div>
                     <label class="block">
                         <span class="text-white">Contraseña:</span>
@@ -105,30 +97,34 @@
                     @enderror
                 </div>
                 
-
-
-
                 <div>
                     <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">Registrar</button>
                 </div>
             </form>
             
-            
         </div>
-
-      
-    
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Función para ajustar la altura del textarea dinámicamente
+        @if(session()->has('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro exitoso',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
+    </script>
+    
+
+    <script>
         function autoSizeTextarea() {
             const textarea = document.getElementById('descripcion');
-            textarea.style.height = 'auto'; // Restablecer la altura para recalcular
-            textarea.style.height = textarea.scrollHeight + 'px'; // Ajustar la altura según el contenido
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
         }
 
-        // Llamar a la función al cargar la página y en cada cambio de contenido
         window.addEventListener('DOMContentLoaded', autoSizeTextarea);
         document.getElementById('descripcion').addEventListener('input', autoSizeTextarea);
 
@@ -147,8 +143,7 @@
                 reader.readAsDataURL(file);
             }
         }
-    </script>
-  <script>
+
         function togglePassword() {
             const password = document.getElementById("password");
             const icon = document.getElementById("password-icon");
@@ -161,6 +156,16 @@
                 icon.src = "{{ asset('logo/ps-tachado.png') }}";
             }
         }
+
+        // Mostrar alerta de éxito usando SweetAlert2 si existe un mensaje de éxito en la sesión
+        @if(session()->has('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro exitoso',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
     </script>
 
 @endsection

@@ -6,8 +6,6 @@
     @include('vistas.administrador.menu')
 @endsection
 
-@section('submenu')
-@endsection
 
 @section('content')
 

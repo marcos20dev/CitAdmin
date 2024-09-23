@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    
     public function up(): void
     {
         Schema::create('citas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('doctor_id');
-            $table->foreign('doctor_id')->references('id')->on('doctor');
-            
+            $table->string('doctor_id'); // Cambia a string para coincidir con DNI
             $table->unsignedBigInteger('horario_id');
-            $table->foreign('horario_id')->references('id')->on('horarios');
-            
             $table->unsignedBigInteger('users_id');
-            $table->foreign('users_id')->references('id')->on('users');
-            $table->boolean('estado')->default(false); 
+            $table->boolean('estado')->default(false);
             $table->timestamps();
+
+            // Establece las llaves foráneas
+            $table->foreign('doctor_id')->references('dni')->on('doctor')->onDelete('cascade'); // Referencia al DNI
+            $table->foreign('horario_id')->references('id')->on('horarios')->onDelete('cascade');
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -1,35 +1,37 @@
 <header x-data="{ open: false }" class="bg-gray-800 text-white py-4" style="background-color: rgb(46, 49, 54);">
-    <div class="container mx-auto flex items-center justify-between px-4">
+    <div class="container mx-auto flex items-center justify-start px-4">
         @auth('admin')
             <img src="{{ Auth::guard('admin')->user()->foto_perfil ? 'data:image/jpeg;base64,' . Auth::guard('admin')->user()->foto_perfil : 'path_to_default_image.jpg' }}"
                 alt="Foto de perfil" class="w-12 h-12 rounded-full">
         @else
             <img src="path_to_default_image.jpg" alt="Default Image" class="w-12 h-12 rounded-full">
         @endauth
-        <div class="flex items-center">
-            @auth('admin') <!-- Nombre y apellido al lado del botón de menú -->
-                <h1 class="text-xl font-semibold">{{ Auth::guard('admin')->user()->nombre }}
-                    {{ Auth::guard('admin')->user()->apellidos }}</h1>
+
+
+        
+        <div class="flex items-center ml-4">
+            @auth('admin')
+                <h1 class="text-xl font-semibold">{{ Auth::guard('admin')->user()->nombre }} {{ Auth::guard('admin')->user()->apellidos }}</h1>
             @else
                 <h1 class="text-xl font-semibold">Invitado</h1>
             @endauth
-
-            <button @click="open = !open"
-                class="ml-4 p-2 rounded-md text-white hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-800 transition">
-                <svg x-show="!open" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-                <svg x-show="open" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
         </div>
+
+        <button @click="open = !open"
+            class="ml-4 p-2 rounded-md text-white hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-800 transition">
+            <svg x-show="!open" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            <svg x-show="open" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
     </div>
 
     <div x-show="open" x-transition @click.away="open = false"
-         class="absolute right-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-1 z-50">
+         class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-1 z-50">
         <div class="px-5 py-4 shadow-xl rounded-lg transform transition-all duration-300 scale-100 opacity-100">
             <!-- Cambiar de cuenta -->
             <a href="#" class="flex items-center px-4 py-3 rounded-lg text-lg font-medium text-gray-700 hover:text-gray-900">
@@ -54,7 +56,5 @@
         </div>
     </div>
 </header>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x" defer></script>

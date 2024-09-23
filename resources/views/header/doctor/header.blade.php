@@ -1,8 +1,11 @@
 <header x-data="{ open: false }" class="bg-blue-800 text-white py-4" style="background-color: rgb(0, 170, 169);">
     <div class="container mx-auto flex items-center justify-between px-4">
         @auth('doctor')
-            <img src="{{ Auth::guard('doctor')->user()->foto_perfil ? 'data:image/jpeg;base64,' . Auth::guard('doctor')->user()->foto_perfil : 'path_to_doctor_default_image.jpg' }}"
-                alt="Foto de perfil del doctor" class="w-12 h-12 rounded-full">
+            
+        <img src="{{ Auth::guard('doctor')->user()->foto_perfil ? 'data:image/jpeg;base64,' . Auth::guard('doctor')->user()->foto_perfil : asset('images/doctor_default.png') }}"
+     alt="Foto de perfil del doctor" class="w-12 h-12 rounded-full">
+
+
         @else
             <img src="path_to_doctor_default_image.jpg" alt="Imagen predeterminada del doctor" class="w-12 h-12 rounded-full">
         @endauth

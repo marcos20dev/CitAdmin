@@ -70,8 +70,7 @@
 
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <input id="remember_me" name="remember" type="checkbox"
-                                class="h-4 w-4 text-white focus:ring-white border-gray-300 rounded">
+                            <input id="remember_me" name="remember" type="checkbox" class="h-4 w-4 text-white focus:ring-white border-gray-300 rounded">
                             <label for="remember_me" class="ml-2 block text-sm text-white">
                                 Recordarme
                             </label>

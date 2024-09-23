@@ -21,7 +21,7 @@
     <div class="absolute inset-x-8 z-20 pt-20">
         <!-- Contenedor de datos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-            <!-- Contenedor 1 -->
+            <!-- Contenedor 1: Citas Programadas -->
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
                 <i class="fas fa-calendar-alt text-blue-500 text-2xl"></i>
                 <div>
@@ -29,14 +29,14 @@
                     <p class="text-gray-600" id="count-programadas">{{ $citasTotales->where('estado', 0)->count() }}</p>
                 </div>
             </div>
-            
+
+            <!-- Contenedor 2: Citas Atendidas -->
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
                 <i class="fas fa-user-md text-green-500 text-2xl"></i>
                 <div>
                     <h3 class="text-lg font-semibold">Citas Atendidas</h3>
                     <p class="text-gray-600" id="count-atendidas">{{ $citasTotales->where('estado', 1)->count() }}</p>
                 </div>
-       
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@
 
     <!-- Contenedor de citas -->
     <h3 class="text-xl font-semibold text-gray-800">Citas</h3>
-    <div class="p-6 space-y-4" id="citas-container">
+    <div class="p-6 space-y-4 max-h-96 overflow-y-auto" id="citas-container">
         <!-- Inicialmente se muestran las citas con estado 0 (programadas) -->
         @include('partials.citas', ['citas' => $citas])
     </div>
@@ -73,8 +73,18 @@
             fetch('{{ url('doctor/dashboard') }}?estado=' + newState)
                 .then(response => response.text())
                 .then(html => {
+                    // Actualizar el contenido del contenedor de citas
                     document.getElementById('citas-container').innerHTML = new DOMParser().parseFromString(html, 'text/html').querySelector('#citas-container').innerHTML;
+
+                    // Actualizar el texto del botón
                     button.textContent = newState == 1 ? 'Mostrar Citas Programadas' : 'Mostrar Citas Atendidas';
+
+                    // Actualizar los contadores
+                    let citasProgramadas = document.querySelectorAll('.cita.estado-0').length;
+                    let citasAtendidas = document.querySelectorAll('.cita.estado-1').length;
+
+                    document.getElementById('count-programadas').textContent = citasProgramadas;
+                    document.getElementById('count-atendidas').textContent = citasAtendidas;
                 });
         });
     });

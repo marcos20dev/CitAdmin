@@ -29,9 +29,9 @@
                 </div>
             </div>
             <div id="formulario{{ $doctor->id }}"
-                class="fixed top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:top-1/2 w-full max-w-lg bg-gray-800 bg-opacity-75 flex justify-center items-center"
+                class="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-75 z-50"
                 style="display: none;" onclick="cerrarFormulario({{ $doctor->id }})">
-                <div class="bg-white p-8 rounded-lg overflow-y-auto" onclick="event.stopPropagation()">
+                <div class="bg-white p-8 rounded-lg overflow-y-auto w-full max-w-3xl" onclick="event.stopPropagation()">
                     <div class="flex justify-between">
                         <h2 class="text-2xl font-bold mb-4">Editar Doctor</h2>
                         <button class="text-gray-700 text-2xl" onclick="cerrarFormulario({{ $doctor->id }})">X</button>
