@@ -69,6 +69,26 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::put('menu/doctor/{id}/editardoctor', [DoctorController::class, 'update'])->name('actualizar.Doctor');
     Route::delete('menu/doctor/{id}/eliminardoctor', [DoctorController::class, 'eliminarDoctor'])->name('eliminar.Doctor');
 
+    //añadir nuevos pacientes al doctor
+    Route::get('menu/doctor/reasignar', [DoctorController::class, 'asignar'])->name('asignardoctor');
+
+    // Ruta para buscar doctor por DNI
+    Route::post('/buscardoctor', [DoctorController::class, 'buscarDoctor'])->name('buscardoctor');
+
+    // Ruta para mostrar los pacientes asignados a un doctor en una fecha específica
+    Route::get('/pacientes-asignados', [DoctorController::class, 'mostrarPacientesAsignados'])->name('pacientes.asignados');
+
+    // Ruta para mostrar los doctores disponibles en una fecha
+    Route::get('/doctores-disponibles', [DoctorController::class, 'mostrarDoctoresDisponibles'])->name('doctores.disponibles');
+
+    // Ruta para reasignar pacientes a otro doctor
+    Route::post('/reasignar-pacientes', [DoctorController::class, 'reasignarPacientes'])->name('reasignar.pacientes');
+
+
+
+
+
+
     // Rutas para el horario
     Route::get('menu/horairo', [HorarioController::class, 'horario'])->name('añadirhorario');
     Route::post('/buscardoctor', [HorarioController::class, 'buscardoctor'])->name('buscardoctor');
@@ -96,7 +116,7 @@ Route::middleware('auth:doctor')->group(function () {
 
 
 
-    
+
     Route::delete('citas/{cita}', [CitaController::class, 'destroy'])->name('citas.destroy');
     Route::put('citas/{id}/atendida', [CitaController::class, 'marcarAtendida'])->name('citas.atender');
     Route::get('citas/filtrar', [CitaController::class, 'filtrar'])->name('citas.filtrar');

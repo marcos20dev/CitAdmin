@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Cita;
+use App\Models\Paciente;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -24,6 +25,8 @@ class DoctorController extends Controller
         $doctores = Doctor::all();
         return view('vistas.administrador.doctor.AñadirDoctor', compact('doctores'));
     }
+
+    
 
     public function agregar(Request $request)
     {
@@ -260,4 +263,81 @@ class DoctorController extends Controller
         // Pasa los horarios a la vista
         return view('vistas.administrador.horarios.ver_horarios', compact('horarios'));
     }
+
+
+
+    public function asignar()
+    {
+        $doctores = Doctor::all();
+        return view('vistas.administrador.doctor.AsignarDoctor', compact('doctores'));
+    }
+
+    public function mostrarDoctoresDisponibles(Request $request)
+    {
+        $fecha = $request->query('dia');
+
+        // Suponiendo que el modelo Doctor tiene una relación con los horarios
+        $doctores = Doctor::whereHas('horarios', function ($query) use ($fecha) {
+            $query->where('fecha', $fecha);
+        })->get();
+
+        if ($doctores->isEmpty()) {
+            return response()->json([
+                'doctores' => [],
+            ]);
+        } else {
+            return response()->json([
+                'doctores' => $doctores,
+            ]);
+        }
+    }
+
+
+    public function mostrarPacientesAsignados(Request $request)
+    {
+        $fecha = $request->query('dia');
+
+        // Aquí suponemos que el modelo Paciente tiene una relación con las citas y el doctor
+        $pacientes = Paciente::whereHas('citas', function ($query) use ($fecha) {
+            $query->where('fecha', $fecha);
+        })->get();
+
+        if ($pacientes->isEmpty()) {
+            return response()->json([
+                'pacientes' => [],
+            ]);
+        } else {
+            return response()->json([
+                'pacientes' => $pacientes,
+            ]);
+        }
+    }
+
+    // Reasignar pacientes a otro doctor
+    public function reasignarPacientes(Request $request)
+    {
+        $doctorId = $request->input('doctor_id');
+        $fecha = $request->input('dia');
+
+        // Obtener el nuevo doctor
+        $nuevoDoctor = Doctor::find($doctorId);
+
+        if (!$nuevoDoctor) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontró el nuevo doctor.',
+            ]);
+        }
+
+        // Actualizar las citas de los pacientes en esa fecha, asignando al nuevo doctor
+        $citas = Cita::where('fecha', $fecha)
+                    ->where('doctor_id', '!=', $doctorId)
+                    ->update(['doctor_id' => $nuevoDoctor->id]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Pacientes reasignados correctamente.',
+        ]);
+    }
+
 }

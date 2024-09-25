@@ -59,6 +59,19 @@
             <hr class="border-b border-gray-300 my-2">
         </div>
 
+        <div class="w-full mb-2">
+            <a href="{{ route('asignardoctor') }}" id="btnHorario"
+                class="inline-block text-white font-normal py-2 px-4 transition-all transform hover:scale-105 @if (request()->routeIs('asignardoctor')) bg-gray-600 @else bg-transparent @endif w-full relative">
+                <div id="bar-btnHorario"
+                    class="absolute top-0 left-0 h-full bg-red-500 {{ request()->routeIs('asignardoctor') ? 'block' : 'hidden' }}"
+                    style="width: 3px;"></div>
+                <i class="far fa-calendar-alt mr-2 text-white"></i>
+                Agregar Fechas y hora
+            </a>
+            <hr class="border-b border-gray-300 my-2">
+        </div>
+
+
 
     </div>
 

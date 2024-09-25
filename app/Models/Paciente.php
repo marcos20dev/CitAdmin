@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Users extends Model
+class Paciente extends Model
 {
     // Define la relación inversa con las citas
     public function citas()
