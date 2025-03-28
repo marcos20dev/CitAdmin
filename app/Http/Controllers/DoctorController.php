@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Cita;
 use App\Models\Paciente;
+use App\Models\Horario;
 use Carbon\Carbon;
+
 use Illuminate\Support\Facades\Log;
 
 
@@ -26,7 +28,7 @@ class DoctorController extends Controller
         return view('vistas.administrador.doctor.AñadirDoctor', compact('doctores'));
     }
 
-    
+
 
     public function agregar(Request $request)
     {
@@ -38,7 +40,7 @@ class DoctorController extends Controller
             'especialidad' => 'required',
             'password' => 'required'
         ]);
-    
+
         $doctor = new Doctor();
         $doctor->nombre = $request->nombre;
         $doctor->apellido = $request->apellido;
@@ -46,12 +48,12 @@ class DoctorController extends Controller
         $doctor->dni = $request->dni;
         $doctor->especialidad = $request->especialidad;
         $doctor->password = Hash::make($request->password);
-    
+
         $doctor->save();
-    
+
         return redirect()->route('añadirdoctor')->with('success', 'Doctor registrado exitosamente');
     }
-    
+
 
 
     public function update(Request $request, $id)
@@ -86,6 +88,7 @@ class DoctorController extends Controller
         // Redirigir a la página deseada después de actualizar el doctor
         return redirect()->route('añadirdoctor')->with('success', 'Doctor actualizado exitosamente');
     }
+
 
 
     public function eliminarDoctor($id)
@@ -158,29 +161,36 @@ class DoctorController extends Controller
     public function mostrarCitas(Request $request)
     {
         $estado = $request->input('estado', 0); // Obtiene el estado de la consulta o por defecto 0
-        
+        $estadoPerdido = $request->input('estado_perdido', 0); // Obtiene el estado perdido de la consulta o por defecto 0
+
         // Obtén todas las citas, sin filtrar por fecha
         $citas = Cita::with('user', 'horario')->get();
-        
+
+        // Filtrar las citas por estado y estado_perdido
+        $citasFiltradas = $citas->filter(function($cita) use ($estado, $estadoPerdido) {
+            return ($cita->estado == $estado) && ($cita->estado_perdido == $estadoPerdido);
+        });
+
         // Log para verificar las citas obtenidas
-        if ($citas->isEmpty()) {
+        if ($citasFiltradas->isEmpty()) {
             Log::info('No se encontraron citas.');
         } else {
-            Log::info('Citas encontradas:', $citas->toArray());
+            Log::info('Citas encontradas:', $citasFiltradas->toArray());
         }
-    
+
         if ($request->ajax()) {
             return view('partials.citas', [
-                'citas' => $citas->where('estado', $estado)
+                'citas' => $citasFiltradas
             ])->render();
         }
-    
+
         return view('vistas.doctor.dashboard.dashboard', [
-            'citas' => $citas->where('estado', $estado),
+            'citas' => $citasFiltradas,
             'citasTotales' => $citas // Pasar todas las citas para los contadores
         ]);
     }
-    
+
+
 
 
 
@@ -222,10 +232,10 @@ class DoctorController extends Controller
     public function historial1(Request $request)
     {
         $doctor = Auth::guard('doctor')->user();
-    
+
         // Obtén la fecha desde el parámetro de consulta
         $fecha = $request->query('fecha', date('Y-m-d')); // Por defecto, usa la fecha actual si no se proporciona
-    
+
         // Filtra las citas por la fecha proporcionada y el DNI del doctor
         $citas = Cita::where('doctor_id', $doctor->dni) // Aquí usamos el 'dni' del doctor autenticado
             ->whereHas('horario', function ($query) use ($fecha) {
@@ -233,27 +243,27 @@ class DoctorController extends Controller
             })
             ->with('horario', 'user')
             ->get();
-    
+
         // Pasa las citas y la fecha a la vista
         return view('vistas.doctor.historial.historial', compact('citas', 'fecha'));
     }
-    
+
     public function verTodo()
     {
         $doctor = Auth::guard('doctor')->user();
-    
+
         // Cambiamos para comparar con el DNI del doctor autenticado
-        $citas = Cita::where('doctor_id', $doctor->dni) 
+        $citas = Cita::where('doctor_id', $doctor->dni)
             ->with('horario', 'user')
             ->get();
-    
+
         // Define una fecha predeterminada, si es necesario
         $fecha = date('Y-m-d');
-    
+
         // Pasa las citas y la fecha a la vista
         return view('vistas.doctor.historial.historial', compact('citas', 'fecha'));
     }
-    
+
 
     public function mostrarHorarios()
     {
@@ -264,80 +274,132 @@ class DoctorController extends Controller
         return view('vistas.administrador.horarios.ver_horarios', compact('horarios'));
     }
 
-
-
     public function asignar()
     {
         $doctores = Doctor::all();
         return view('vistas.administrador.doctor.AsignarDoctor', compact('doctores'));
     }
 
-    public function mostrarDoctoresDisponibles(Request $request)
+    public function buscarDoctor(Request $request)
     {
-        $fecha = $request->query('dia');
+        // Validar el DNI
+        $request->validate([
+            'dni_doctor_anterior' => 'required|string',
+        ]);
 
-        // Suponiendo que el modelo Doctor tiene una relación con los horarios
-        $doctores = Doctor::whereHas('horarios', function ($query) use ($fecha) {
-            $query->where('fecha', $fecha);
-        })->get();
+        // Buscar el doctor por su DNI
+        $doctor = Doctor::where('dni', $request->dni_doctor_anterior)->first();
 
-        if ($doctores->isEmpty()) {
+        // Retornar la respuesta
+        if ($doctor) {
             return response()->json([
-                'doctores' => [],
+                'success' => true,
+                'nombre' => $doctor->nombre,
+                'apellido' => $doctor->apellido,
             ]);
         } else {
-            return response()->json([
-                'doctores' => $doctores,
-            ]);
-        }
-    }
-
-
-    public function mostrarPacientesAsignados(Request $request)
-    {
-        $fecha = $request->query('dia');
-
-        // Aquí suponemos que el modelo Paciente tiene una relación con las citas y el doctor
-        $pacientes = Paciente::whereHas('citas', function ($query) use ($fecha) {
-            $query->where('fecha', $fecha);
-        })->get();
-
-        if ($pacientes->isEmpty()) {
-            return response()->json([
-                'pacientes' => [],
-            ]);
-        } else {
-            return response()->json([
-                'pacientes' => $pacientes,
-            ]);
-        }
-    }
-
-    // Reasignar pacientes a otro doctor
-    public function reasignarPacientes(Request $request)
-    {
-        $doctorId = $request->input('doctor_id');
-        $fecha = $request->input('dia');
-
-        // Obtener el nuevo doctor
-        $nuevoDoctor = Doctor::find($doctorId);
-
-        if (!$nuevoDoctor) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se encontró el nuevo doctor.',
+                'message' => 'Doctor no encontrado.',
             ]);
         }
-
-        // Actualizar las citas de los pacientes en esa fecha, asignando al nuevo doctor
-        $citas = Cita::where('fecha', $fecha)
-                    ->where('doctor_id', '!=', $doctorId)
-                    ->update(['doctor_id' => $nuevoDoctor->id]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Pacientes reasignados correctamente.',
-        ]);
     }
 
+
+    public function buscarPacientes(Request $request)
+    {
+        // Validar la fecha y el DNI del doctor
+        $request->validate([
+            'dia_seleccionado' => 'required|date',
+            'doctor_id' => 'required|string', // Esperamos que el DNI se envíe
+        ]);
+
+        // Obtener citas para la fecha seleccionada, doctor, y con estado 0 (no atendidas)
+        $citas = Cita::where('doctor_id', $request->doctor_id)
+            ->where('estado', 0) // Filtrar por citas no atendidas (estado 0)
+            ->whereHas('horario', function ($query) use ($request) {
+                $query->whereDate('fecha', $request->dia_seleccionado); // Filtrar por la fecha del horario
+            })
+            ->with(['user', 'horario']) // Incluir la relación de 'horario' para obtener la fecha y hora
+            ->get();
+
+        // Retornar la respuesta
+        return response()->json($citas);
+    }
+
+
+
+
+    public function buscarDoctores(Request $request)
+    {
+        $request->validate([
+            'dia_seleccionado' => 'required|date',
+            'doctor_id' => 'required|string', // Suponiendo que el DNI del doctor es un string
+        ]);
+
+        // Obtener el DNI del doctor anterior
+        $dniDoctorAnterior = $request->doctor_id;
+
+        // Obtener el horario para el doctor anterior en la fecha seleccionada
+        $horarioDoctorAnterior = Horario::where('dni_doctor', $dniDoctorAnterior)
+            ->where('fecha', $request->dia_seleccionado)
+            ->first();
+
+        // Verificar si existe el horario y obtener la especialidad
+        if ($horarioDoctorAnterior) {
+            $especialidad = Doctor::where('dni', $dniDoctorAnterior)->value('especialidad');
+
+            $doctores = Doctor::where('especialidad', $especialidad)
+                ->where('dni', '<>', $dniDoctorAnterior) // Excluir el doctor buscado
+                ->whereHas('horarios', function ($query) use ($request) {
+                    $query->where('fecha', $request->dia_seleccionado);
+                })
+                ->get();
+
+            return response()->json($doctores);
+        }
+
+        return response()->json(['success' => false, 'message' => 'No se encontró horario para el doctor especificado.']);
+    }
+
+    public function buscarHorarios(Request $request)
+    {
+        $doctorId = $request->input('doctor_id');
+
+        $horarios = Horario::where('dni_doctor', $doctorId)
+            ->where('ocupado', 0)
+            ->get();
+
+        return response()->json($horarios);
+    }
+
+
+
+    public function reasignarPacientes(Request $request)
+    {
+
+        // Validar los datos recibidos
+        $request->validate([
+            'pacientes' => 'required|array', // Lista de IDs de pacientes
+            'nuevo_doctor_id' => 'required|string', // DNI del nuevo doctor
+            'horario_id' => 'required|integer', // ID del nuevo horario
+        ]);
+
+        // Obtener los pacientes seleccionados
+        $pacientes = $request->pacientes;
+
+        // Iterar sobre los pacientes seleccionados y reasignar sus citas
+        foreach ($pacientes as $citaId) {
+            $cita = Cita::find($citaId);
+
+            if ($cita) {
+                // Reasignar al nuevo doctor y horario
+                $cita->doctor_id = $request->nuevo_doctor_id;
+                $cita->horario_id = $request->horario_id;
+                $cita->save();
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Pacientes reasignados correctamente.']);
+    }
 }

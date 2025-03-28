@@ -22,6 +22,8 @@ class Cita extends Model
     {
         return $this->belongsTo(Horario::class, 'horario_id');
     }
+
+  
 }
 
 

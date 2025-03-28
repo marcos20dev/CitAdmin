@@ -1,147 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <!-- Incluir bb-rich-text-editor -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('imagen/logo-icon.png') }}" type="image/x-icon">
 
     <style>
-        .fixed-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 17%;
-            /* Ancho del menú */
-            background-color: rgb(46, 49, 54);
-            /* Color de fondo del menú */
-            padding: 2rem;
-            /* Relleno del menú */
-            overflow-y: auto;
-            /* Desplazamiento vertical automático si el contenido excede el tamaño del menú */
-        }
-
-        .fixed-submenu {
-            position: fixed;
-            top: 81px;
-            right: 0;
-            bottom: 0;
-            width: 25%;
-            /* Aumentar el ancho */
-            max-width: 420px;
-            /* Limitar el ancho máximo */
-            padding: 1rem;
-            /* Reducir el relleno */
-            overflow-y: auto;
-            background-color: rgb(40, 42, 46);
-            /* Color de fondo */
-        }
-
-
-        /* Estilo para el encabezado fijo */
-        .fixed-header {
-            position: fixed;
-            top: 0;
-            left: 17%;
-            /* Ajuste del espacio para el menú */
-            right: 0;
-         
-            /* Asegura que el encabezado esté por encima de otros elementos */
-            background-color: rgb(46, 49, 54);
-            /* Color de fondo del encabezado */
-            padding: 0rem;
-            /* Relleno del encabezado */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            /* Sombra del encabezado */
-        }
-
-
-        .content-main {
-            background-color: rgb(34, 37, 42);
-            /* Color de fondo del contenido principal */
-            padding: 2rem;
-            /* Relleno del contenido principal */
-            margin-left: 20%;
-            /* Aumento del margen izquierdo */
-            margin-right: 20%;
-            /* Aumento del margen derecho */
-        }
-
-      
-        @media (max-width: 767px) {
-            .fixed-menu {
-                width: 100%;
-                height: auto;
-                bottom: auto;
-                padding: 1rem;
-            }
-
-            .fixed-header {
-                top: auto;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 1rem;
-            }
-
-            .ml-1/5 {
-                margin-left: 0;
-            }
-
-            .mt-16 {
-                margin-top: 1rem;
-            }
-        }
-
+        /* Sistema de capas y posicionamiento */
         body {
+            display: grid;
+            grid-template-areas:
+                "menu header header"
+                "menu content submenu";
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 64px 1fr;
+            min-height: 100vh;
             background-color: rgb(34, 37, 42);
-
+            color: #e2e8f0;
         }
 
-        .content-wrapper {
-            display: flex;
+        /* Menú lateral - Ahora fijo */
+        .fixed-menu {
+            grid-area: menu;
+            background-color: rgb(46, 49, 54);
+            z-index: 40;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            height: 100vh; /* Ocupa toda la altura */
+            overflow-y: auto; /* Scroll interno si el contenido es muy largo */
         }
 
+        /* Encabezado */
+        .fixed-header {
+            grid-area: header;
+            background-color: rgb(46, 49, 54);
+            z-index: 30;
+            position: sticky;
+            top: 0;
+            height: 64px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Contenido principal */
         .content-main {
-            flex-grow: 1;
+            grid-area: content;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: rgb(34, 37, 42);
         }
 
-        .content-main.left-margin-adjusted {
-            margin-left: 20%;
-           
+        /* Submenú */
+        .fixed-submenu {
+            grid-area: submenu;
+            background-color: rgb(40, 42, 46);
+            overflow-y: auto;
+            z-index: 20;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .submenu {
-            margin-left: 10px;
-      
+        /* Responsive */
+        @media (max-width: 1024px) {
+            body {
+                grid-template-columns: 240px 1fr 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                grid-template-areas:
+                    "header header header"
+                    "content content content";
+                grid-template-columns: 1fr;
+            }
+
+            .fixed-menu,
+            .fixed-submenu {
+                position: fixed;
+                top: 64px;
+                bottom: 0;
+                width: 280px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .fixed-menu.open {
+                transform: translateX(0);
+                left: 0;
+            }
+
+            .fixed-submenu.open {
+                transform: translateX(0);
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
         }
     </style>
-
 </head>
 
-<body>
+<body class="antialiased">
+<!-- Menú lateral -->
+<aside class="fixed-menu">
+    @yield('menu')
+</aside>
 
-    <div class="fixed-header">
-        @yield('header')
-    </div>
+<!-- Encabezado -->
+<header class="fixed-header">
+    @yield('header')
+</header>
 
-    <div class="fixed-menu">
-        @yield('menu')
-    </div>
+<!-- Contenido principal -->
+<main class="content-main">
+    @yield('content')
+</main>
 
-    <div class="ml-1/4 mt-8 content-main">
+<!-- Submenú -->
+<aside class="fixed-submenu">
+    @yield('submenu')
+</aside>
 
-        @yield('content')
-    </div>
-
-    <div class="fixed-submenu">
-        @yield('submenu')
-    </div>
+<!-- Script para manejar el responsive (opcional) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Aquí podrías añadir lógica para los toggles del menú en móvil
+        // Por ejemplo:
+        // document.querySelector('.menu-toggle').addEventListener('click', function() {
+        //     document.querySelector('.fixed-menu').classList.toggle('open');
+        // });
+    });
+</script>
 </body>
-
 </html>

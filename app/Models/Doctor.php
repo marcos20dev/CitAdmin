@@ -18,5 +18,12 @@ class Doctor extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $table = 'doctor';
+  
+
+     protected $table = 'doctor';
+
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class, 'dni_doctor', 'dni');
+    }
 }

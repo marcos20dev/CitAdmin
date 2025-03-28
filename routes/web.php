@@ -23,7 +23,7 @@ use function Ramsey\Uuid\v1;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-//login adminsitrador 
+//login adminsitrador
 Route::get('/', InicioController::class)->name('inicio');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -71,21 +71,8 @@ Route::middleware(['auth:admin'])->group(function () {
 
     //añadir nuevos pacientes al doctor
     Route::get('menu/doctor/reasignar', [DoctorController::class, 'asignar'])->name('asignardoctor');
-
-    // Ruta para buscar doctor por DNI
-    Route::post('/buscardoctor', [DoctorController::class, 'buscarDoctor'])->name('buscardoctor');
-
-    // Ruta para mostrar los pacientes asignados a un doctor en una fecha específica
-    Route::get('/pacientes-asignados', [DoctorController::class, 'mostrarPacientesAsignados'])->name('pacientes.asignados');
-
-    // Ruta para mostrar los doctores disponibles en una fecha
-    Route::get('/doctores-disponibles', [DoctorController::class, 'mostrarDoctoresDisponibles'])->name('doctores.disponibles');
-
-    // Ruta para reasignar pacientes a otro doctor
-    Route::post('/reasignar-pacientes', [DoctorController::class, 'reasignarPacientes'])->name('reasignar.pacientes');
-
-
-
+// web.php
+Route::post('reasignar-pacientes', [DoctorController::class, 'reasignarPacientes'])->name('reasignar.pacientes');
 
 
 
@@ -96,11 +83,6 @@ Route::middleware(['auth:admin'])->group(function () {
 });
 
 
-
-
-//DOCTOR
-
-
 Route::get('login/doctor', [DoctorController::class, 'logindoctor'])->name('doctor');
 Route::post('login/doctor', [DoctorController::class, 'login'])->name('doctor.login.submit');
 
@@ -109,12 +91,6 @@ Route::middleware('auth:doctor')->group(function () {
     Route::get('doctor/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
     Route::get('doctor/citas', [DoctorController::class, 'cita'])->name('doctor.cita');
     Route::get('doctor/historial', [DoctorController::class, 'historial'])->name('doctor.historial');
-
-
-
-
-
-
 
 
     Route::delete('citas/{cita}', [CitaController::class, 'destroy'])->name('citas.destroy');
@@ -136,3 +112,14 @@ Route::middleware('auth:doctor')->group(function () {
     Route::get('doctor/ver-todo', [DoctorController::class, 'verTodo'])->name('doctor.ver-todo');
 });
 //-----------------------------------------------
+
+
+// Ruta para buscar un doctor por DNI
+Route::post('buscar-doctor', [DoctorController::class, 'buscarDoctor'])->name('buscar.doctor');
+// Ruta para buscar pacientes por fecha y doctor
+Route::post('buscar-pacientes', [DoctorController::class, 'buscarPacientes'])->name('buscar.pacientes');
+Route::post('buscar-doctores', [DoctorController::class, 'buscarDoctores'])->name('buscar.doctores');
+
+
+Route::post('buscar/horarios', [DoctorController::class, 'buscarHorarios'])->name('buscar.horarios');
+

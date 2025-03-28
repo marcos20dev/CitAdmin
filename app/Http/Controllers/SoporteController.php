@@ -28,17 +28,17 @@ class SoporteController extends Controller
         $doctores = Doctor::all(); // Asegúrate de que el modelo Doctor está correctamente definido y el namespace importado
         return view('vistas.soporte.ver_cuentasDoctor', compact('doctores'));
     }
-    
+
     public function destroyDoctor($id)
     {
         // Encuentra al doctor por su ID y elimínalo
         $doctor = Doctor::findOrFail($id);
         $doctor->delete();
-    
+
         // Redirecciona de vuelta con un mensaje de éxito
         return redirect()->route('ver.doctores')->with('success', 'Doctor eliminado correctamente.');
     }
-    
+
     public function verCunetasAdministrador() {
         $administradores = Administrador::all(); // Obtiene todos los administradores
         return view('vistas.soporte.ver_cuentas_admins', ['administradores' => $administradores]);
@@ -66,35 +66,41 @@ class SoporteController extends Controller
             'password' => 'required|string|min:6',
             'foto_perfil' => 'nullable|image|max:2048',
         ]);
-    
+
         $administrador = new Administrador($request->all());
         $administrador->password = Hash::make($request['password']);
-    
+
         if ($request->hasFile('foto_perfil')) {
             $imagePath = $request->file('foto_perfil');
             $imageData = file_get_contents($imagePath);
             $administrador->foto_perfil = base64_encode($imageData);
         }
-    
+
         $administrador->save();
-    
+
         return redirect()->route('añadircuentas')->with('success', 'Cuenta de administrador creada correctamente.');
     }
-    
+
 
     public function inicio(Request $request)
     {
-        $credentials = $request->only('email', 'password'); // Asegúrate de que 'email' esté en el formulario de inicio de sesión
-    
+        $credentials = $request->only('email', 'password'); // Obtener credenciales
+
         if (Auth::guard('soporte')->attempt($credentials)) {
-            // Autenticación exitosa
-            return redirect()->intended(route('añadircuentas'));
+            session()->regenerate(); // Asegura que la sesión se mantenga
+
+            logger()->info('Usuario autenticado correctamente:', ['user' => Auth::guard('soporte')->user()]);
+
+            return redirect()->intended(route('añadircuentas')); // Redirige después del login
         }
-    
-        // Autenticación fallida
+
+        logger()->error('Error de autenticación: Credenciales incorrectas');
+
+        // Si la autenticación falla
         return redirect()->back()->withErrors(['email' => 'Las credenciales no coinciden con nuestros registros.']);
     }
-    
+
+
 
 
 
