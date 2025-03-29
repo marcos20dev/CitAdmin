@@ -12,7 +12,11 @@ class NoticiaController extends Controller
         $noticias = Noticias::all(); // Obtener todas las noticias desde la base de datos
         return view('vistas.administrador.noticias.AñadirNoticia', compact('noticias'));
     }
-    
+    public function mostrar()
+    {
+        $noticias = Noticias::orderBy('created_at', 'desc')->paginate(10);
+        return view('vistas.administrador.noticias.mostrarnoticias', compact('noticias'));
+    }
     public function agregar(Request $request){
 
         // Validar la solicitud y los datos del formulario
@@ -25,8 +29,8 @@ class NoticiaController extends Controller
 
         // Crear una nueva instancia del modelo Noticias
         $noticia = new Noticias();
-         
-        
+
+
         $noticia->titulo = $request->titulo;
         $noticia->descripcion = $request->descripcion;
 
@@ -95,5 +99,5 @@ class NoticiaController extends Controller
         return redirect()->route('noticias')->with('success', 'Noticia eliminada exitosamente.');
     }
 
-    
+
 }

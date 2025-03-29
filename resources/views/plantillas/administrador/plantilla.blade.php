@@ -14,12 +14,21 @@
             display: grid;
             grid-template-areas:
                 "menu header header"
-                "menu content submenu";
-            grid-template-columns: 280px 1fr 320px;
+                "menu content content"; /* Configuración por defecto sin submenú */
+            grid-template-columns: 280px 1fr;
             grid-template-rows: 64px 1fr;
             min-height: 100vh;
             background-color: rgb(34, 37, 42);
             color: #e2e8f0;
+            overflow: hidden; /* Esto evita el scroll global */
+        }
+
+        /* Cuando hay submenú */
+        body.has-submenu {
+            grid-template-areas:
+                "menu header header"
+                "menu content submenu";
+            grid-template-columns: 280px 1fr 320px;
         }
 
         /* Menú lateral - Ahora fijo */
@@ -30,8 +39,8 @@
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             position: sticky;
             top: 0;
-            height: 100vh; /* Ocupa toda la altura */
-            overflow-y: auto; /* Scroll interno si el contenido es muy largo */
+            height: 100vh;
+            overflow-y: auto;
         }
 
         /* Encabezado */
@@ -51,6 +60,8 @@
             padding: 2rem;
             overflow-y: auto;
             background-color: rgb(34, 37, 42);
+            height: calc(100vh - 64px); /* Altura fija menos el header */
+            position: relative;
         }
 
         /* Submenú */
@@ -60,28 +71,45 @@
             overflow-y: auto;
             z-index: 20;
             border-left: 1px solid rgba(255, 255, 255, 0.05);
+            display: none; /* Oculto por defecto */
+            height: calc(100vh - 64px); /* Altura fija menos el header */
+            position: sticky;
+            top: 64px;
+        }
+
+        body.has-submenu .fixed-submenu {
+            display: block; /* Mostrado cuando hay submenú */
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
             body {
+                grid-template-columns: 240px 1fr;
+            }
+            body.has-submenu {
                 grid-template-columns: 240px 1fr 280px;
             }
         }
 
         @media (max-width: 768px) {
-            body {
+            body, body.has-submenu {
                 grid-template-areas:
                     "header header header"
                     "content content content";
                 grid-template-columns: 1fr;
+                overflow: auto; /* Permitir scroll en mobile */
+            }
+
+            .content-main {
+                height: auto;
+                min-height: calc(100vh - 64px);
             }
 
             .fixed-menu,
             .fixed-submenu {
                 position: fixed;
                 top: 64px;
-                bottom: 0;
+                height: calc(100vh - 64px);
                 width: 280px;
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
@@ -92,9 +120,14 @@
                 left: 0;
             }
 
+            .fixed-submenu {
+                right: 0;
+                left: auto;
+                transform: translateX(100%);
+            }
+
             .fixed-submenu.open {
                 transform: translateX(0);
-                right: 0;
             }
 
             .menu-toggle {
@@ -118,7 +151,7 @@
     </style>
 </head>
 
-<body class="antialiased">
+<body class="antialiased @hasSection('submenu')has-submenu @endif">
 <!-- Menú lateral -->
 <aside class="fixed-menu">
     @yield('menu')
@@ -134,19 +167,31 @@
     @yield('content')
 </main>
 
-<!-- Submenú -->
-<aside class="fixed-submenu">
-    @yield('submenu')
-</aside>
+<!-- Submenú - Solo aparece si se define en la vista hija -->
+@hasSection('submenu')
+    <aside class="fixed-submenu">
+        @yield('submenu')
+    </aside>
+@endif
 
-<!-- Script para manejar el responsive (opcional) -->
+<!-- Script para manejar el responsive -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Aquí podrías añadir lógica para los toggles del menú en móvil
-        // Por ejemplo:
-        // document.querySelector('.menu-toggle').addEventListener('click', function() {
-        //     document.querySelector('.fixed-menu').classList.toggle('open');
-        // });
+        // Lógica para menú móvil si es necesario
+        const menuToggle = document.querySelector('.menu-toggle');
+        if(menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                document.querySelector('.fixed-menu').classList.toggle('open');
+            });
+        }
+
+        // Lógica para submenú móvil si es necesario
+        const submenuToggle = document.querySelector('.submenu-toggle');
+        if(submenuToggle) {
+            submenuToggle.addEventListener('click', function() {
+                document.querySelector('.fixed-submenu').classList.toggle('open');
+            });
+        }
     });
 </script>
 </body>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use App\Models\Noticias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +18,28 @@ use Illuminate\Support\Facades\Log;
 class DoctorController extends Controller
 {
 
+public function mostrar()
+{
+
+    $doctores = Doctor::orderBy('created_at', 'desc')->paginate(10);
+    return view('vistas.administrador.doctor.MostrarDoctor', compact('doctores'));
+
+}
+    public function mostrarsearch(Request $request)
+    {
+        $search = $request->input('search');
+
+        $doctores = Doctor::when($search, function($query, $search) {
+            return $query->where('nombre', 'like', "%{$search}%")
+                ->orWhere('apellido', 'like', "%{$search}%")
+                ->orWhere('dni', 'like', "%{$search}%")
+                ->orWhere('especialidad', 'like', "%{$search}%");
+        })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('vistas.administrador.doctor.MostrarDoctor', compact('doctores'));
+    }
     public function logindoctor()
     {
         return view('login.doctor.logindoctor');
@@ -32,27 +55,42 @@ class DoctorController extends Controller
 
     public function agregar(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'correo' => 'required|email',
-            'dni' => 'required',
-            'especialidad' => 'required',
-            'password' => 'required'
-        ]);
+        try {
+            $request->validate([
+                'nombre' => 'required',
+                'apellido' => 'required',
+                'correo' => 'required|email|unique:doctor,correo',
+                'dni' => 'required|unique:doctor,dni',
+                'especialidad' => 'required',
+                'password' => 'required'
+            ]);
 
-        $doctor = new Doctor();
-        $doctor->nombre = $request->nombre;
-        $doctor->apellido = $request->apellido;
-        $doctor->correo = $request->correo;
-        $doctor->dni = $request->dni;
-        $doctor->especialidad = $request->especialidad;
-        $doctor->password = Hash::make($request->password);
+            $doctor = new Doctor();
+            $doctor->nombre = $request->nombre;
+            $doctor->apellido = $request->apellido;
+            $doctor->correo = $request->correo;
+            $doctor->dni = $request->dni;
+            $doctor->especialidad = $request->especialidad;
+            $doctor->password = Hash::make($request->password);
 
-        $doctor->save();
+            $doctor->save();
 
-        return redirect()->route('añadirdoctor')->with('success', 'Doctor registrado exitosamente');
+            return redirect()->route('añadirdoctor')->with('success', 'Doctor registrado exitosamente');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == 1062){
+                // Verificar si el error es por correo o DNI
+                if (strpos($e->getMessage(), 'doctor_correo_unique') !== false) {
+                    return back()->with('duplicate_error', 'El correo electrónico ya está registrado en el sistema.');
+                } elseif (strpos($e->getMessage(), 'doctor_dni_unique') !== false) {
+                    return back()->with('duplicate_error', 'El DNI ya está registrado en el sistema.');
+                }
+            }
+            return back()->with('error', 'Ocurrió un error al registrar el doctor.');
+        }
     }
+
 
 
 

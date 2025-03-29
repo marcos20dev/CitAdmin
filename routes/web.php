@@ -50,8 +50,6 @@ Route::middleware('auth:soporte')->group(function () {
 
 
 //--------------------------------------------------------------------------------------------------
-
-
 //RUTA PARA EL MENU
 // Utiliza el middleware 'auth' para proteger las rutas
 Route::middleware(['auth:admin'])->group(function () {
@@ -62,12 +60,16 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('menu/noticias/agregar', [NoticiaController::class, 'agregar'])->name('agregar');
     Route::put('menu/noticias/{id}/editar', [NoticiaController::class, 'updateNoticia'])->name('actualizar.noticia');
     Route::delete('menu/noticias/{id}/eliminar', [NoticiaController::class, 'eliminarNoticia'])->name('eliminar.noticia');
+    Route::get('mostrar/noticias', [NoticiaController::class, 'mostrar'])->name('noticias.mostrar');
 
     // Rutas para el doctor
     Route::get('menu/doctor', [DoctorController::class, 'doctor'])->name('añadirdoctor');
     Route::post('menu/doctor/agregar', [DoctorController::class, 'agregar'])->name('agregarDoctor');
+    Route::get('menu/doctor/buscar', [DoctorController::class, 'mostrarsearch'])->name('mostrarDoctor');
+
     Route::put('menu/doctor/{id}/editardoctor', [DoctorController::class, 'update'])->name('actualizar.Doctor');
     Route::delete('menu/doctor/{id}/eliminardoctor', [DoctorController::class, 'eliminarDoctor'])->name('eliminar.Doctor');
+    Route::get('mostrar/doctor', [DoctorController::class, 'mostrar'])->name('doctor.mostrar');
 
     //añadir nuevos pacientes al doctor
     Route::get('menu/doctor/reasignar', [DoctorController::class, 'asignar'])->name('asignardoctor');
@@ -80,6 +82,11 @@ Route::post('reasignar-pacientes', [DoctorController::class, 'reasignarPacientes
     Route::get('menu/horairo', [HorarioController::class, 'horario'])->name('añadirhorario');
     Route::post('/buscardoctor', [HorarioController::class, 'buscardoctor'])->name('buscardoctor');
     Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
+    // routes/web.php
+    Route::get('/horarios', [HorarioController::class, 'mostrar'])->name('horarios.mostrar');
+    Route::post('/horarios/duplicar/{id}', [HorarioController::class, 'duplicate'])->name('horarios.duplicate');
+    Route::delete('/horarios/{id}', [HorarioController::class, 'eliminarhorario'])->name('horarios.eliminar');
+
 });
 
 

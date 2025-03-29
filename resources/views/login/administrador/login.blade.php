@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-
-
-    <!-- Fondo Ultra Premium -->
+    <!-- Fondo Ultra Premium Oscuro -->
     <div class="neural-network"></div>
     <div class="particles-container" id="particles-js"></div>
     <div class="particle-connections" id="connections-js"></div>
@@ -25,8 +23,8 @@
                 <!-- Botón Médico -->
                 <div class="w-full flex justify-end">
                     <button type="button" onclick="window.location.href='{{ route('doctor') }}'"
-                            class="group flex items-center space-x-3 px-6 py-3 bg-white/90 hover:bg-white border border-gray-200/80 text-gray-800 rounded-xl text-md font-medium transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-                        <svg class="h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            class="group flex items-center space-x-3 px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 rounded-xl text-md font-medium transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1">
+                        <svg class="h-5 w-5 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                         <span>Acceso Médico</span>
@@ -39,33 +37,33 @@
                 <!-- Logo y Texto -->
                 <div class="flex flex-col items-center lg:items-start space-y-10 text-center lg:text-left">
                     <div class="logo-3d relative group">
-                        <div class="absolute -inset-3 bg-gradient-to-r from-indigo-100 to-blue-100 rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition duration-700"></div>
-                        <div class="relative bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-100/50">
+                        <div class="absolute -inset-3 bg-gradient-to-r from-indigo-900/50 to-blue-900/50 rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition duration-700"></div>
+                        <div class="relative bg-gray-800/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700/50">
                             <img src="{{ asset('imagen/icon.png') }}" class="h-52 w-auto" alt="Hospital Logo">
                             <div class="absolute -bottom-2 -right-2 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">v4.2.1</div>
                         </div>
                     </div>
 
                     <div class="space-y-6">
-                        <h1 class="text-5xl font-bold text-gray-800 leading-tight">
-                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">Sistema Clínico</span><br>
-                            <span class="text-gray-800">Integrado</span>
+                        <h1 class="text-5xl font-bold text-gray-100 leading-tight">
+                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-blue-400">Sistema Clínico</span><br>
+                            <span class="text-gray-300">Integrado</span>
                         </h1>
-                        <p class="text-xl text-gray-600 max-w-lg leading-relaxed">
+                        <p class="text-xl text-gray-400 max-w-lg leading-relaxed">
                             Plataforma segura para la gestión administrativa hospitalaria con los más altos estándares de seguridad.
                         </p>
                         <div class="flex flex-wrap gap-3">
-                            <div class="flex items-center space-x-2 bg-indigo-50/70 px-4 py-2 rounded-full border border-indigo-100/50 backdrop-blur-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div class="flex items-center space-x-2 bg-indigo-900/40 px-4 py-2 rounded-full border border-indigo-800/50 backdrop-blur-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                                 </svg>
-                                <span class="text-sm font-medium text-indigo-700">Certificado HIPAA</span>
+                                <span class="text-sm font-medium text-indigo-300">Certificado HIPAA</span>
                             </div>
-                            <div class="flex items-center space-x-2 bg-indigo-50/70 px-4 py-2 rounded-full border border-indigo-100/50 backdrop-blur-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div class="flex items-center space-x-2 bg-indigo-900/40 px-4 py-2 rounded-full border border-indigo-800/50 backdrop-blur-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                 </svg>
-                                <span class="text-sm font-medium text-indigo-700">Cifrado AES-256</span>
+                                <span class="text-sm font-medium text-indigo-300">Cifrado AES-256</span>
                             </div>
                         </div>
                     </div>
@@ -73,7 +71,7 @@
             </div>
 
             <!-- Tarjeta de Login -->
-            <div class="w-full lg:w-1/2 max-w-md glass-card p-10 relative overflow-hidden">
+            <div class="w-full lg:w-1/2 max-w-md dark-glass-card p-10 relative overflow-hidden">
                 <!-- Barra decorativa superior -->
                 <div class="holographic-bar absolute top-0 left-0 right-0"></div>
 
@@ -84,14 +82,14 @@
                     <div class="space-y-8">
                         <div class="text-center pt-4">
                             <div class="mb-5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 mx-auto text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/>
                                 </svg>
                             </div>
-                            <h2 class="text-3xl font-bold text-gray-800 mb-3">
+                            <h2 class="text-3xl font-bold text-gray-100 mb-3">
                                 Acceso Administrativo
                             </h2>
-                            <p class="text-gray-500 text-sm font-medium">
+                            <p class="text-gray-400 text-sm font-medium">
                                 Credenciales restringidas al personal autorizado
                             </p>
                         </div>
@@ -99,15 +97,15 @@
                         <div class="space-y-6">
                             <!-- Campo Usuario -->
                             <div class="space-y-3">
-                                <label for="usuario" class="block text-sm font-medium text-gray-700">
+                                <label for="usuario" class="block text-sm font-medium text-gray-300">
                                     Usuario
                                 </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas fa-user text-black text-lg"></i>
+                                        <i class="fas fa-user text-gray-400 text-lg"></i>
                                     </div>
                                     <input id="usuario" name="usuario" type="text" required
-                                           class="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-300 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-all duration-200"
+                                           class="w-full pl-11 pr-4 py-3.5 bg-gray-700 border border-gray-600 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-400 transition-all duration-200"
                                            placeholder="usuario.admin"
                                            autocomplete="username">
                                 </div>
@@ -115,21 +113,21 @@
 
                             <!-- Campo Contraseña -->
                             <div class="space-y-3">
-                                <label for="password" class="block text-sm font-medium text-gray-700">
+                                <label for="password" class="block text-sm font-medium text-gray-300">
                                     Contraseña
                                 </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas fa-lock text-black text-lg"></i>
+                                        <i class="fas fa-lock text-gray-400 text-lg"></i>
                                     </div>
                                     <input id="password" name="password" type="password" required
-                                           class="w-full pl-11 pr-12 py-3.5 bg-white border border-gray-300 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-all duration-200"
+                                           class="w-full pl-11 pr-12 py-3.5 bg-gray-700 border border-gray-600 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-400 transition-all duration-200"
                                            placeholder="••••••••"
                                            autocomplete="current-password">
                                     <button id="toggle-password-button" type="button"
-                                            class="absolute right-3 bottom-3.5 p-1.5 rounded-lg bg-gray-100/70 hover:bg-gray-200/70 transition-colors backdrop-blur-sm"
+                                            class="absolute right-3 bottom-3.5 p-1.5 rounded-lg bg-gray-600/70 hover:bg-gray-500/70 transition-colors backdrop-blur-sm"
                                             onclick="togglePassword()">
-                                        <i id="password-icon" class="fas fa-eye text-gray-600 text-sm"></i>
+                                        <i id="password-icon" class="fas fa-eye text-gray-300 text-sm"></i>
                                     </button>
                                 </div>
                             </div>
@@ -138,7 +136,7 @@
 
                         <!-- Mensaje de error -->
                         @error('usuario')
-                        <div class="px-4 py-3 rounded-xl bg-red-50/80 border border-red-200 text-red-700 text-sm flex items-center animate-shake backdrop-blur-sm">
+                        <div class="px-4 py-3 rounded-xl bg-red-900/80 border border-red-700 text-red-100 text-sm flex items-center animate-shake backdrop-blur-sm">
                             <svg class="h-5 w-5 mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -150,14 +148,14 @@
                         <div class="flex items-center justify-between pt-3">
                             <div class="flex items-center">
                                 <input id="remember_me" name="remember" type="checkbox"
-                                       class="h-4 w-4 rounded bg-white/80 border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                <label for="remember_me" class="ml-2 block text-sm text-gray-600">
+                                       class="h-4 w-4 rounded bg-gray-700 border-gray-600 text-indigo-500 focus:ring-indigo-400">
+                                <label for="remember_me" class="ml-2 block text-sm text-gray-400">
                                     Recordar mi acceso
                                 </label>
                             </div>
 
                             <button type="button"
-                                    class="text-sm text-indigo-600 hover:text-indigo-800 font-medium transition-colors hover:underline"
+                                    class="text-sm text-indigo-400 hover:text-indigo-300 font-medium transition-colors hover:underline"
                                     onclick="window.location.href='{{ route('soporte') }}'">
                                 <svg class="h-4 w-4 mr-1 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -169,8 +167,8 @@
                         <!-- Botón de Submit -->
                         <div class="pt-6">
                             <button type="submit"
-                                    class="w-full py-4 px-6 holographic-btn rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transform hover:-translate-y-1 active:translate-y-0 group relative overflow-hidden">
-                                <span class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                                    class="w-full py-4 px-6 dark-holographic-btn rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transform hover:-translate-y-1 active:translate-y-0 group relative overflow-hidden">
+                                <span class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                                 <span class="relative z-10 flex items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
@@ -184,27 +182,27 @@
             </div>
         </div>
 
-        <!-- Footer Futurista -->
-        <div class="holographic-footer absolute bottom-0 left-0 right-0 h-20 flex items-center justify-center z-10">
+        <!-- Footer Futurista Oscuro -->
+        <div class="dark-holographic-footer absolute bottom-0 left-0 right-0 h-20 flex items-center justify-center z-10">
             <div class="flex flex-col items-center space-y-1">
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                    <a href="#" class="text-gray-500 hover:text-indigo-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
                     </a>
-                    <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                    <a href="#" class="text-gray-500 hover:text-indigo-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                         </svg>
                     </a>
-                    <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                    <a href="#" class="text-gray-500 hover:text-indigo-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                     </a>
                 </div>
-                <p class="text-gray-600 text-xs tracking-wide font-medium mt-2">
+                <p class="text-gray-400 text-xs tracking-wide font-medium mt-2">
                     © 2023 Sistema Clínico Integrado - v4.2.1
                 </p>
                 <p class="text-gray-500 text-[0.65rem]">
@@ -355,30 +353,35 @@
             }, 500);
         });
     </script>
-    <!-- Estilos CSS Ultra Premium -->
+    <!-- Estilos CSS Ultra Premium Oscuro -->
     <style>
         :root {
-            --color-primary: #4f46e5;
-            --color-primary-light: #6366f1;
-            --color-primary-dark: #4338ca;
+            --color-primary: #6366f1;
+            --color-primary-light: #818cf8;
+            --color-primary-dark: #4f46e5;
             --color-secondary: #10b981;
             --color-accent: #f59e0b;
             --color-error: #ef4444;
-            --color-text: #1e293b;
-            --color-text-light: #64748b;
-            --color-background: #f8fafc;
-            --color-surface: rgba(255, 255, 255, 0.9);
-            --color-border: rgba(226, 232, 240, 0.6);
+            --color-text: #f3f4f6;
+            --color-text-light: #9ca3af;
+            --color-background: #111827;
+            --color-surface: rgba(31, 41, 55, 0.9);
+            --color-border: rgba(55, 65, 81, 0.6);
         }
 
-        /* Fondo de lujo con múltiples efectos */
+        /* Fondo oscuro con múltiples efectos */
         body {
-            background: linear-gradient(-45deg, #f3f4f6, #e5e7eb, #f9fafb, #f1f5f9);
+            background: linear-gradient(-45deg,
+            #2e3136,
+            #1f2937,
+            #22252a,
+            #1e293b);
             background-size: 400% 400%;
             animation: gradientBG 18s ease infinite;
             min-height: 100vh;
             margin: 0;
             overflow-x: hidden;
+            color: var(--color-text);
         }
 
         @keyframes gradientBG {
@@ -397,7 +400,7 @@
             z-index: 0;
             opacity: 0.15;
             background-image:
-                radial-gradient(circle at 20% 30%, var(--color-primary-light) 0%, transparent 25%),
+                radial-gradient(circle at 20% 30%, var(--color-primary-dark) 0%, transparent 25%),
                 radial-gradient(circle at 80% 70%, var(--color-secondary) 0%, transparent 25%),
                 linear-gradient(to right, rgba(79, 70, 229, 0.1) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(79, 70, 229, 0.1) 1px, transparent 1px);
@@ -482,24 +485,24 @@
             pointer-events: none;
         }
 
-        /* Tarjeta de vidrio futurista */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
+        /* Tarjeta de vidrio futurista oscura */
+        .dark-glass-card {
+            background: rgba(31, 41, 55, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: 24px;
             border: 1px solid var(--color-border);
             box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.08),
-                0 8px 25px rgba(79, 70, 229, 0.15),
-                inset 0 0 15px rgba(255, 255, 255, 0.5);
+                0 20px 50px rgba(0, 0, 0, 0.2),
+                0 8px 25px rgba(79, 70, 229, 0.25),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             overflow: hidden;
             z-index: 10;
             position: relative;
         }
 
-        .glass-card::before {
+        .dark-glass-card::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -509,7 +512,7 @@
             background: linear-gradient(
                 to bottom right,
                 rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.05) 50%,
                 rgba(255, 255, 255, 0) 100%
             );
             transform: rotate(30deg);
@@ -521,12 +524,12 @@
             100% { transform: translateX(100%) rotate(30deg); }
         }
 
-        .glass-card:hover {
-            transition: transform 0.3s ease; /* Más simple */
+        .dark-glass-card:hover {
+            transition: transform 0.3s ease;
             box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.12),
-                0 15px 35px rgba(79, 70, 229, 0.2),
-                inset 0 0 20px rgba(255, 255, 255, 0.6);
+                0 25px 60px rgba(0, 0, 0, 0.3),
+                0 15px 35px rgba(79, 70, 229, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
         }
 
         /* Barra decorativa holográfica */
@@ -551,12 +554,12 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Botón futurista */
-        .holographic-btn {
+        /* Botón futurista oscuro */
+        .dark-holographic-btn {
             background: linear-gradient(
                 135deg,
-                var(--color-primary),
-                var(--color-primary-light)
+                var(--color-primary-dark),
+                var(--color-primary)
             );
             color: white;
             border: none;
@@ -564,19 +567,19 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
             box-shadow:
-                0 5px 20px rgba(79, 70, 229, 0.4),
-                0 2px 10px rgba(255, 255, 255, 0.3) inset;
+                0 5px 20px rgba(79, 70, 229, 0.5),
+                0 2px 10px rgba(255, 255, 255, 0.1) inset;
             z-index: 1;
         }
 
-        .holographic-btn:hover {
+        .dark-holographic-btn:hover {
             transform: translateY(-4px);
             box-shadow:
-                0 10px 30px rgba(79, 70, 229, 0.5),
-                0 3px 15px rgba(255, 255, 255, 0.4) inset;
+                0 10px 30px rgba(79, 70, 229, 0.6),
+                0 3px 15px rgba(255, 255, 255, 0.2) inset;
         }
 
-        .holographic-btn::before {
+        .dark-holographic-btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -586,41 +589,41 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0.2),
                 transparent
             );
             transition: 0.6s;
             z-index: -1;
         }
 
-        .holographic-btn:hover::before {
+        .dark-holographic-btn:hover::before {
             left: 100%;
         }
 
-        /* Input fields futuristas */
-        .holographic-input {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(226, 232, 240, 0.7);
+        /* Input fields futuristas oscuros */
+        .dark-holographic-input {
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.7);
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
             box-shadow:
-                0 2px 5px rgba(0, 0, 0, 0.05),
+                0 2px 5px rgba(0, 0, 0, 0.1),
                 0 0 0 1px rgba(99, 102, 241, 0) inset;
         }
 
-        .holographic-input:hover {
+        .dark-holographic-input:hover {
             border-color: var(--color-primary-light);
             box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.2),
                 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
-        .holographic-input:focus {
+        .dark-holographic-input:focus {
             border-color: var(--color-primary);
             box-shadow:
-                0 2px 10px rgba(0, 0, 0, 0.1),
+                0 2px 10px rgba(0, 0, 0, 0.2),
                 0 0 0 3px rgba(79, 70, 229, 0.2);
-            background: white;
+            background: rgba(31, 41, 55, 0.9);
         }
 
         /* Animaciones premium */
@@ -658,13 +661,13 @@
             transform: rotateY(15deg) rotateX(5deg) scale(1.05);
         }
 
-        /* Footer futurista */
-        .holographic-footer {
-            background: rgba(255, 255, 255, 0.92);
+        /* Footer futurista oscuro */
+        .dark-holographic-footer {
+            background: rgba(31, 41, 55, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(226, 232, 240, 0.7);
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.03);
+            border-top: 1px solid rgba(55, 65, 81, 0.7);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
         }
     </style>
 @endsection

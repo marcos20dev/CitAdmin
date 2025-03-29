@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Horario extends Model
 {
-   
     use HasFactory;
 
     protected $table = 'horarios';
@@ -15,7 +14,10 @@ class Horario extends Model
 
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class, 'dni', 'dni_doctor');
+        // Parámetros correctos:
+        // 1. Modelo relacionado
+        // 2. Columna LOCAL en horarios (dni_doctor)
+        // 3. Columna REMOTA en doctors (dni)
+        return $this->belongsTo(Doctor::class, 'dni_doctor', 'dni');
     }
-
 }

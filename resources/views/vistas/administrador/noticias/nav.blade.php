@@ -1,108 +1,238 @@
 @extends('plantillas.administrador.plantilla')
 
-@section('title', 'nav')
+@section('title', 'Gestión de Noticias')
 
 @section('submenu')
-<div class="max-w-2xl py-5 px-8 flex-grow flex justify-end"> <!-- Alinear el div de noticias a la derecha -->
-    <div class="flex flex-wrap justify-center"> <!-- Alinear el contenido de las noticias al centro -->
-        @foreach ($noticias->reverse() as $noticia)
-            <div class="w-72 max-w-sm rounded overflow-hidden shadow-lg bg-white mx-4 my-4">
-                <img class="w-full h-48 object-cover" src="data:image/jpeg;base64,{{ $noticia->foto }}" alt="{{ $noticia->titulo }}">
-                <div class="px-6 py-4">
-                    <div class="font-bold text-lg mb-2">{{ $noticia->titulo }}</div>
-                    <p class="text-sm text-gray-700 mb-2">{{ \Illuminate\Support\Str::limit($noticia->descripcion, 100, $end='...') }}</p>
-                    <div class="flex justify-between">
-                        <button class="bg-red-700 hover:bg-red-500 text-white font-bold py-1 px-2 rounded"
-                            onclick="expandirFormulario({{ $noticia->id }})">
-                            Editar
+    <div class="max-w-3xl mx-auto py-4 px-4">
+        <div class="space-y-2">
+            @foreach ($noticias->reverse()->take(8) as $noticia)
+                <!-- Tarjeta estilo WhatsApp -->
+                <div class="flex items-center bg-white p-3 rounded-lg shadow hover:bg-gray-50 transition-colors duration-200">
+                    <!-- Foto circular pequeña -->
+                    <div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 mr-3">
+                        <img class="w-full h-full object-cover"
+                             src="data:image/jpeg;base64,{{ $noticia->foto }}"
+                             alt="{{ $noticia->titulo }}">
+                    </div>
+
+                    <!-- Contenido principal -->
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-medium text-gray-900 truncate">{{ $noticia->titulo }}</h3>
+                        <p class="text-sm text-gray-500 truncate">{{ \Illuminate\Support\Str::limit($noticia->descripcion, 50, $end='...') }}</p>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="flex space-x-2 ml-3">
+                        <button onclick="expandirFormulario({{ $noticia->id }})"
+                                class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
                         </button>
-                        <button class="bg-gray-700 hover:bg-gray-500 text-white font-bold py-1 px-2 rounded"
-                            onclick="confirmarEliminacion({{ $noticia->id }})">
-                            Eliminar
+
+                        <button onclick="confirmarEliminacion({{ $noticia->id }})"
+                                class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                         </button>
-                        <form id="eliminar-form{{ $noticia->id }}" action="{{ route('eliminar.noticia', ['id' => $noticia->id]) }}" method="POST" style="display: none;">
+                    </div>
+                </div>
+
+                <!-- Modal de Edición (se mantiene igual) -->
+                <div id="formulario{{ $noticia->id }}" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+                    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all" onclick="event.stopPropagation()">
+                        <!-- Encabezado del modal -->
+                        <div class="sticky top-0 bg-white p-4 sm:p-6 border-b flex justify-between items-center">
+                            <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Editar Noticia</h2>
+                            <button onclick="cerrarFormulario({{ $noticia->id }})"
+                                    class="text-gray-500 hover:text-gray-700 transition-colors p-1 rounded-full hover:bg-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Formulario de edición -->
+                        <form id="form{{ $noticia->id }}" action="{{ route('actualizar.noticia', ['id' => $noticia->id]) }}" method="POST" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-4 sm:space-y-6">
                             @csrf
-                            @method('DELETE')
+                            @method('PUT')
+
+                            <!-- Sección adaptable -->
+                            <div class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-6">
+                                <!-- Columna izquierda - Campos de texto -->
+                                <div class="flex-1 space-y-4 sm:space-y-6">
+                                    <!-- Campo Título -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Título:</label>
+                                        <input type="text" name="titulo" value="{{ $noticia->titulo }}"
+                                               class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-black">
+                                    </div>
+
+
+                                    <!-- Campo Descripción -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Descripción:</label>
+                                        <textarea name="descripcion" rows="4"
+                                                  class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 min-h-[100px] sm:min-h-[150px] text-black">{{ $noticia->descripcion }}</textarea>
+                                    </div>
+
+                                </div>
+
+                                <!-- Columna derecha - Imágenes (sección compacta) -->
+                                <div class="flex-1 space-y-4 sm:space-y-6">
+                                    <!-- Área de carga compacta -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Imagen:</label>
+
+                                        <!-- Imagen Actual (pequeña) -->
+                                        <div class="relative mb-3" style="max-width: 150px;">
+                                            <img class="w-full h-auto rounded-lg border border-gray-300"
+                                                 src="data:image/jpeg;base64,{{ $noticia->foto }}"
+                                                 alt="Imagen actual">
+                                            <div class="absolute -bottom-2 -right-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                                                Actual
+                                            </div>
+                                        </div>
+
+                                        <!-- Selector de archivo integrado con vista previa -->
+                                        <div class="flex items-center space-x-3">
+                                            <label class="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg transition duration-200 flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                Cambiar
+                                                <input type="file" name="foto" id="fotoInput{{ $noticia->id }}" accept="image/*" class="hidden" onchange="mostrarMiniatura(this, {{ $noticia->id }})">
+                                            </label>
+
+                                            <!-- Vista previa en miniatura -->
+                                            <div id="previewThumbnail{{ $noticia->id }}" class="hidden relative" style="max-width: 80px;">
+                                                <img id="imagenThumbnail{{ $noticia->id }}" class="w-full h-auto rounded-lg border border-blue-300">
+                                                <div class="absolute -bottom-2 -right-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                                    Nueva
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-1">Formatos: JPEG, PNG (Max. 5MB)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botón de enviar -->
+                            <div class="flex justify-end pt-4">
+                                <button type="submit"
+                                        class="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow transition-all duration-300">
+                                    Guardar Cambios
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
-            </div>
-            <div id="formulario{{ $noticia->id }}"
-                class="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-75 z-50"
-                style="display: none;" onclick="cerrarFormulario({{ $noticia->id }})">
-                <div class="bg-white p-8 rounded-lg overflow-y-auto w-full max-w-3xl" onclick="event.stopPropagation()">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold">Editar Noticia</h2>
-                        <button class="text-gray-700 text-2xl" onclick="cerrarFormulario({{ $noticia->id }})">X</button>
-                    </div>
-                    <form id="form{{ $noticia->id }}" action="{{ route('actualizar.noticia', ['id' => $noticia->id]) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <!-- Campos de edición -->
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2" for="titulo">Título:</label>
-                            <input type="text" name="titulo" value="{{ $noticia->titulo }}" class="w-full border rounded-md px-3 py-2">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2" for="descripcion">Descripción:</label>
-                            <textarea name="descripcion" class="w-full h-35 border rounded-md px-3 py-2 resize-y max-h-64">{{ $noticia->descripcion }}</textarea>
-                        </div>
-                        <!-- Campo para cambiar la foto -->
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2" for="foto">Nueva Imagen:</label>
-                            <input type="file" name="foto" accept="image/*" class="mt-2" onchange="mostrarImagenSeleccionada(this, {{ $noticia->id }})">
-                        </div>
-                        <!-- Vista previa de la imagen que se va a actualizar -->
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2">Imagen a Actualizar:</label>
-                            <img id="imagen{{ $noticia->id }}" class="w-full mb-2 object-contain" src="data:image/jpeg;base64,{{ $noticia->foto }}" alt="Vista previa de la imagen a actualizar">
-                        </div>
-                        <!-- Otros campos según sea necesario -->
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Actualizar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <script>
-                // Función para mostrar la imagen seleccionada en la vista previa
-                function mostrarImagenSeleccionada(input, id) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var imagen = document.getElementById("imagen" + id);
-                        imagen.src = e.target.result;
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-                // Función para mostrar el formulario de edición
-                function expandirFormulario(id) {
-                    var formulario = document.getElementById("formulario" + id);
-                    formulario.style.display = "flex";
-                }
-                // Función para cerrar el formulario de edición
-                function cerrarFormulario(id) {
-                    var formulario = document.getElementById("formulario" + id);
-                    formulario.style.display = "none";
-                }
-                // Función para confirmar la eliminación de la noticia
-                function confirmarEliminacion(id) {
-                    Swal.fire({
-                        title: '¿Estás seguro?',
-                        text: "¡No podrás revertir esto!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Sí, eliminar',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            document.getElementById('eliminar-form' + id).submit();
+
+                <script>
+                    // Función para mostrar miniatura
+                    function mostrarMiniatura(input, id) {
+                        const preview = document.getElementById(`previewThumbnail${id}`);
+                        const thumbnail = document.getElementById(`imagenThumbnail${id}`);
+
+                        if (input.files && input.files[0]) {
+                            const reader = new FileReader();
+
+                            reader.onload = function(e) {
+                                thumbnail.src = e.target.result;
+                                preview.classList.remove('hidden');
+                            }
+
+                            reader.readAsDataURL(input.files[0]);
+                        } else {
+                            preview.classList.add('hidden');
                         }
-                    })
-                }
-            </script>
-        @endforeach
+                    }
+
+                    // Funciones para abrir/cerrar el modal
+                    function expandirFormulario(id) {
+                        const formulario = document.getElementById(`formulario${id}`);
+                        formulario.classList.remove('hidden');
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function cerrarFormulario(id) {
+                        const formulario = document.getElementById(`formulario${id}`);
+                        formulario.classList.add('hidden');
+                        document.body.style.overflow = 'auto';
+                    }
+                </script>
+                <form id="eliminar-form{{ $noticia->id }}" action="{{ route('eliminar.noticia', ['id' => $noticia->id]) }}" method="POST" style="display: none;">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endforeach
+
+            <!-- Botón "Ver más" en blanco -->
+            <div class="pt-6 text-center">
+                <a href="{{ route('noticias.mostrar') }}"
+                   class="inline-flex items-center px-4 py-2 text-white hover:text-gray-200 transition-colors duration-200 font-medium">
+                    Ver más noticias
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
     </div>
-</div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Función para mostrar la imagen seleccionada en la vista previa
+        function mostrarImagenSeleccionada(input, id) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var imagen = document.getElementById("imagen" + id);
+                if(imagen) {
+                    imagen.src = e.target.result;
+                    imagen.classList.remove('hidden');
+                }
+            }
+            if(input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Función para mostrar el formulario de edición
+        function expandirFormulario(id) {
+            var formulario = document.getElementById("formulario" + id);
+            formulario.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Función para cerrar el formulario de edición
+        function cerrarFormulario(id) {
+            var formulario = document.getElementById("formulario" + id);
+            formulario.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Función para confirmar la eliminación de la noticia
+        function confirmarEliminacion(id) {
+            Swal.fire({
+                title: '¿Eliminar noticia?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                background: '#fff',
+                backdrop: `
+                rgba(0,0,0,0.4)
+            `
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('eliminar-form' + id).submit();
+                }
+            })
+        }
+    </script>
 @endsection

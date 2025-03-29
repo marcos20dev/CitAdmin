@@ -61,7 +61,7 @@
             /* Sombra del encabezado */
         }
 
-       
+
 
         /* Estilo para el contenido principal */
         .content-main {
@@ -122,7 +122,7 @@
             /* Ajusta el valor según sea necesario */
         }
     </style>
-    
+
 </head>
 
 <body>
