@@ -215,7 +215,7 @@
                                 Acceso Médico
                             </h2>
                             <p class="text-gray-500 text-sm font-medium">
-                                Ingrese sus credenciales institucionales
+                                Ingrese sus credenciales
                             </p>
                         </div>
 
@@ -233,7 +233,7 @@
                                     </div>
                                     <input id="correo" name="correo" type="email" required
                                            class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 transition-all shadow-sm hover:border-gray-300"
-                                           placeholder="usuario@hospitalsanlucas.com">
+                                           placeholder="usuario@correo.com">
                                 </div>
                             </div>
 

@@ -106,7 +106,7 @@
                                     </div>
                                     <input id="usuario" name="usuario" type="text" required
                                            class="w-full pl-11 pr-4 py-3.5 bg-gray-700 border border-gray-600 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-400 transition-all duration-200"
-                                           placeholder="usuario.admin"
+                                           placeholder="usuario@correo.com"
                                            autocomplete="username">
                                 </div>
                             </div>
