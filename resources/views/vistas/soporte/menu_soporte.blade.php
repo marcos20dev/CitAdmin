@@ -1,74 +1,97 @@
-<div class="flex flex-col space-y-4">
-    <!-- Botón para Agregar Cuentas -->
-    <div class="w-full">
-        <a href="{{ route('añadircuentas') }}" id="btnAñadirCuentas"
-            class="menu-button inline-block w-full py-2 px-4 text-black font-normal transition-all transform hover:scale-105 bg-gray-200 bg-opacity-100 hover:bg-opacity-75 relative">
-            <div class="absolute top-0 left-0 h-full bg-gray-500 bg-opacity-100 hover:bg-opacity-100" style="width: 3px;"></div>
-            <i class="fas fa-plus-circle mr-2"></i>
-            Agregar Cuentas
-        </a>
-        <hr class="border-b border-gray-300 my-2">
-    </div>
+@php
+    $items = [
+        ['route' => 'añadircuentas', 'icon' => 'fas fa-user-plus', 'label' => 'Agregar Cuentas'],
+        ['route' => 'ver.doctores', 'icon' => 'fas fa-user-md', 'label' => 'Ver Cuentas de Doctor'],
+        ['route' => 'add.especialidades', 'icon' => 'fas fa-notes-medical', 'label' => 'Agregar Especialidades'],
+        ['route' => 'ver.administradores', 'icon' => 'fas fa-user-shield', 'label' => 'Ver Cuentas de Administrador'],
+    ];
+@endphp
 
-    <!-- Botón para Ver Cuentas de Doctores -->
-    <div class="w-full">
-        <a href="{{ route('ver.doctores') }}" id="btnVerDoctores"
-            class="menu-button inline-block w-full py-2 px-4 text-black font-normal transition-all transform hover:scale-105 bg-gray-200 bg-opacity-90 hover:bg-opacity-75 relative">
-            <div class="absolute top-0 left-0 h-full bg-gray-600 bg-opacity-100 hover:bg-opacity-100" style="width: 3px;"></div>
-            <i class="fas fa-user-md mr-2"></i>
-            Ver Cuentas de Doctor
-        </a>
-        <hr class="border-b border-gray-300 my-2">
-    </div>
+<div class="flex flex-col space-y-3 w-full mt-8 px-2">
+    @foreach ($items as $item)
+        @php
+            $editando = isset($especialidad);
+           $active = request()->routeIs($item['route']) || ($item['route'] === 'add.especialidades' && $editando);
+        @endphp
 
-    <!-- Botón para Ver Cuentas de Administradores -->
-    <div class="w-full">
-        <a href="{{ route('ver.administradores') }}" id="btnVerAdministradores"
-            class="menu-button inline-block w-full py-2 px-4 text-black font-normal transition-all transform hover:scale-105 bg-gray-200 bg-opacity-90 hover:bg-opacity-75 relative">
-            <div class="absolute top-0 left-0 h-full  bg-gray-600 bg-opacity-100 hover:bg-opacity-100" style="width: 3px;"></div>
-            <i class="fas fa-users-cog mr-2"></i>
-            Ver Cuentas de Administrador
+        <a href="{{ route($item['route']) }}"
+           class="group relative flex items-center justify-between w-full px-4 py-2.5 rounded-xl transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+           {{ $active ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20' : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md border border-gray-100' }}
+           before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:rounded-l-lg
+           {{ $active ? 'before:bg-white before:opacity-80' : 'before:bg-transparent' }}
+           transform hover:-translate-y-0.5">
+
+            <div class="flex items-center gap-3">
+                <div class="{{ $active ? 'bg-white/20 text-white' : 'bg-gray-100 text-blue-600 group-hover:bg-blue-100 group-hover:text-blue-700' }}
+                      rounded-xl p-2.5 transition-all duration-300 group-hover:rotate-6">
+                    <i class="{{ $item['icon'] }} text-xl"></i>
+                </div>
+                <span class="text-sm font-medium tracking-wide">{{ $item['label'] }}</span>
+            </div>
+
+            @if ($active)
+                <span class="text-white/90 animate-pulse">
+                    <i class="fas fa-arrow-right text-sm"></i>
+                </span>
+            @else
+                <span class="text-gray-400 group-hover:text-blue-500 transition-transform duration-300 group-hover:translate-x-1">
+                    <i class="fas fa-chevron-right text-xs"></i>
+                </span>
+            @endif
+
+            <span class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                  bg-gradient-to-r from-blue-500/5 to-indigo-500/5"></span>
         </a>
-        <hr class="border-b border-gray-300 my-2">
-    </div>
+    @endforeach
+
+    <!-- Botón de Cerrar Sesión -->
+    <form method="POST" action="{{ route('logout') }}" class="mt-6">
+        @csrf
+        <button type="submit"
+                class="group relative flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                       bg-white text-red-600 hover:bg-red-50 hover:shadow-md border border-red-100
+                       before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:rounded-l-lg before:bg-transparent
+                       transform hover:-translate-y-0.5">
+
+            <div class="flex items-center gap-3">
+                <div class="bg-red-100 text-red-600 group-hover:bg-red-200 group-hover:text-red-700
+                      rounded-xl p-2.5 transition-all duration-300 group-hover:rotate-6">
+                    <i class="fas fa-sign-out-alt text-xl"></i>
+                </div>
+                <span class="text-sm font-medium tracking-wide">Cerrar Sesión</span>
+            </div>
+
+            <span class="text-red-400 group-hover:text-red-500 transition-transform duration-300 group-hover:translate-x-1">
+                <i class="fas fa-chevron-right text-xs"></i>
+            </span>
+
+            <span class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                  bg-gradient-to-r from-red-500/5 to-pink-500/5"></span>
+        </button>
+    </form>
 </div>
 
-
 <style>
-    .active-button {
-    background-color: #4ab5bd; /* Cambia este color al que prefieras */
-}
+    /* Animación sutil para el ícono activo */
+    @keyframes subtleBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-2px); }
+    }
 
+    .animate-pulse {
+        animation: subtleBounce 1.5s ease-in-out infinite;
+    }
+
+    /* Efecto hover para el botón de cerrar sesión */
+    button:hover .fa-sign-out-alt {
+        animation: signOutShake 0.5s ease-in-out;
+    }
+
+    @keyframes signOutShake {
+        0%, 100% { transform: translateX(0) rotate(0deg); }
+        20% { transform: translateX(-2px) rotate(-5deg); }
+        40% { transform: translateX(2px) rotate(5deg); }
+        60% { transform: translateX(-2px) rotate(-5deg); }
+        80% { transform: translateX(2px) rotate(5deg); }
+    }
 </style>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('.menu-button');
-
-    // Resaltar el botón activo basado en la URL actual
-    const currentPath = window.location.pathname;
-    buttons.forEach(button => {
-        const path = new URL(button.href).pathname;
-        if (path === currentPath) {
-            button.classList.add('active-button'); // Añade la clase al botón actual
-        }
-    });
-
-    // Escuchar los clics para actualizar el indicador activo
-    buttons.forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Previene la navegación inmediata
-            // Remover la clase activa de todos los botones
-            buttons.forEach(btn => {
-                btn.classList.remove('active-button');
-            });
-            // Añadir la clase activa a este botón
-            this.classList.add('active-button');
-            // Opcional: Redireccionar manualmente a la URL del botón
-            window.location.href = this.href;
-        });
-    });
-});
-
-</script>

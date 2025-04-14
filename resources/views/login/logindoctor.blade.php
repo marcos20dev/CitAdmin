@@ -20,18 +20,27 @@
 
     <form class="mt-8 space-y-6" action="{{ route('doctor.login.submit') }}" method="POST">
       @csrf
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div>
-          <label for="correo" class="sr-only">Correo electrónico</label>
-          <input id="correo" name="correo" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Correo electrónico" value="{{ old('correo') }}">
+        <div class="rounded-md shadow-sm -space-y-px">
+            <div>
+                <label for="correo" class="sr-only">Correo electrónico</label>
+                <input id="correo" name="correo" type="email" autocomplete="email" required
+                       class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-black bg-white rounded-t-md focus:outline-none
+                      focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Correo electrónico" value="{{ old('correo') }}">
+            </div>
+            <div>
+                <label for="password" class="sr-only">Contraseña</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required
+                       class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-black bg-white rounded-b-md focus:outline-none
+                      focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Contraseña">
+            </div>
         </div>
-        <div>
-          <label for="password" class="sr-only">Contraseña</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Contraseña">
-        </div>
-      </div>
 
-      <div class="flex items-center justify-between">
+
+        <div class="flex items-center justify-between">
         <div class="flex items-center">
           <input id="remember-me" name="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
           <label for="remember-me" class="ml-2 block text-sm text-gray-900">

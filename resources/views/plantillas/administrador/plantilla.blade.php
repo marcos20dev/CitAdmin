@@ -163,9 +163,21 @@
 </header>
 
 <!-- Contenido principal -->
-<main class="content-main">
-    @yield('content')
+<main class="flex-1 p-6">
+    <!-- Breadcrumbs -->
+    <div class="mb-6 flex items-center text-sm text-gray-600">
+        <a href="#" class="hover:text-primary">Inicio</a>
+        <span class="mx-2">/</span>
+        <span class="font-medium text-primary">@yield('title')</span>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="bg-black rounded-xl shadow-sm p-6" style="background: rgb(46,49,54); backdrop-filter: blur(10px);">
+        @yield('content')
+    </div>
+
 </main>
+
 
 <!-- Submenú - Solo aparece si se define en la vista hija -->
 @hasSection('submenu')

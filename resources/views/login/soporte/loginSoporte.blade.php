@@ -81,8 +81,9 @@
                                         <i class="fas fa-envelope text-black"></i>
                                     </div>
                                     <input id="email" name="email" type="email" required
-                                           class="input-glass w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30"
+                                           class="w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-black bg-white"
                                            placeholder="correo@dominio.com" value="{{ old('email') }}">
+
                                 </div>
                             </div>
 
@@ -93,13 +94,15 @@
                                         <i class="fas fa-lock text-black"></i>
                                     </div>
                                     <input id="password" name="password" type="password" required
-                                           class="input-glass w-full pl-10 pr-12 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30"
+                                           class="w-full pl-10 pr-12 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-black bg-white"
                                            placeholder="••••••••">
+
                                     <button type="button" id="toggle-password"
-                                            class="absolute inset-y-0 right-0 px-3 text-muted-white hover:text-white focus:outline-none"
+                                            class="absolute inset-y-0 right-0 px-3 text-black hover:text-gray-800 focus:outline-none"
                                             onclick="togglePassword()">
                                         <i class="far fa-eye"></i>
                                     </button>
+
                                 </div>
                             </div>
                         </div>

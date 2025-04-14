@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\InitController;
@@ -42,8 +43,26 @@ Route::middleware('auth:soporte')->group(function () {
     Route::get('/ver-doctores', [SoporteController::class, 'verCuentasDoctor'])->name('ver.doctores');
     Route::delete('/soporte/doctores/{id}', [SoporteController::class, 'destroyDoctor'])->name('soporte.eliminarDoctor');
 
+
+    Route::post('/ver/especialidades', [EspecialidadController::class, 'verEspecialidades'])->name('ver.especialidades');
+    Route::post('/especialidades', [EspecialidadController::class, 'store'])->name('especialidades.store');
+    Route::post('/especialidades/{id}/toggle', [EspecialidadController::class, 'toggleEstado'])->name('especialidades.toggle');
+// Eliminar
+    Route::delete('/especialidades/{id}', [EspecialidadController::class, 'destroy'])->name('especialidades.destroy');
+
+// Editar (mostrar formulario de edición)
+    Route::get('/especialidades/{id}/editar', [EspecialidadController::class, 'edit'])->name('especialidades.edit');
+
+// Editar (guardar cambios)
+    Route::put('/especialidades/{id}', [EspecialidadController::class, 'update'])->name('especialidades.update');
+
+
+
     Route::get('/ver-administradores', [SoporteController::class, 'verCunetasAdministrador'])->name('ver.administradores');
     Route::delete('/soporte/administradores/{id}', [SoporteController::class, 'destroyAdministrador'])->name('soporte.eliminarAdministrador');
+
+    Route::get('/agregar/especiaidades', [SoporteController::class, 'especialidades'])->name('add.especialidades');
+
 
     Route::post('/soporte/añadircuentas', [SoporteController::class, 'store'])->name('soporte.store');
 });

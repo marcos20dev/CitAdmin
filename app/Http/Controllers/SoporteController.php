@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Especialidad;
 use Illuminate\Http\Request;
 use App\Models\Administrador; // Asegúrate de importar tu modelo de Administrador
 use App\Models\Doctor;
@@ -12,6 +13,20 @@ use Illuminate\Support\Facades\Log;
 
 class SoporteController extends Controller
 {
+
+    public function especialidades(Request $request)
+    {
+        $busqueda = $request->input('buscar');
+
+        $especialidades = Especialidad::when($busqueda, function ($query, $busqueda) {
+            return $query->where('nombre', 'like', "%{$busqueda}%")
+                ->orWhere('descripcion', 'like', "%{$busqueda}%");
+        })->paginate(8)->withQueryString(); // mantiene la búsqueda al cambiar de página
+
+        return view('vistas.soporte.especialiades', compact('especialidades', 'busqueda'));
+    }
+
+
 
     public function login()
     {
