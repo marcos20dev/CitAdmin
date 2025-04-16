@@ -38,6 +38,15 @@ Route::post('login/soporte', [SoporteController::class, 'inicio'])->name('soport
 
 Route::middleware('auth:soporte')->group(function () {
     Route::get('menu/soporte', [SoporteController::class, 'MenuSoporte'])->name('añadircuentas');
+    Route::patch('/soporte/administradores/{id}/toggle', [SoporteController::class, 'toggle'])->name('soporte.toggle');
+
+
+    Route::put('/soporte/administradores/{id}', [SoporteController::class, 'update'])->name('soporte.update');
+    Route::get('/soporte/administradores/{id}/editar', [SoporteController::class, 'edit'])->name('soporte.edit');
+    Route::get('/soporte/buscar', [SoporteController::class, 'buscar'])->name('soporte.buscar');
+
+
+
 
     // Rutas en web.php
     Route::get('/ver-doctores', [SoporteController::class, 'verCuentasDoctor'])->name('ver.doctores');

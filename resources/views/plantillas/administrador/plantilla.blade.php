@@ -163,7 +163,7 @@
 </header>
 
 <!-- Contenido principal -->
-<main class="flex-1 p-6">
+<main class="content-main">
     <!-- Breadcrumbs -->
     <div class="mb-6 flex items-center text-sm text-gray-600">
         <a href="#" class="hover:text-primary">Inicio</a>
@@ -175,7 +175,6 @@
     <div class="bg-black rounded-xl shadow-sm p-6" style="background: rgb(46,49,54); backdrop-filter: blur(10px);">
         @yield('content')
     </div>
-
 </main>
 
 

@@ -12,8 +12,16 @@ class Administrador extends Authenticatable
     protected $table = 'administradores'; // Confirma que esta es la tabla correcta
 
     protected $fillable = [
-        'nombre', 'apellidos', 'dni', 'cargo', 'foto_perfil', 'usuario', 'password',
+        'nombre',
+        'apellidos',
+        'dni',
+        'cargo',
+        'foto_perfil',
+        'usuario',
+        'password',
+        'activo', // 👈 Agrega este campo
     ];
+
 
     protected $hidden = [
         'password', 'remember_token',

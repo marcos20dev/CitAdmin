@@ -1,97 +1,100 @@
 @php
+    $editandoAdministrador = isset($adminEditar);
+    $editandoEspecialidad = isset($especialidad);
     $items = [
-        ['route' => 'añadircuentas', 'icon' => 'fas fa-user-plus', 'label' => 'Agregar Cuentas'],
-        ['route' => 'ver.doctores', 'icon' => 'fas fa-user-md', 'label' => 'Ver Cuentas de Doctor'],
-        ['route' => 'add.especialidades', 'icon' => 'fas fa-notes-medical', 'label' => 'Agregar Especialidades'],
-        ['route' => 'ver.administradores', 'icon' => 'fas fa-user-shield', 'label' => 'Ver Cuentas de Administrador'],
+        ['route' => 'añadircuentas', 'icon' => 'fas fa-user-shield', 'label' => 'Administradores', 'desc' => 'Gestionar cuentas admin'],
+        ['route' => 'add.especialidades', 'icon' => 'fas fa-user-md', 'label' => 'Doctores', 'desc' => 'Gestionar especialidades'],
     ];
 @endphp
 
-<div class="flex flex-col space-y-3 w-full mt-8 px-2">
-    @foreach ($items as $item)
-        @php
-            $editando = isset($especialidad);
-           $active = request()->routeIs($item['route']) || ($item['route'] === 'add.especialidades' && $editando);
-        @endphp
+<div id="sidebarMenu" class="flex flex-col justify-between px-2 py-6 overflow-hidden">
+    <!-- Menú -->
+    <div class="flex flex-col space-y-2.5 text-sm">
+        @foreach ($items as $item)
+            @php
+                $active = request()->routeIs($item['route']) ||
+                          ($item['route'] === 'añadircuentas' && $editandoAdministrador) ||
+                          ($item['route'] === 'add.especialidades' && $editandoEspecialidad);
+            @endphp
 
-        <a href="{{ route($item['route']) }}"
-           class="group relative flex items-center justify-between w-full px-4 py-2.5 rounded-xl transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
-           {{ $active ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20' : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md border border-gray-100' }}
-           before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:rounded-l-lg
-           {{ $active ? 'before:bg-white before:opacity-80' : 'before:bg-transparent' }}
-           transform hover:-translate-y-0.5">
+            <a href="{{ route($item['route']) }}"
+               class="relative flex items-center justify-between w-full px-4 py-2.5 rounded-lg transition-all duration-300 ease-in-out
+                      {{ $active ?
+                         'bg-gradient-to-br from-indigo-600 to-purple-500 shadow-md text-white' :
+                         'bg-white/90 backdrop-blur-sm hover:bg-white text-gray-700 hover:shadow-sm border border-gray-100' }}
+                      hover:-translate-y-0.5 hover:scale-[1.01] transform-gpu overflow-hidden">
 
-            <div class="flex items-center gap-3">
-                <div class="{{ $active ? 'bg-white/20 text-white' : 'bg-gray-100 text-blue-600 group-hover:bg-blue-100 group-hover:text-blue-700' }}
-                      rounded-xl p-2.5 transition-all duration-300 group-hover:rotate-6">
-                    <i class="{{ $item['icon'] }} text-xl"></i>
+                @if($active)
+                    <div class="absolute inset-0 bg-[radial-gradient(80%_80%_at_50%_0%,rgba(255,255,255,0.3)_0%,transparent_100%)]"></div>
+                @endif
+
+                <div class="flex items-center gap-3 relative z-10 w-full">
+                    <div class="{{ $active ? 'bg-white/20 shadow-inner' : 'bg-gradient-to-br from-white to-gray-50 shadow border border-gray-100' }}
+                                rounded-md p-2 transition-all duration-300 group-hover/all:rotate-3 hover:scale-105">
+                        <i class="{{ $item['icon'] }} text-base {{ $active ? 'text-white' : 'bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent' }}"></i>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <span class="font-medium {{ $active ? 'text-white' : 'text-gray-800' }}">{{ $item['label'] }}</span>
+                        <span class="text-xs {{ $active ? 'text-white/80' : 'text-gray-500' }}">{{ $item['desc'] }}</span>
+                    </div>
                 </div>
-                <span class="text-sm font-medium tracking-wide">{{ $item['label'] }}</span>
-            </div>
 
-            @if ($active)
-                <span class="text-white/90 animate-pulse">
-                    <i class="fas fa-arrow-right text-sm"></i>
-                </span>
-            @else
-                <span class="text-gray-400 group-hover:text-blue-500 transition-transform duration-300 group-hover:translate-x-1">
-                    <i class="fas fa-chevron-right text-xs"></i>
-                </span>
-            @endif
+                <div class="relative z-10 ml-2 flex-shrink-0">
+                    @if($active)
+                        <div class="flex items-center animate-pulse-right">
+                            <span class="w-1.5 h-1.5 bg-cyan-200 rounded-full mr-1"></span>
+                            <i class="fas fa-chevron-right text-xs text-white/90"></i>
+                        </div>
+                    @else
+                        <div class="h-5 w-5 flex items-center justify-center bg-gradient-to-br from-white to-gray-50 rounded-full shadow border border-gray-100">
+                            <i class="fas fa-chevron-right text-[0.55rem] bg-gradient-to-r from-gray-500 to-gray-600 bg-clip-text text-transparent transition-transform group-hover/all:translate-x-0.5"></i>
+                        </div>
+                    @endif
+                </div>
+            </a>
+        @endforeach
+    </div>
 
-            <span class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                  bg-gradient-to-r from-blue-500/5 to-indigo-500/5"></span>
-        </a>
-    @endforeach
-
-    <!-- Botón de Cerrar Sesión -->
-    <form method="POST" action="{{ route('logout') }}" class="mt-6">
+    <!-- Botón Cerrar Sesión -->
+    <form method="POST" action="{{ route('logout') }}" class="pt-4 border-t border-gray-100/50 mt-4">
         @csrf
         <button type="submit"
-                class="group relative flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
-                       bg-white text-red-600 hover:bg-red-50 hover:shadow-md border border-red-100
-                       before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:rounded-l-lg before:bg-transparent
-                       transform hover:-translate-y-0.5">
+                class="group relative flex items-center justify-between w-full px-4 py-2.5 rounded-lg transition-all duration-300 ease-in-out
+                       bg-white/90 backdrop-blur-sm hover:bg-white shadow-sm hover:shadow-md border border-gray-100
+                       hover:-translate-y-0.5 hover:scale-[1.01] transform-gpu overflow-hidden">
 
-            <div class="flex items-center gap-3">
-                <div class="bg-red-100 text-red-600 group-hover:bg-red-200 group-hover:text-red-700
-                      rounded-xl p-2.5 transition-all duration-300 group-hover:rotate-6">
-                    <i class="fas fa-sign-out-alt text-xl"></i>
+            <div class="flex items-center gap-3 relative z-10 w-full">
+                <div class="bg-gradient-to-br from-white to-gray-50 shadow border border-gray-100 rounded-md p-2 transition-all duration-300
+                            group-hover:rotate-3 hover:scale-105">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"/>
+                    </svg>
                 </div>
-                <span class="text-sm font-medium tracking-wide">Cerrar Sesión</span>
+
+                <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-gray-800">Cerrar Sesión</span>
+                    <span class="text-xs text-gray-500 mt-0.5">Salir del sistema</span>
+                </div>
             </div>
 
-            <span class="text-red-400 group-hover:text-red-500 transition-transform duration-300 group-hover:translate-x-1">
-                <i class="fas fa-chevron-right text-xs"></i>
-            </span>
-
-            <span class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                  bg-gradient-to-r from-red-500/5 to-pink-500/5"></span>
+            <div class="h-5 w-5 flex items-center justify-center bg-gradient-to-br from-white to-gray-50 rounded-full shadow border border-gray-100">
+                <i class="fas fa-chevron-right text-[0.55rem] bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent transition-transform group-hover:translate-x-0.5"></i>
+            </div>
         </button>
     </form>
 </div>
 
-<style>
-    /* Animación sutil para el ícono activo */
-    @keyframes subtleBounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-2px); }
-    }
+<!-- Enlace a FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    .animate-pulse {
-        animation: subtleBounce 1.5s ease-in-out infinite;
+<!-- Script para altura automática -->
+<script>
+    function setFullHeight() {
+        const menu = document.getElementById('sidebarMenu');
+        menu.style.height = window.innerHeight + 'px';
     }
-
-    /* Efecto hover para el botón de cerrar sesión */
-    button:hover .fa-sign-out-alt {
-        animation: signOutShake 0.5s ease-in-out;
-    }
-
-    @keyframes signOutShake {
-        0%, 100% { transform: translateX(0) rotate(0deg); }
-        20% { transform: translateX(-2px) rotate(-5deg); }
-        40% { transform: translateX(2px) rotate(5deg); }
-        60% { transform: translateX(-2px) rotate(-5deg); }
-        80% { transform: translateX(2px) rotate(5deg); }
-    }
-</style>
+    window.addEventListener('load', setFullHeight);
+    window.addEventListener('resize', setFullHeight);
+</script>
