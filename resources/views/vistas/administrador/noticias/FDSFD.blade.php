@@ -1,592 +1,626 @@
-@extends('plantillas.soporte.menu')
+@extends('plantillas.administrador.plantilla')
 
-@section('title', 'Registro de Cuenta de Administrador')
+@section('title', 'Gestión de Noticias - Dashboard Moderno')
+
+{{-- Asegúrate de incluir Font Awesome si aún no lo has hecho --}}
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> --}}
 
 @section('menu')
-    @include('vistas.soporte.menu_soporte')
+    @include('vistas.administrador.menu')
 @endsection
 
-@section('soprote')
-    <!-- Notificaciones flotantes -->
-    <div id="successNotification" class="notification hidden fixed top-24 right-6 w-80 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-lg flex items-center justify-between animate-slideIn">
-        <div class="flex items-center">
-            <i class="fas fa-check-circle mr-2"></i>
-            <span id="successMessage"></span>
-        </div>
-        <button onclick="closeNotification('successNotification')" class="text-green-700 hover:text-green-900">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
+@section('content')
+    <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-black dark:to-indigo-950 …">
+        <div class="max-w-8xl mx-auto space-y-8">
 
-    <div id="errorNotification" class="notification hidden fixed top-24 right-6 w-80 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg flex items-center justify-between animate-slideIn">
-        <div class="flex items-center">
-            <i class="fas fa-exclamation-circle mr-2"></i>
-            <span id="errorMessage"></span>
-        </div>
-        <button onclick="closeNotification('errorNotification')" class="text-red-700 hover:text-red-900">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-
-    <!-- Contenedor principal -->
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
-        <div class="container mx-auto px-4">
-            <!-- Encabezado de la página -->
-            <header class="mb-8 bg-transparent">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <div>
-                        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800">Gestión de Administradores</h1>
-                        <p class="text-gray-600 mt-2">Registro y administración de cuentas privilegiadas</p>
-                    </div>
-                    <form method="GET" action="{{ route('soporte.buscar') }}" class="w-full md:w-auto">
-                        <div class="relative flex items-center">
-                            <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar administrador..."
-                                   class="pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full md:w-64 bg-white shadow-none transition-all duration-200">
-                            <i class="fas fa-search absolute left-4 text-gray-400"></i>
-                            <button type="submit"
-                                    class="ml-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-5 py-3 rounded-xl shadow-none transition-all duration-300 flex items-center">
-                                <span>Buscar</span>
-                            </button>
-                            @if(request()->has('buscar'))
-                                <a href="{{ route('soporte.buscar') }}"
-                                   class="ml-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-3 rounded-xl shadow-none transition-all duration-300 flex items-center">
-                                    <i class="fas fa-times mr-1"></i>
-                                    Limpiar
-                                </a>
-                            @endif
-                        </div>
-                    </form>
-
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 animate-gradient-x pb-2">
+                        Gestión de Noticias
+                    </h1>
+                    <p class="text-slate-500 dark:text-slate-400 text-lg">Crea, edita y administra tu contenido.</p>
                 </div>
-            </header>
+                <div class="flex items-center space-x-4">
+                    <div class="relative group">
+                        <button class="notification-btn p-3 rounded-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out">
+                            <i class="fas fa-bell text-slate-500 dark:text-slate-400 group-hover:text-indigo-500 transition-colors"></i>
+                            <span class="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full border-2 border-white dark:border-slate-800">3</span>
+                        </button>
+                    </div>
+                    <button class="dark-mode-toggle p-3 rounded-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out relative overflow-hidden group">
+                        <i class="fas fa-moon text-indigo-500 dark:text-yellow-400 relative z-10 transition-colors duration-300"></i>
+                        <span class="absolute inset-0 bg-gradient-to-tr from-yellow-300 to-orange-400 opacity-0 group-hover:opacity-20 dark:from-indigo-500 dark:to-purple-600 dark:group-hover:opacity-30 transition-opacity duration-300 rounded-full"></span>
+                    </button>
+                    {{-- Botón de Usuario (Ejemplo) --}}
+                    <button class="flex items-center space-x-2 p-2 rounded-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out">
+                        <img src="https://via.placeholder.com/32" alt="User Avatar" class="w-8 h-8 rounded-full border-2 border-indigo-200 dark:border-indigo-700">
+                        <span class="text-sm font-medium hidden sm:inline">Admin</span>
+                        <i class="fas fa-chevron-down text-xs text-slate-400 dark:text-slate-500"></i>
+                    </button>
+                </div>
+            </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @php
+                    $stats = [
+                        ['icon' => 'fa-eye', 'title' => 'Total de visitas', 'value' => '45.2K', 'change' => '+12.5%', 'change_color' => 'text-green-500 dark:text-green-400', 'arrow' => 'fa-arrow-up', 'gradient' => 'from-blue-500 to-cyan-400', 'width' => '75%', 'shadow' => 'shadow-blue-500/30'],
+                        ['icon' => 'fa-newspaper', 'title' => 'Noticias publicadas', 'value' => '237', 'change' => '+8.3%', 'change_color' => 'text-green-500 dark:text-green-400', 'arrow' => 'fa-arrow-up', 'gradient' => 'from-indigo-500 to-purple-500', 'width' => '65%', 'shadow' => 'shadow-indigo-500/30'],
+                        ['icon' => 'fa-comment-alt', 'title' => 'Comentarios', 'value' => '3.1K', 'change' => '+5.7%', 'change_color' => 'text-green-500 dark:text-green-400', 'arrow' => 'fa-arrow-up', 'gradient' => 'from-purple-500 to-pink-500', 'width' => '45%', 'shadow' => 'shadow-purple-500/30'],
+                        ['icon' => 'fa-share-alt', 'title' => 'Compartidas', 'value' => '1.8K', 'change' => '-2.3%', 'change_color' => 'text-red-500 dark:text-red-400', 'arrow' => 'fa-arrow-down', 'gradient' => 'from-teal-500 to-emerald-500', 'width' => '35%', 'shadow' => 'shadow-teal-500/30'],
+                    ];
+                @endphp
 
-            <!-- Contenido principal (Grid) -->
-            <main class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                <!-- Tarjeta: Formulario de Registro -->
-                <section class="xl:col-span-4 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <!-- Encabezado de la tarjeta -->
-                    <div class="p-4 text-white {{ isset($adminEditar) ? 'bg-gradient-to-r from-red-600 to-red-500' : 'bg-gradient-to-r from-blue-600 to-blue-500' }}">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
-                                    <i class="fas {{ isset($adminEditar) ? 'fa-user-edit' : 'fa-user-plus' }} text-lg"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-sm font-bold">{{ isset($adminEditar) ? 'Editar Administrador' : 'Nuevo Administrador' }}</h2>
-                                    <p class="text-blue-100 text-xs">{{ isset($adminEditar) ? 'Modifique los campos necesarios' : 'Complete el formulario para registrar' }}</p>
-                                </div>
+                @foreach ($stats as $stat)
+                    <div class="stats-card p-6 backdrop-blur-lg bg-white/60 dark:bg-slate-800/70 rounded-3xl shadow-xl dark:shadow-black/30 border border-white/20 dark:border-slate-700/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl {{ $stat['shadow'] }} hover:{{ $stat['shadow'] }}">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="rounded-2xl p-3 bg-gradient-to-br {{ $stat['gradient'] }} text-white shadow-lg {{ $stat['shadow'] }} transform group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas {{ $stat['icon'] }} text-xl fa-fw"></i>
                             </div>
-                            <div class="bg-white {{ isset($adminEditar) ? 'text-red-600' : 'text-blue-600' }} text-xs font-semibold px-2.5 py-1 rounded-full shadow">
-                                {{ isset($adminEditar) ? 'Modo Edición' : 'Paso 1 de 2' }}
+                            <span class="text-xs font-semibold {{ $stat['change_color'] }} flex items-center">
+                        <i class="fas {{ $stat['arrow'] }} mr-1 text-xs"></i> {{ $stat['change'] }}
+                    </span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">{{ $stat['title'] }}</h3>
+                            <span class="text-3xl font-bold text-slate-800 dark:text-white">{{ $stat['value'] }}</span>
+                        </div>
+                        <div class="mt-5">
+                            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r {{ $stat['gradient'] }} rounded-full transition-all duration-500 ease-out" style="width: {{ $stat['width'] }}"></div>
                             </div>
                         </div>
                     </div>
-                    <!-- Cuerpo del formulario -->
-                    <div class="p-4 overflow-y-auto" style="max-height: calc(100vh - 220px)">
-                        <form method="POST" action="{{ isset($adminEditar) ? route('soporte.update', $adminEditar->id) : route('soporte.store') }}" enctype="multipart/form-data">
-                            @csrf
-                            @if(isset($adminEditar))
-                                @method('PUT')
-                            @endif
+                @endforeach
+            </div>
 
-                            <!-- Foto de Perfil -->
-                            <div class="flex flex-col items-center space-y-3">
-                                <div class="relative group">
-                                    <div class="relative overflow-hidden rounded-full w-24 h-24 border-4 border-white shadow-xl">
-                                        <img id="fotoPreview"
-                                             src="@if(isset($adminEditar) && $adminEditar->foto_perfil)
-                                                    data:image/jpeg;base64,{{ $adminEditar->foto_perfil }}
-                                                  @else
-                                                    https://ui-avatars.com/api/?name={{ isset($adminEditar) ? urlencode($adminEditar->nombre[0].' '.$adminEditar->apellidos[0]) : 'N+U' }}&background=random&color=fff&size=128
-                                                  @endif"
-                                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <label for="foto_perfil" class="cursor-pointer">
-                                                <i class="fas fa-camera text-white text-lg"></i>
-                                            </label>
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+
+                <div class="xl:col-span-5 space-y-8">
+                    <!-- Tarjeta principal con animación de pulso sutil -->
+                    <div class="rounded-3xl overflow-hidden transition-all duration-500 bg-gradient-to-br from-slate-900/50 to-slate-800/60 backdrop-blur-xl shadow-2xl border border-slate-700/40 hover:shadow-indigo-700/30 animate-pulse-slow">
+                        <!-- Encabezado con gradiente animado -->
+                        <div class="p-6 border-b border-slate-700/50 flex items-center gap-4 bg-gradient-to-r from-slate-800/80 via-slate-900/60 to-slate-800/80 animate-gradient-x">
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-700 text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-600/50 transition-all duration-300">
+                                <i class="fas fa-plus-circle text-2xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-semibold text-white/90">Crear Nueva Noticia</h2>
+                        </div>
+
+                        <form class="p-6 space-y-6">
+                            <!-- Input con placeholder flotante -->
+                            <div class="space-y-1">
+                                <label for="news-title" class="block text-sm font-medium text-white/90">
+                                    Título principal <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="news-title" name="title" required
+                                       class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-300"
+                                       placeholder="Escribe el título aquí">
+                            </div>
+
+
+                            <!-- Categorías -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-400 mb-2">Categorías</label>
+                                <div class="flex flex-wrap gap-2">
+                                    @php
+                                        $categories = [
+                                            ['name' => 'Tecnología', 'icon' => 'fa-laptop-code', 'color' => 'blue'],
+                                            ['name' => 'Deportes', 'icon' => 'fa-futbol', 'color' => 'green'],
+                                            ['name' => 'Cultura', 'icon' => 'fa-landmark', 'color' => 'purple'],
+                                            ['name' => 'Economía', 'icon' => 'fa-chart-line', 'color' => 'amber'],
+                                        ];
+                                    @endphp
+                                    @foreach($categories as $category)
+                                        <button type="button"
+                                                class="category-btn group px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 bg-{{$category['color']}}-900/40 text-{{$category['color']}}-300 hover:bg-{{$category['color']}}-800/70 hover:text-white hover:shadow-md transition-all duration-300 focus:ring-2 focus:ring-{{$category['color']}}-500 focus:outline-none">
+                                            <i class="fas {{ $category['icon'] }}"></i>
+                                            <span>{{ $category['name'] }}</span>
+                                        </button>
+                                    @endforeach
+                                    <button type="button"
+                                            class="group px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 bg-slate-700 text-slate-300 hover:bg-indigo-900/50 hover:text-indigo-300 hover:shadow-md transition-all duration-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                        <i class="fas fa-plus text-[10px] group-hover:rotate-90 transition-transform duration-300"></i>
+                                        <span>Nueva</span>
+                                    </button>
+                                </div>
+                                <input type="hidden" name="category" id="selected-category">
+                            </div>
+
+                            <!-- Editor con placeholder personalizado -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-400 mb-2">Contenido</label>
+                                <div class="editor-container rounded-xl overflow-hidden border border-slate-700 shadow-sm transition-all hover:shadow-lg">
+                                    <div class="editor-toolbar bg-slate-900/70 p-2 border-b border-slate-700 flex flex-wrap gap-1">
+                                        <div class="flex items-center bg-slate-800 rounded-lg p-0.5 space-x-0.5">
+                                            <button type="button" class="toolbar-btn p-2 hover:bg-slate-700 rounded-md transition" data-command="bold" title="Negrita"><i class="fas fa-bold"></i></button>
+                                            <button type="button" class="toolbar-btn p-2 hover:bg-slate-700 rounded-md transition" data-command="italic" title="Cursiva"><i class="fas fa-italic"></i></button>
+                                            <button type="button" class="toolbar-btn p-2 hover:bg-slate-700 rounded-md transition" data-command="underline" title="Subrayado"><i class="fas fa-underline"></i></button>
                                         </div>
                                     </div>
-                                    <label for="foto_perfil" class="absolute -bottom-2 -right-2 bg-gradient-to-r {{ isset($adminEditar) ? 'from-red-600 to-red-500' : 'from-blue-600 to-blue-500' }} text-white p-1.5 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-transform duration-300 transform hover:scale-110">
-                                        <i class="fas fa-pencil-alt fa-xs"></i>
-                                        <input type="file" id="foto_perfil" name="foto_perfil" class="hidden" accept="image/*" onchange="previewImage(this)">
+                                    <div id="editor-content" class="editor-content bg-slate-800 min-h-[300px] p-5 text-white focus:outline-none"
+                                         contenteditable="true"
+                                         data-placeholder="Escribe tu contenido increíble aquí...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tags -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-400 mb-2">Etiquetas (Tags)</label>
+                                <div class="tags-container flex flex-wrap items-center gap-2 p-3 rounded-xl bg-slate-800 border border-slate-700 focus-within:ring-4 focus-within:ring-indigo-500/20 transition-all duration-300">
+                    <span class="tag-item px-3 py-1 rounded-lg text-xs font-medium bg-indigo-900/40 text-indigo-300 flex items-center">
+                        blockchain
+                        <button type="button" class="ml-1.5 text-indigo-400 hover:text-indigo-200 text-xs">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </span>
+                                    <input type="text" id="tag-input" placeholder="Añadir etiqueta y presionar Enter..."
+                                           class="tag-input flex-1 min-w-[150px] bg-transparent text-sm text-slate-300 placeholder-slate-500 py-1 outline-none">
+                                </div>
+                            </div>
+
+                            <!-- Multimedia -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-400 mb-2">Imagen Principal / Multimedia</label>
+                                <div class="relative">
+                                    <div id="drag-drop-zone"
+                                         class="border-2 border-dashed border-slate-600 rounded-2xl p-8 text-center transition-all duration-300 hover:border-indigo-500 hover:bg-indigo-900/10 cursor-pointer">
+                                        <input type="file" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" id="file-upload-input">
+                                        <div class="flex flex-col items-center justify-center space-y-4 text-slate-400">
+                                            <div class="p-4 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/40">
+                                                <i class="fas fa-cloud-upload-alt text-3xl"></i>
+                                            </div>
+                                            <p><span class="text-indigo-400">Haz clic</span> o <span class="font-semibold">arrastra y suelta</span> archivos aquí</p>
+                                            <p class="text-xs text-slate-500">PNG, JPG, GIF, MP4 | Máx. 50MB</p>
+                                        </div>
+                                    </div>
+                                    <div id="upload-preview" class="grid grid-cols-3 sm:grid-cols-4 gap-4 mt-4"></div>
+                                </div>
+                            </div>
+
+                            <!-- Programación -->
+                            <div class="p-5 rounded-xl bg-slate-800/60 border border-slate-700">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center gap-2 text-slate-300">
+                                        <i class="fas fa-calendar-alt text-indigo-400"></i>
+                                        <span class="text-sm">Programar publicación</span>
+                                    </div>
+                                    <label for="schedule-toggle" class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="schedule-toggle" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:bg-indigo-600 relative">
+                                            <div class="absolute top-0.5 left-0.5 bg-white rounded-full w-5 h-5 transition-transform peer-checked:translate-x-5"></div>
+                                        </div>
                                     </label>
                                 </div>
-                                <span class="text-xs text-gray-500">Formatos: JPG, PNG (Máx. 2MB)</span>
-                            </div>
-
-                            <!-- Información Personal -->
-                            <div class="space-y-4 mt-6">
-                                <div class="flex items-center">
-                                    <div class="w-1 h-6 bg-blue-500 rounded-full mr-2"></div>
-                                    <h3 class="text-sm font-semibold text-gray-800">Información Personal</h3>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    <!-- DNI -->
-                                    <div class="space-y-1">
-                                        <label class="block text-gray-700 font-medium">DNI <span class="text-red-500">*</span></label>
-                                        <div class="relative">
-                                            <input type="text" name="dni" placeholder="Ingrese DNI"
-                                                   value="{{ $adminEditar->dni ?? old('dni') }}"
-                                                   pattern="\d{8}" maxlength="8"
-                                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                   class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <i class="fas fa-id-card text-gray-400 text-xs"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Nombres -->
-                                    <div class="space-y-1">
-                                        <label class="block text-gray-700 font-medium">Nombres <span class="text-red-500">*</span></label>
-                                        <input type="text" name="nombre" placeholder="Ingrese nombres"
-                                               value="{{ $adminEditar->nombre ?? old('nombre') }}"
-                                               pattern="[A-Za-zÁ-Úá-ú\s]+" title="Solo se permiten letras y espacios"
-                                               oninput="this.value = this.value.replace(/[^A-Za-zÁ-Úá-ú\s]/g,'')"
-                                               class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                    </div>
-                                    <!-- Apellidos -->
-                                    <div class="space-y-1">
-                                        <label class="block text-gray-700 font-medium">Apellidos <span class="text-red-500">*</span></label>
-                                        <input type="text" name="apellidos" placeholder="Ingrese apellidos"
-                                               value="{{ $adminEditar->apellidos ?? old('apellidos') }}"
-                                               pattern="[A-Za-zÁ-Úá-ú\s]+" title="Solo se permiten letras y espacios"
-                                               oninput="this.value = this.value.replace(/[^A-Za-zÁ-Úá-ú\s]/g,'')"
-                                               class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                    </div>
-                                    <!-- Correo Electrónico -->
-                                    <div class="space-y-1">
-                                        <label class="block text-gray-700 font-medium">Correo Electrónico <span class="text-red-500">*</span></label>
-                                        <div class="relative">
-                                            <input type="email" name="usuario" placeholder="ejemplo@dominio.com"
-                                                   value="{{ $adminEditar->usuario ?? old('usuario') }}"
-                                                   pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Ingrese un correo válido"
-                                                   class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <i class="fas fa-envelope text-gray-400 text-xs"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Teléfono -->
-                                    <div class="space-y-1">
-                                        <label class="block text-gray-700 font-medium">Teléfono</label>
-                                        <div class="relative">
-                                            <input type="text" name="telefono" placeholder="Ingrese número"
-                                                   value="{{ $adminEditar->telefono ?? old('telefono') }}"
-                                                   pattern="9\d{8}" maxlength="9"
-                                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                   class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <i class="fas fa-phone text-gray-400 text-xs"></i>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div id="schedule-controls" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-0 opacity-0 overflow-hidden transition-all duration-300 peer-checked:max-h-40 peer-checked:opacity-100">
+                                    <input type="date" class="w-full p-2.5 rounded-lg bg-slate-800 border border-slate-700 text-sm text-white">
+                                    <input type="time" class="w-full p-2.5 rounded-lg bg-slate-800 border border-slate-700 text-sm text-white">
                                 </div>
                             </div>
 
-                            <!-- Credenciales de Acceso (solo en modo creación) -->
-                            @unless(isset($adminEditar))
-                                <div class="space-y-4 mt-6">
-                                    <div class="flex items-center">
-                                        <div class="w-1 h-6 bg-blue-500 rounded-full mr-2"></div>
-                                        <h3 class="text-sm font-semibold text-gray-800">Credenciales de Acceso</h3>
-                                    </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <!-- Contraseña -->
-                                        <div class="space-y-1">
-                                            <label class="block text-gray-700 font-medium">Contraseña <span class="text-red-500">*</span></label>
-                                            <div class="relative">
-                                                <input type="password" id="password" name="password" placeholder="Contraseña"
-                                                       class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                                <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-2 text-gray-400 hover:text-blue-500">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </div>
-                                            <div class="mt-1">
-                                                <div class="w-full bg-gray-200 rounded-full h-1 overflow-hidden">
-                                                    <div id="strength-bar" class="h-full w-0 transition-all duration-300"></div>
-                                                </div>
-                                                <div id="strength-hints" class="text-xs text-gray-500 mt-0.5 flex justify-between">
-                                                    <span id="strength-text" class="font-medium">Seguridad</span>
-                                                    <span id="strength-hint" class="text-right"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Confirmar Contraseña -->
-                                        <div class="space-y-1">
-                                            <label class="block text-gray-700 font-medium">Confirmar Contraseña <span class="text-red-500">*</span></label>
-                                            <input type="password" name="password_confirmation" placeholder="Repita la contraseña"
-                                                   class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                        </div>
-                                    </div>
-                                </div>
-                            @endunless
-
-                            <!-- Configuración de Cuenta -->
-                            <div class="space-y-4 mt-6">
-                                <div class="flex items-center">
-                                    <div class="w-1 h-6 bg-blue-500 rounded-full mr-2"></div>
-                                    <h3 class="text-sm font-semibold text-gray-800">Configuración de Cuenta</h3>
-                                </div>
-                                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                                    <!-- Toggle Estado -->
-                                    <div class="flex items-center">
-                                        <input type="hidden" name="estado" value="0">
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" name="estado" value="1"
-                                                   class="sr-only peer"
-                                                {{ ($adminEditar->activo ?? old('estado', true)) ? 'checked' : '' }}>
-                                            <span class="slider"></span>
-                                            <span class="ml-3 text-gray-700 font-medium text-xs">Cuenta activa</span>
-                                        </label>
-
-                                    </div>
-                                    <!-- Cargo del usuario (con autocompletado con Alpine.js) -->
-                                    <div class="w-full md:w-48 relative" x-data="{ open: false, search: '{{ $adminEditar->cargo ?? old('cargo') }}', roles: ['Administrador', 'Soporte Técnico', 'Editor'] }">
-                                        <label class="block text-xs font-medium text-gray-700 mb-1">Cargo del usuario</label>
-                                        <input type="text" name="cargo"
-                                               x-model="search"
-                                               @focus="open = true"
-                                               @input="open = true"
-                                               @click.away="open = false"
-                                               placeholder="Seleccionar rol..."
-                                               value="{{ $adminEditar->cargo ?? old('cargo') }}"
-                                               class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-xs">
-                                        <ul x-show="open && roles.filter(r => r.toLowerCase().includes(search.toLowerCase())).length > 0"
-                                            class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-y-auto text-xs"
-                                            x-transition>
-                                            <template x-for="role in roles.filter(r => r.toLowerCase().includes(search.toLowerCase()))" :key="role">
-                                                <li @click="search = role; open = false"
-                                                    class="px-4 py-2 hover:bg-blue-100 cursor-pointer transition-all">
-                                                    <span x-text="role"></span>
-                                                </li>
-                                            </template>
-                                        </ul>
-                                    </div>
-                                </div>
+                            <!-- Botones -->
+                            <div class="flex flex-wrap justify-end gap-3 pt-4">
+                                <button type="button"
+                                        class="px-5 py-2.5 rounded-xl bg-slate-700 text-slate-300 hover:bg-slate-600 transition hover:shadow-md transform hover:scale-105 focus:outline-none">
+                                    Guardar Borrador
+                                </button>
+                                <button type="button"
+                                        class="px-5 py-2.5 rounded-xl bg-slate-700 text-slate-300 hover:bg-slate-600 transition hover:shadow-md transform hover:scale-105 focus:outline-none">
+                                    Vista Previa
+                                </button>
+                                <button type="submit"
+                                        class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transition transform hover:scale-105 focus:outline-none">
+                    <span class="flex items-center gap-2">
+                        Publicar Noticia <i class="fas fa-rocket"></i>
+                    </span>
+                                </button>
                             </div>
-
-                            <!-- Botón Enviar -->
-                            <button type="submit"
-                                    class="w-full mt-6 bg-gradient-to-r {{ isset($adminEditar) ? 'from-red-600 to-red-500 hover:from-red-700 hover:to-red-600' : 'from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600' }} text-white font-semibold px-4 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center text-xs">
-                                <i class="fas {{ isset($adminEditar) ? 'fa-save' : 'fa-user-plus' }} mr-2 text-sm transition-transform group-hover:scale-110"></i>
-                                {{ isset($adminEditar) ? 'Actualizar Administrador' : 'Registrar Administrador' }}
-                            </button>
                         </form>
-                        <!-- Alpine.js para autocompletado -->
-                        <script src="//unpkg.com/alpinejs" defer></script>
                     </div>
-                </section>
+                </div>
 
-                <!-- Tarjeta: Lista de Administradores -->
-                <section class="xl:col-span-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <!-- Encabezado de la tarjeta -->
-                    <div class="p-6 border-b border-gray-200 bg-white">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                            <div class="flex items-center">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-users text-blue-600 text-xl"></i>
+                <style>
+                    /* Placeholder para editor de contenido */
+                    .editor-content[contenteditable=true]:empty:before {
+                        content: attr(data-placeholder);
+                        color: #9ca3af; /* gris-400 */
+                        pointer-events: none;
+                        display: block;
+                    }
+                    .dark .editor-content[contenteditable=true]:empty:before {
+                        color: #6b7280; /* gris-500 */
+                    }
+
+                    /* Animación Gradiente para el encabezado */
+                    @keyframes gradient-x {
+                        0%, 100% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                    }
+                    .animate-gradient-x {
+                        background-size: 200% 200%;
+                        animation: gradient-x 5s ease infinite;
+                    }
+
+                    /* Animación pulso lento para la tarjeta */
+                    @keyframes pulse-slow {
+                        0%, 100% { opacity: 1; transform: scale(1); }
+                        50% { opacity: 0.95; transform: scale(1.005); }
+                    }
+                    .animate-pulse-slow {
+                        animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                    }
+
+                    /* Scrollbar personalizada */
+                    ::-webkit-scrollbar {
+                        width: 8px;
+                        height: 8px;
+                    }
+                    ::-webkit-scrollbar-track {
+                        background: transparent;
+                    }
+                    ::-webkit-scrollbar-thumb {
+                        background-color: rgba(165, 180, 252, 0.5);
+                        border-radius: 10px;
+                        border: 2px solid transparent;
+                        background-clip: content-box;
+                    }
+                    ::-webkit-scrollbar-thumb:hover {
+                        background-color: rgba(129, 140, 248, 0.7);
+                    }
+                    .dark ::-webkit-scrollbar-thumb {
+                        background-color: rgba(99, 102, 241, 0.4);
+                    }
+                    .dark ::-webkit-scrollbar-thumb:hover {
+                        background-color: rgba(79, 70, 229, 0.6);
+                    }
+
+                    /* Efecto hover más suave para los botones */
+                    .category-btn, .toolbar-btn, .tag-item {
+                        transition: all 0.2s ease;
+                    }
+
+                    /* Mejora en el foco de los inputs */
+                    input:focus, textarea:focus, [contenteditable]:focus {
+                        outline: none;
+                        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+                    }
+                </style>
+                <div class="xl:col-span-7">
+                    <div class="backdrop-blur-lg bg-white/60 dark:bg-slate-800/70 rounded-3xl shadow-2xl dark:shadow-black/30 border border-white/20 dark:border-slate-700/30 overflow-hidden transition-all duration-500 hover:shadow-indigo-500/10 dark:hover:shadow-indigo-700/20">
+                        <div class="p-6 border-b border-slate-200/50 dark:border-slate-700/50">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30">
+                                        <i class="fas fa-list-alt text-2xl"></i>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">
+                                        Noticias Recientes
+                                    </h2>
                                 </div>
-                                <div>
-                                    <h2 class="text-xl font-bold text-gray-800">Administradores Registrados</h2>
-                                    <p class="text-gray-600 text-sm">Lista completa de cuentas con privilegios</p>
+                                <div class="flex items-center gap-3 w-full md:w-auto">
+                                    <div class="relative flex-1 md:w-72">
+                                        <input type="text"
+                                               class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/80 dark:bg-slate-700/60 border-2 border-slate-200 dark:border-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 dark:focus:ring-indigo-600/30 outline-none transition-all duration-300 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
+                                               placeholder="Buscar por título, contenido...">
+                                        <i class="fas fa-search absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500"></i>
+                                    </div>
+                                    <button id="filter-toggle-btn" class="filter-btn p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700/60 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors relative group shrink-0">
+                                        <i class="fas fa-filter text-slate-500 dark:text-slate-400 group-hover:text-indigo-500 transition-colors"></i>
+                                        {{-- Indicador de filtros activos (opcional) --}}
+                                        {{-- <span class="absolute -top-1 -right-1 h-2.5 w-2.5 bg-indigo-500 rounded-full border border-white dark:border-slate-800"></span> --}}
+                                    </button>
                                 </div>
                             </div>
-                            <div class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">
-                                <span class="font-bold">{{ $administradores->count() }}</span> administradores
+
+                            <div id="filter-panel" class="filter-panel transition-all duration-300 ease-in-out max-h-0 opacity-0 overflow-hidden mt-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-600">
+                                {{-- Contenido del panel aquí --}}
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="filter-status" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Estado</label>
+                                        <select id="filter-status" class="w-full p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                            <option value="">Todos</option>
+                                            <option value="published">Publicado</option>
+                                            <option value="draft">Borrador</option>
+                                            <option value="scheduled">Programado</option>
+                                            <option value="pending">Pendiente</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="filter-category" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Categoría</label>
+                                        <select id="filter-category" class="w-full p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                            <option value="">Todas</option>
+                                            <option value="tech">Tecnología</option>
+                                            <option value="sports">Deportes</option>
+                                            <option value="culture">Cultura</option>
+                                            <option value="economy">Economía</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="filter-date" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Fecha</label>
+                                        <select id="filter-date" class="w-full p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                            <option value="">Cualquier fecha</option>
+                                            <option value="today">Hoy</option>
+                                            <option value="week">Esta semana</option>
+                                            <option value="month">Este mes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end mt-4 space-x-3">
+                                    <button type="button" class="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 text-sm hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors">
+                                        Limpiar
+                                    </button>
+                                    <button type="button" class="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm hover:opacity-90 transition-opacity">
+                                        Aplicar Filtros
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Contenedor de la tabla -->
-                    <div class="overflow-auto" style="max-height: calc(100vh - 220px)">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50 sticky top-0">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cargo</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($administradores as $admin)
-                                <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10">
-                                                @if($admin->foto_perfil)
-                                                    <img class="h-10 w-10 rounded-full" src="data:image/jpeg;base64,{{ $admin->foto_perfil }}" alt="Foto">
-                                                @else
-                                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($admin->nombre) }}" alt="Avatar">
-                                                @endif
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">{{ $admin->nombre }} {{ $admin->apellidos }}</div>
-                                                <div class="text-sm text-gray-500">{{ $admin->usuario }}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                {{ $admin->cargo }}
-                                            </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full {{ $admin->activo ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                                {{ $admin->activo ? 'Activo' : 'Inactivo' }}
-                                            </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <!-- Botón Editar -->
-                                            <form action="{{ route('soporte.edit', $admin->id) }}" method="GET">
-                                                <button type="submit" class="p-2 rounded-full hover:bg-blue-50 transition text-blue-600" title="Editar">
-                                                    <i class="fas fa-pen fa-sm"></i>
-                                                </button>
-                                            </form>
-                                            <!-- Botón Toggle Estado -->
-                                            <form action="{{ route('soporte.toggle', $admin->id) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="p-2 rounded-full hover:bg-yellow-50 transition text-yellow-600" title="{{ $admin->activo ? 'Desactivar' : 'Activar' }}">
-                                                    <i class="fas {{ $admin->activo ? 'fa-toggle-on' : 'fa-toggle-off' }} fa-sm"></i>
-                                                </button>
-                                            </form>
-                                            <!-- Botón Eliminar -->
-                                            <form action="{{ route('soporte.eliminarAdministrador', $admin->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro que deseas eliminar este administrador?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="p-2 rounded-full hover:bg-red-50 transition text-red-600" title="Eliminar">
-                                                    <i class="fas fa-trash fa-sm"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                        <div class="overflow-x-auto relative max-h-[calc(100vh-420px)] {{-- Ajusta esta altura según sea necesario --}}">
+                            <table class="w-full text-sm text-left text-slate-500 dark:text-slate-400">
+                                <thead class="text-xs text-slate-700 dark:text-slate-300 uppercase bg-slate-50 dark:bg-slate-700/50 sticky top-0 z-10 backdrop-blur-sm">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 font-semibold cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600/50 transition-colors">
+                                        <span class="flex items-center">
+                                            Título <i class="fas fa-sort ml-1.5 text-[10px] opacity-70"></i>
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center font-semibold cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600/50 transition-colors">
+                                        <span class="flex items-center justify-center">
+                                           Categoría <i class="fas fa-sort ml-1.5 text-[10px] opacity-70"></i>
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center font-semibold cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600/50 transition-colors">
+                                        <span class="flex items-center justify-center">
+                                           Estado <i class="fas fa-sort ml-1.5 text-[10px] opacity-70"></i>
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center font-semibold cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600/50 transition-colors">
+                                        <span class="flex items-center justify-center">
+                                           Fecha <i class="fas fa-sort-amount-down-alt ml-1.5 text-[10px] opacity-70"></i>
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center font-semibold">
+                                        Acciones
+                                    </th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Paginación -->
-                    <div class="px-6 py-4 border-t border-gray-200 bg-white">
-                        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-                            <div class="text-sm text-gray-500">
-                                Mostrando <span class="font-medium">1</span> a <span class="font-medium">3</span> de <span class="font-medium">8</span> resultados
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 transition">
+                                </thead>
+                                <tbody class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                                {{-- Filas de ejemplo (reemplazar con datos reales de Blade) --}}
+                                @for ($i = 1; $i <= 10; $i++)
+                                    <tr class="bg-white dark:bg-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/40 transition-colors duration-150 ease-in-out">
+                                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white whitespace-nowrap max-w-xs truncate">
+                                            Noticia de Ejemplo Muy Larga Número {{ $i }} para Probar El Truncado
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            @php $cat = $categories[array_rand($categories)]; @endphp
+                                            <span class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium bg-{{$cat['color']}}-100 text-{{$cat['color']}}-800 dark:bg-{{$cat['color']}}-900/50 dark:text-{{$cat['color']}}-300">
+                                            <i class="fas {{ $cat['icon'] }} text-{{$cat['color']}}-500"></i>
+                                            {{ $cat['name'] }}
+                                        </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            @php
+                                                $statuses = [
+                                                    'published' => ['text' => 'Publicado', 'color' => 'green', 'icon' => 'fa-check-circle'],
+                                                    'draft' => ['text' => 'Borrador', 'color' => 'yellow', 'icon' => 'fa-pencil-alt'],
+                                                    'scheduled' => ['text' => 'Programado', 'color' => 'blue', 'icon' => 'fa-clock'],
+                                                    'pending' => ['text' => 'Pendiente', 'color' => 'orange', 'icon' => 'fa-hourglass-half'],
+                                                ];
+                                                $status = $statuses[array_rand($statuses)];
+                                            @endphp
+                                            <span class="inline-flex items-center rounded-full bg-{{$status['color']}}-100 dark:bg-{{$status['color']}}-900/50 px-2.5 py-0.5 text-xs font-medium text-{{$status['color']}}-800 dark:text-{{$status['color']}}-300">
+                                            <i class="fas {{ $status['icon'] }} mr-1.5 text-{{$status['color']}}-500"></i>
+                                            {{ $status['text'] }}
+                                        </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center text-slate-500 dark:text-slate-400">
+                                            {{ date('d/m/Y', strtotime("-$i days")) }}
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <div class="flex items-center justify-center space-x-2">
+                                                <button class="p-2 rounded-lg text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors" title="Editar">
+                                                    <i class="fas fa-pencil-alt fa-fw"></i>
+                                                </button>
+                                                <button class="p-2 rounded-lg text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors" title="Eliminar">
+                                                    <i class="fas fa-trash-alt fa-fw"></i>
+                                                </button>
+                                                <button class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="Ver">
+                                                    <i class="fas fa-eye fa-fw"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t border-slate-200/50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-between">
+                         <span class="text-xs text-slate-500 dark:text-slate-400">
+                            Mostrando 1-10 de 57 resultados
+                        </span>
+                            <div class="inline-flex rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                                <button class="px-3 py-1.5 text-sm font-medium text-slate-500 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50" disabled>
                                     <i class="fas fa-chevron-left"></i>
                                 </button>
-                                <button class="px-3 py-1 rounded-lg bg-blue-600 text-white">1</button>
-                                <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 transition">2</button>
-                                <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 transition">3</button>
-                                <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 transition">
+                                <button class="px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border-l border-r border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    1
+                                </button>
+                                <button class="px-3 py-1.5 text-sm font-medium text-slate-500 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    2
+                                </button>
+                                <button class="px-3 py-1.5 text-sm font-medium text-slate-500 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    3
+                                </button>
+                                <span class="px-3 py-1.5 text-sm font-medium text-slate-400 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700">...</span>
+                                <button class="px-3 py-1.5 text-sm font-medium text-slate-500 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    6
+                                </button>
+                                <button class="px-3 py-1.5 text-sm font-medium text-slate-500 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                                     <i class="fas fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                </section>
-            </main>
-        </div>
-    </div>
-
-    <!-- Estilos personalizados -->
-    <style>
-        /* Animaciones para las notificaciones */
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(100%); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideOut {
-            from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(100%); }
-        }
-        .animate-slideIn {
-            animation: slideIn 0.3s ease-out forwards;
-        }
-        .animate-slideOut {
-            animation: slideOut 0.3s ease-out forwards;
-        }
-        /* Estilos personalizados para el Toggle Switch */
-        .slider {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-            background-color: #d1d5db;
-            border-radius: 9999px;
-            transition: background-color 0.3s;
-        }
-        .peer:checked + .slider {
-            background-color: #2563eb;
-        }
-        .slider::before {
-            content: "";
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            height: 20px;
-            width: 20px;
-            background-color: white;
-            border-radius: 9999px;
-            transition: transform 0.3s;
-        }
-        .peer:checked + .slider::before {
-            transform: translateX(20px);
-        }
-    </style>
-
-    <style>
-        .slider {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-            background-color: #d1d5db;
-            border-radius: 9999px;
-            transition: background-color 0.3s;
-        }
-        .peer:checked + .slider {
-            background-color: #2563eb;
-        }
-        .slider::before {
-            content: "";
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            height: 20px;
-            width: 20px;
-            background-color: white;
-            border-radius: 9999px;
-            transition: transform 0.3s;
-        }
-        .peer:checked + .slider::before {
-            transform: translateX(20px);
-        }
-
-    </style>
-
-    <!-- JavaScript -->
+                </div> </div> </div> </div> {{-- Scripts (necesitarás JS para interactividad) --}}
     <script>
-        // Función genérica para mostrar notificaciones
-        function showNotification(id, message) {
-            const notification = document.getElementById(id);
-            const messageElement = id === 'successNotification' ? document.getElementById('successMessage') : document.getElementById('errorMessage');
-            messageElement.textContent = message;
-            notification.classList.remove('hidden');
-            notification.style.animation = 'none';
-            void notification.offsetHeight;
-            notification.style.animation = 'slideIn 0.3s ease-out forwards';
-            setTimeout(() => closeNotification(id), 5000);
-        }
-
-        function closeNotification(id) {
-            const notification = document.getElementById(id);
-            notification.style.animation = 'slideOut 0.3s forwards';
-            setTimeout(() => notification.classList.add('hidden'), 300);
-        }
-
-        // Mostrar notificaciones en DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', function() {
-            @if(session('success'))
-            showNotification('successNotification', '{{ session('success') }}');
-            @endif
-
-            @if($errors->any())
-            @foreach($errors->all() as $error)
-            showNotification('errorNotification', '{{ $error }}');
-            @endforeach
-            @endif
+        // --- Dark Mode Toggle (Ejemplo básico, usa tu implementación) ---
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            // Aquí guardarías la preferencia (localStorage, etc.)
         });
 
-        // Función para la vista previa de la imagen
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                if (input.files[0].size > 2 * 1024 * 1024) {
-                    showNotification('errorNotification', 'La imagen no debe superar los 2MB');
-                    input.value = '';
-                    return;
+        // --- Toggle Panel de Filtros ---
+        const filterBtn = document.getElementById('filter-toggle-btn');
+        const filterPanel = document.getElementById('filter-panel');
+        if (filterBtn && filterPanel) {
+            filterBtn.addEventListener('click', () => {
+                const isHidden = filterPanel.classList.contains('max-h-0');
+                if (isHidden) {
+                    filterPanel.classList.remove('max-h-0', 'opacity-0');
+                    filterPanel.classList.add('max-h-96', 'opacity-100', 'mt-4', 'p-4'); // Ajusta max-h según necesites
+                } else {
+                    filterPanel.classList.remove('max-h-96', 'opacity-100', 'mt-4', 'p-4');
+                    filterPanel.classList.add('max-h-0', 'opacity-0');
                 }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('fotoPreview').setAttribute('src', e.target.result);
+            });
+        }
+
+        // --- Placeholder para Editor ContentEditable ---
+        const editor = document.getElementById('editor-content');
+        if(editor){
+            const placeholder = editor.getAttribute('data-placeholder');
+            editor.addEventListener('focus', () => {
+                if (editor.textContent === placeholder) {
+                    // Podrías querer limpiar el texto o manejarlo de otra forma
                 }
-                reader.readAsDataURL(input.files[0]);
+                editor.style.color = ''; // Restaura color normal
+            });
+            editor.addEventListener('blur', () => {
+                if (editor.textContent.trim() === '') {
+                    // editor.textContent = placeholder;
+                    // editor.style.color = '#9ca3af'; // Color del placeholder (ajusta)
+                    // Mejor usar un pseudo-elemento ::before con CSS para el placeholder
+                }
+            });
+            // Inicialización (opcional, mejor con CSS)
+            // if (editor.textContent.trim() === '') {
+            //     editor.textContent = placeholder;
+            //     editor.style.color = '#9ca3af';
+            // }
+        }
+
+        // --- Toggle de Programación ---
+        const scheduleToggle = document.getElementById('schedule-toggle');
+        const scheduleControls = document.getElementById('schedule-controls');
+        if(scheduleToggle && scheduleControls) {
+            scheduleToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    scheduleControls.style.maxHeight = scheduleControls.scrollHeight + "px";
+                    scheduleControls.style.opacity = 1;
+                    scheduleControls.style.marginTop = '0.75rem'; // Ajusta si es necesario
+                } else {
+                    scheduleControls.style.maxHeight = '0';
+                    scheduleControls.style.opacity = 0;
+                    scheduleControls.style.marginTop = '0';
+                }
+            });
+            // Para que funcione la animación inicial si está checked por defecto
+            if (scheduleToggle.checked) {
+                scheduleControls.style.maxHeight = scheduleControls.scrollHeight + "px";
+                scheduleControls.style.opacity = 1;
+                scheduleControls.style.marginTop = '0.75rem';
             }
         }
 
-        // Alternar visibilidad de la contraseña
-        function togglePasswordVisibility() {
-            const passwordField = document.getElementById('password');
-            const eyeIcon = passwordField.nextElementSibling.querySelector('i');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
+        // --- Lógica adicional necesaria (con JS más avanzado o Alpine.js): ---
+        // - Manejo de comandos del editor enriquecido (document.execCommand o librerías como TipTap/Quill).
+        // - Selección y almacenamiento de categoría activa.
+        // - Añadir/eliminar etiquetas (tags).
+        // - Manejo de subida de archivos (drag & drop, previsualización, eliminación).
+        // - Aplicación real de filtros y búsqueda.
+        // - Paginación y ordenamiento de la tabla.
 
-        // Medidor de fuerza de contraseña
-        document.getElementById('password').addEventListener('input', function(e) {
-            const password = e.target.value;
-            const strengthBar = document.getElementById('strength-bar');
-            const strengthText = document.getElementById('strength-text');
-            const strengthHint = document.getElementById('strength-hint');
+        // --- Ejemplo básico para botones de categoría (solo visual) ---
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const selectedCategoryInput = document.getElementById('selected-category');
 
-            // Reiniciar
-            strengthBar.style.width = '0%';
-            strengthBar.className = 'h-full w-0 transition-all duration-300';
-            strengthText.textContent = 'Seguridad';
-            strengthText.className = 'font-medium';
-            strengthHint.textContent = '';
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Quita la clase 'active' o estilo de selección de todos
+                categoryButtons.forEach(btn => {
+                    btn.classList.remove('ring-2', 'ring-offset-2', 'dark:ring-offset-slate-800'); // Quita estilos de selección
+                    // Restaura colores base si los cambiaste mucho
+                });
 
-            if (!password) return;
+                // Añade estilo al seleccionado
+                button.classList.add('ring-2', 'ring-offset-2', 'dark:ring-offset-slate-800'); // Añade anillo de selección
+                // Extrae el color del botón para el anillo (más complejo, ejemplo con índigo)
+                button.classList.add('ring-indigo-500');
 
-            // Calcular fuerza y sugerir mejoras
-            let strength = 0;
-            let suggestions = [];
-
-            if (password.length >= 6) strength += 20;
-            if (password.length >= 10) strength += 20;
-            else suggestions.push('Mínimo 10 caracteres');
-
-            if (/[A-Z]/.test(password)) strength += 15;
-            else suggestions.push('Añadir mayúsculas');
-
-            if (/[0-9]/.test(password)) strength += 15;
-            else suggestions.push('Añadir números');
-
-            if (/[^A-Za-z0-9]/.test(password)) strength += 15;
-            else suggestions.push('Añadir símbolos');
-
-            if (/(.)\1{2,}/.test(password)) strength -= 10;
-            if (/123|abc|qwerty/.test(password.toLowerCase())) strength -= 15;
-
-            strength = Math.max(0, Math.min(100, strength));
-            strengthBar.style.width = strength + '%';
-
-            if (strength < 40) {
-                strengthBar.className = 'h-full bg-red-500 transition-all duration-300';
-                strengthText.textContent = 'Débil';
-                strengthText.className = 'font-medium text-red-500';
-            } else if (strength < 70) {
-                strengthBar.className = 'h-full bg-yellow-500 transition-all duration-300';
-                strengthText.textContent = 'Moderada';
-                strengthText.className = 'font-medium text-yellow-500';
-            } else {
-                strengthBar.className = 'h-full bg-green-500 transition-all duration-300';
-                strengthText.textContent = 'Fuerte';
-                strengthText.className = 'font-medium text-green-500';
-            }
-
-            if (suggestions.length > 0 && strength < 70) {
-                strengthHint.textContent = 'Sugerencias: ' + suggestions.join(', ');
-            }
+                // Guarda el valor (ejemplo: texto del span)
+                if (selectedCategoryInput) {
+                    selectedCategoryInput.value = button.querySelector('span').textContent;
+                }
+            });
         });
+
     </script>
+
+    {{-- Añade CSS para el placeholder del editor si prefieres esa técnica --}}
+    <style>
+        .editor-content[contenteditable=true]:empty:before {
+            content: attr(data-placeholder);
+            color: #9ca3af; /* gris-400 */
+            pointer-events: none;
+            display: block; /* or inline-block */
+        }
+        .dark .editor-content[contenteditable=true]:empty:before {
+            color: #6b7280; /* gris-500 */
+        }
+
+        /* Animación Gradiente para el Título */
+        @keyframes gradient-x {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .animate-gradient-x {
+            background-size: 200% 200%;
+            animation: gradient-x 5s ease infinite;
+        }
+
+        /* Animación pulso lento */
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.03); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Estilos para scrollbar (opcional, mejora estética) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(165, 180, 252, 0.5); /* indigo-300/50 */
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(129, 140, 248, 0.7); /* indigo-400/70 */
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: rgba(99, 102, 241, 0.4); /* indigo-500/40 */
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(79, 70, 229, 0.6); /* indigo-600/60 */
+        }
+    </style>
 @endsection

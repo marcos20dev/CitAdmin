@@ -1,998 +1,878 @@
-@extends('plantillas.soporte.menu')
+@extends('plantillas.administrador.plantilla')
 
-@section('title', 'Registro de Cuenta de Administrador')
+@section('title', 'Gestión de Noticias - Dashboard Moderno')
 
 @section('menu')
-    @include('vistas.soporte.menu_soporte')
+    @include('vistas.administrador.menu')
 @endsection
 
-@section('soprote')
-    <!-- Sistema de Notificaciones Holográficas -->
-    <div id="notificationsHoloSystem" class="fixed inset-0 pointer-events-none z-50 flex justify-end items-start pt-24 pr-6">
-        <!-- Notificación flotante principal -->
-        <div id="holoNotification" class="hidden w-96 bg-opacity-90 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] translate-x-full">
-            <div class="absolute inset-0 bg-gradient-to-br opacity-30 from-blue-500 to-purple-600"></div>
-            <div class="relative p-5 flex items-start">
-                <div id="holoIcon" class="flex-shrink-0 text-2xl mr-4 mt-1"></div>
-                <div class="flex-1">
-                    <h3 id="holoTitle" class="text-lg font-bold text-white"></h3>
-                    <p id="holoMessage" class="text-white text-opacity-90 mt-1"></p>
-                </div>
-                <button onclick="dismissHolo()" class="text-white text-opacity-70 hover:text-opacity-100 ml-4">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="holoProgress" class="h-1 bg-white bg-opacity-30 w-full"></div>
+@section('content')
+    <!-- Header -->
+    <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6 rounded-xl px-6 py-5 shadow-inner"
+        style="background-color: rgb(55,64,80);">
+        <div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-600 animate-gradient-x pb-2">
+                Gestión de Noticias
+            </h1>
+            <p class="text-gray-300 dark:text-gray-400 text-lg">Crea, edita y administra tu contenido.</p>
         </div>
+
     </div>
 
-    <!-- Panel de Notificaciones Holográfico -->
-    <div id="holoPanel" class="fixed top-24 right-6 w-96 bg-gray-900 bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white border-opacity-10 z-50 transform transition-all duration-500 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] translate-x-full hidden overflow-hidden">
-        <div class="relative">
-            <!-- Encabezado con efecto neón -->
-            <div class="p-5 border-b border-white border-opacity-10">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-bold text-white flex items-center">
-                        <i class="fas fa-bell mr-3 text-blue-400"></i>
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Notificaciones</span>
-                    </h3>
-                    <div class="flex space-x-3">
-                        <button onclick="clearAllNotifications()" class="text-blue-400 hover:text-blue-300 transition-colors" title="Limpiar todo">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                        <button onclick="toggleHoloPanel()" class="text-white text-opacity-70 hover:text-opacity-100 transition-colors">
+
+    <!-- Estatísticas Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        @php
+            $stats = [
+                ['icon' => 'fa-eye', 'title' => 'Total de visitas', 'value' => '45.2K', 'change' => '+12.5%', 'change_color' => 'text-green-500 dark:text-green-400', 'arrow' => 'fa-arrow-up', 'gradient' => 'from-blue-500 to-cyan-400', 'width' => '75%', 'shadow' => 'shadow-blue-500/30'],
+                ['icon' => 'fa-newspaper', 'title' => 'Noticias publicadas', 'value' => '237', 'change' => '+8.3%', 'change_color' => 'text-green-500 dark:text-green-400', 'arrow' => 'fa-arrow-up', 'gradient' => 'from-indigo-500 to-purple-500', 'width' => '65%', 'shadow' => 'shadow-indigo-500/30'],
+                ['icon' => 'fa-comment-alt', 'title' => 'Comentarios', 'value' => '3.1K', 'change' => '+5.7%', 'change_color' => 'text-green-500 dark:text-green-400', 'arrow' => 'fa-arrow-up', 'gradient' => 'from-purple-500 to-pink-500', 'width' => '45%', 'shadow' => 'shadow-purple-500/30'],
+                ['icon' => 'fa-share-alt', 'title' => 'Compartidas', 'value' => '1.8K', 'change' => '-2.3%', 'change_color' => 'text-red-500 dark:text-red-400', 'arrow' => 'fa-arrow-down', 'gradient' => 'from-teal-500 to-emerald-500', 'width' => '35%', 'shadow' => 'shadow-teal-500/30'],
+            ];
+        @endphp
+
+        @foreach ($stats as $stat)
+            <div
+                class="p-3 rounded-xl dark:bg-slate-800 shadow-sm transition-all duration-300 hover:scale-[1.02] {{ $stat['shadow'] }} hover:{{ $stat['shadow'] }}"
+                style="background-color: rgb(55,64,80);">
+                <div class="flex justify-between items-center mb-1">
+                    <div
+                        class="rounded-lg p-2 bg-gradient-to-br {{ $stat['gradient'] }} text-white shadow {{ $stat['shadow'] }}">
+                        <i class="fas {{ $stat['icon'] }} text-sm fa-fw"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold {{ $stat['change_color'] }} flex items-center">
+                    <i class="fas {{ $stat['arrow'] }} mr-1 text-[10px]"></i> {{ $stat['change'] }}
+                </span>
+                </div>
+                <div>
+                    <h3 class="text-[11px] font-medium text-slate-400 mb-0.5">{{ $stat['title'] }}</h3>
+                    <span class="text-xl font-bold text-white">{{ $stat['value'] }}</span>
+                </div>
+                <div class="mt-3">
+                    <div class="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                        <div
+                            class="h-full bg-gradient-to-r {{ $stat['gradient'] }} rounded-full transition-all duration-500 ease-out"
+                            style="width: {{ $stat['width'] }}"></div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+
+    <!-- Sección Principal -->
+    <div class="grid grid-cols- xl:grid-cols-12 gap-5">
+
+        <!-- Crear Nueva Noticia -->
+        <div class="xl:col-span-8 space-y-8">
+            <div
+                class="rounded-3xl overflow-hidden transition-all duration-500 bg-gradient-to-br from-slate-900/50 to-slate-800/60 backdrop-blur-xl shadow-2xl hover:shadow-indigo-700/30 hover:-translate-y-1">
+                <!-- Encabezado -->
+                <div
+                    class="relative p-7 border-b border-white/10 flex items-center gap-6 rounded-t-2xl backdrop-blur-lg overflow-hidden shadow-2xl shadow-purple-900/20 hover:shadow-violet-900/30 transition-all duration-500 group"
+                    style="background-color: rgb(55,64,80);">
+                    <!-- Luces flotantes -->
+                    <div class="absolute -top-16 -left-16 w-32 h-32 rounded-full opacity-20"
+                         style="background: radial-gradient(ellipse, #8b5cf6, transparent 70%); animation: float 12s ease-in-out infinite;"></div>
+                    <div class="absolute bottom-8 right-12 w-28 h-28 rounded-full opacity-25"
+                         style="background: radial-gradient(ellipse, #ec4899, transparent 70%); animation: float 8s ease-in-out infinite reverse;"></div>
+                    <div class="absolute top-1/4 left-1/3 w-20 h-20 rounded-full opacity-15"
+                         style="background: radial-gradient(ellipse, #3b82f6, transparent 70%); animation: float 6s ease-in-out infinite;"></div>
+
+                    <!-- Partículas -->
+                    <div class="absolute inset-0 z-0 bg-[length:200px_200px]"
+                         style="animation: particle-move 20s linear infinite; background: radial-gradient(1px 1px at 20% 30%, white 1%, transparent 100%), radial-gradient(1px 1px at 40% 70%, white 1%, transparent 100%), radial-gradient(1px 1px at 60% 20%, white 1%, transparent 100%), radial-gradient(1px 1px at 80% 50%, white 1%, transparent 100%), radial-gradient(1px 1px at 30% 80%, white 1%, transparent 100%);"></div>
+
+                    <!-- Ícono -->
+                    <div
+                        class="relative p-4 rounded-2xl text-white shadow-xl shadow-violet-900/50 hover:shadow-fuchsia-900/60 transition-all duration-500 transform group-hover:-translate-y-1 group-hover:rotate-[10deg] group-hover:scale-105 z-10"
+                        style="background: conic-gradient(from 180deg at 50% 50%, #6366f1, #8b5cf6, #ec4899);">
+                        <div
+                            class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                            style="background: conic-gradient(from 180deg at 50% 50%, #818cf8, #a78bfa, #f472b6);"></div>
+                        <i class="fas fa-plus-circle text-3xl relative z-10 transition-all duration-700 group-hover:text-white"></i>
+                        <div
+                            class="absolute inset-0 rounded-2xl border-[3px] border-white/10 group-hover:border-white/30 transition-all duration-700"></div>
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-white/5 group-hover:bg-white/10 transition-all duration-700"></div>
+                    </div>
+
+                    <!-- Contenido -->
+                    <div class="relative z-10 space-y-2">
+                        <h2 class="text-3xl font-extrabold bg-clip-text tracking-tight animate-[text-shimmer_3s_linear_infinite] bg-[length:200%_100%]">
+                            Crear Nueva Noticia
+                        </h2>
+                        <p class="text-sm font-medium text-white mt-1 flex items-center gap-2">
+                            <span class="inline-flex w-2.5 h-2.5 rounded-full animate-pulse shadow-[0_0_8px_#10b981]"
+                                  style="background: conic-gradient(at right, #34d399, #10b981, #059669);"></span>
+                            <span class="text-white">Completa todos los campos para publicar</span>
+                        </p>
+                    </div>
+
+                    <!-- Hover extra -->
+                    <div class="absolute inset-0 pointer-events-none">
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700"
+                             style="background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.3) 0%, transparent 70%);"></div>
+                        <div
+                            class="absolute inset-0 rounded-t-2xl border border-transparent group-hover:border-white/10 transition-all duration-700"></div>
+                    </div>
+                </div>
+
+
+                <!-- Formulario -->
+                <form class="p-6 space-y-8" style="background-color: rgb(55,64,80);">
+                    <!-- Título -->
+                    <div class="space-y-2">
+                        <label for="news-title" class="block text-sm font-medium text-white/90">
+                            Título principal <span class="text-red-400" aria-hidden="true">*</span>
+                            <span class="sr-only">(requerido)</span>
+                        </label>
+
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg
+                                    class="w-5 h-5 text-cyan-300/90 group-focus-within:text-cyan-200 transition-colors duration-200"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2"
+                                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                </svg>
+                            </div>
+                            <input
+                                type="text"
+                                id="news-title"
+                                name="title"
+                                required
+                                aria-required="true"
+                                class="w-full px-4 py-3 pl-10 rounded-xl bg-transparent text-white placeholder-slate-300/80 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-400/30 transition-all duration-200 shadow-sm group-hover:border-slate-500/50 outline-none"
+                                placeholder="Escribe el título aquí"
+                                style="background: linear-gradient(135deg,
+                rgba(70,77,91,0.9) 0%,
+                rgba(62,68,80,0.95) 100%);"
+                            >
+                        </div>
+                        <p class="text-xs text-slate-400/80 mt-1">Máx. 120 caracteres</p>
+                    </div>
+
+                    <!-- Categorías -->
+                    <div class="space-y-4">
+                        <label class="block text-sm font-medium text-slate-300/90 mb-3 transition-colors">Categorías
+                            <span class="text-red-400/90">*</span>
+                        </label>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-wrap gap-3">
+                            @php
+                                $categories = [
+                                    ['name' => 'Tecnología', 'icon' => 'fa-microchip', 'color' => 'sky'],
+                                    ['name' => 'Deportes', 'icon' => 'fa-trophy', 'color' => 'emerald'],
+                                    ['name' => 'Cultura', 'icon' => 'fa-masks-theater', 'color' => 'purple'],
+                                    ['name' => 'Economía', 'icon' => 'fa-chart-pie', 'color' => 'amber'],
+                                    ['name' => 'Salud', 'icon' => 'fa-heart-pulse', 'color' => 'rose'],
+                                    ['name' => 'Política', 'icon' => 'fa-landmark-dome', 'color' => 'red'],
+                                ];
+                            @endphp
+
+                            @foreach($categories as $category)
+                                <button type="button"
+                                        class="category-btn group relative px-5 py-3 rounded-2xl text-sm font-semibold flex items-center gap-3
+                           bg-gradient-to-br from-{{$category['color']}}-600/20 to-{{$category['color']}}-900/30
+                           text-{{$category['color']}}-200 hover:text-white
+                           hover:border-{{$category['color']}}-400/60
+                           transform transition-all duration-300
+                           hover:scale-[1.03] hover:shadow-lg hover:shadow-{{$category['color']}}-900/20
+                           focus:outline-none focus:ring-2 focus:ring-{{$category['color']}}-400/60
+                           active:scale-95"
+                                        data-selected="false" style="background: linear-gradient(135deg,
+                rgba(92,100,117,0.9) 0%,
+                rgb(119,115,121) 100%);">
+                                    <div class="flex items-center gap-3">
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-0 bg-{{$category['color']}}-400/10 blur-[2px] rounded-full"></div>
+                                            <i class="fas {{ $category['icon'] }} text-{{$category['color']}}-400/90 text-lg relative z-10
+                              group-hover:text-{{$category['color']}}-200 transition-colors"></i>
+                                        </div>
+                                        <span class="tracking-wide">{{ $category['name'] }}</span>
+                                    </div>
+                                    <div class="absolute top-1 right-1 w-2 h-2 bg-{{$category['color']}}-500 rounded-full
+                           opacity-0 group-data-[selected=true]:opacity-100 transition-opacity"></div>
+                                </button>
+                            @endforeach
+
+                            <button type="button"
+                                    class="group px-5 py-3 rounded-2xl text-sm font-semibold flex items-center gap-3
+                       bg-gradient-to-br from-slate-800/40 to-slate-900/60
+                       text-slate-400 hover:text-indigo-200
+                       border border-slate-700/50 hover:border-indigo-500/60
+                       transform transition-all duration-300
+                       hover:scale-[1.03] hover:shadow-lg hover:shadow-indigo-900/20
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500/50
+                       active:scale-95">
+                                <i class="fas fa-plus text-xs transform transition-transform duration-300
+                   group-hover:rotate-90 group-hover:scale-125"></i>
+                                <span class="tracking-wide">Nueva categoría</span>
+                            </button>
+                        </div>
+
+                        <input type="hidden" name="category" id="selected-category">
+                        <p class="mt-1 text-xs text-slate-500/80 animate-pulse">✨ Selecciona la categoría que mejor
+                            represente tu contenido</p>
+                    </div>
+
+                    <!-- Editor -->
+                    <div class="space-y-4">
+                        <label class="block text-sm font-medium text-slate-300/90 mb-3">Contenido <span
+                                class="text-rose-400/90">*</span></label>
+                        <div
+                            class="editor-container rounded-xl overflow-hidden border-2 border-slate-700/60 shadow-xl hover:shadow-2xl transition-all duration-300 group hover:border-indigo-500/50">
+                            <!-- Toolbar Mejorado -->
+                            <div
+                                class="editor-toolbar bg-slate-900/95 p-3 border-b border-slate-700/40 flex flex-wrap gap-3 backdrop-blur-sm">
+                                <!-- Formato básico -->
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md" data-command="bold"
+                                        title="Negrita (Ctrl+B)">
+                                    <i class="fas fa-bold text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md" data-command="italic"
+                                        title="Cursiva (Ctrl+I)">
+                                    <i class="fas fa-italic text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md"
+                                        data-command="underline"
+                                        title="Subrayado (Ctrl+U)">
+                                    <i class="fas fa-underline text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+
+                                <!-- Listas e indent -->
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md"
+                                        data-command="insertUnorderedList"
+                                        title="Viñetas">
+                                    <i class="fas fa-list-ul text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md"
+                                        data-command="insertOrderedList"
+                                        title="Numerado">
+                                    <i class="fas fa-list-ol text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md" data-command="indent"
+                                        title="Aumentar sangría">
+                                    <i class="fas fa-indent text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md" data-command="outdent"
+                                        title="Reducir sangría">
+                                    <i class="fas fa-outdent text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+
+                                <!-- Enlace, imagen, video -->
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md insert-link"
+                                        title="Enlace">
+                                    <i class="fas fa-link text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md insert-image"
+                                        title="Imagen">
+                                    <i class="fas fa-image text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md insert-youtube"
+                                        title="YouTube">
+                                    <i class="fab fa-youtube text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+
+                                <!-- Color texto/fondo -->
+                                <div class="relative">
+                                    <button
+                                        class="p-2 hover:bg-indigo-500/20 rounded-md text-slate-300 hover:text-indigo-400"
+                                        title="Color texto">
+                                        <i class="fas fa-palette"></i>
+                                    </button>
+                                    <input type="color" class="color-picker" data-command="foreColor"
+                                           aria-label="Color texto"/>
+                                </div>
+                                <div class="relative">
+                                    <button
+                                        class="p-2 hover:bg-indigo-500/20 rounded-md text-slate-300 hover:text-indigo-400"
+                                        title="Color fondo">
+                                        <i class="fas fa-highlighter"></i>
+                                    </button>
+                                    <input type="color" class="color-picker" data-command="backColor"
+                                           aria-label="Color fondo"/>
+                                </div>
+
+
+                                <!-- Insertar tabla -->
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md insert-table"
+                                        title="Insertar tabla">
+                                    <i class="fas fa-table text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+                                <!-- Cambiar color tabla -->
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md change-table-color"
+                                        title="Cambiar color de tabla">
+                                    <i class="fas fa-fill-drip text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+
+
+                                <!-- Insertar emoji -->
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md insert-emoji"
+                                        title="Insertar emoji">
+                                    <i class="fas fa-smile text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+
+                                <!-- Limpiar formato -->
+                                <button class="toolbar-btn p-2 hover:bg-indigo-500/20 rounded-md clear-format"
+                                        title="Limpiar formato">
+                                    <i class="fas fa-eraser text-slate-300 hover:text-indigo-400"></i>
+                                </button>
+
+
+                                <!-- Encabezados, fuente y tamaño de letra -->
+                                <select
+                                    class="headings-selector bg-slate-800/50 text-slate-300 rounded-md px-2 py-1 text-sm"
+                                    title="Formato párrafo/título">
+                                    <option value="p">Párrafo</option>
+                                    <option value="h1">Título 1</option>
+                                    <option value="h2">Título 2</option>
+                                </select>
+                                <select
+                                    class="font-selector bg-slate-800/50 text-slate-300 rounded-md px-2 py-1 text-sm"
+                                    title="Tipo de letra">
+                                    <option value="font-sans">Sans-serif</option>
+                                    <option value="font-serif">Serif</option>
+                                    <option value="font-mono">Monospace</option>
+                                </select>
+                                <select
+                                    class="font-size-selector bg-slate-800/50 text-slate-300 rounded-md px-2 py-1 text-sm"
+                                    title="Tamaño de letra">
+                                    <option value="1">10px</option>
+                                    <option value="2">13px</option>
+                                    <option value="3" selected>16px</option>
+                                    <option value="4">18px</option>
+                                    <option value="5">24px</option>
+                                    <option value="6">32px</option>
+                                    <option value="7">48px</option>
+                                </select>
+                            </div>
+
+                            <!-- Editor Content -->
+                            <div id="editor-content"
+                                 class="editor-content bg-slate-900/50 min-h-[400px] p-6 text-slate-200 focus:outline-none"
+                                 contenteditable="true" data-placeholder="Escribe aquí..." spellcheck="false"></div>
+                            <div
+                                class="bg-slate-900/80 border-t border-slate-700/40 p-3 flex justify-between items-center text-sm">
+                                <span class="char-count">Caracteres: 0</span>
+                                <span class="word-count">Palabras: 0</span>
+                                <button class="undo-btn px-3 py-1 rounded-md bg-slate-800/50 hover:bg-indigo-500/20"><i
+                                        class="fas fa-undo-alt"></i></button>
+                                <button class="redo-btn px-3 py-1 rounded-md bg-slate-800/50 hover:bg-indigo-500/20"><i
+                                        class="fas fa-redo-alt"></i></button>
+                            </div>
+
+                        </div>
+                        <input type="hidden" id="contenido_final" name="contenido">
+
+                    </div>
+
+
+                    <!-- Tags -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-3">Etiquetas (Tags)</label>
+                        <div
+                            class="tags-container flex flex-wrap items-center gap-3 p-4 rounded-xl bg-slate-800/70 border-2 border-slate-700 focus-within:ring-4 focus-within:ring-indigo-500/20 transition-all duration-300 hover:border-slate-600">
+                    <span
+                        class="tag-item px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-900/40 text-indigo-300 flex items-center gap-1 border border-indigo-800/50">
+                        <i class="fas fa-tag text-indigo-400 text-[10px]"></i>
+                        blockchain
+                        <button type="button" class="ml-1.5 text-indigo-400 hover:text-indigo-200 text-xs">
                             <i class="fas fa-times"></i>
                         </button>
-                    </div>
-                </div>
-                <div class="mt-3 flex items-center">
-                    <div class="flex-1 h-1 bg-white bg-opacity-10 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" style="width: 60%"></div>
-                    </div>
-                    <span class="ml-3 text-xs text-blue-400 font-mono">Sistema al 60%</span>
-                </div>
-            </div>
-
-            <!-- Lista de notificaciones -->
-            <div class="max-h-[70vh] overflow-y-auto custom-scroll">
-                <ul id="holoNotificationsList" class="divide-y divide-white divide-opacity-5">
-                    <!-- Notificaciones se insertarán aquí dinámicamente -->
-                </ul>
-            </div>
-
-            <!-- Pie con efecto de conexión -->
-            <div class="p-4 border-t border-white border-opacity-10 flex justify-between items-center">
-                <div class="flex items-center">
-                    <div class="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></div>
-                    <span class="text-xs text-white text-opacity-70 font-mono">Conectado</span>
-                </div>
-                <button class="text-xs bg-white bg-opacity-10 hover:bg-opacity-20 text-white px-3 py-1 rounded-full transition-all flex items-center">
-                    <i class="fas fa-sync-alt mr-1 text-xs"></i> Actualizar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Botón Flotante Futurista -->
-    <div class="fixed bottom-8 right-8 z-40">
-        <button id="holoButton" onclick="toggleHoloPanel()" class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 shadow-2xl flex items-center justify-center text-white transform transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95 group">
-            <div class="absolute inset-0 rounded-full border-2 border-white border-opacity-30 animate-ping-slow opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <i class="fas fa-bell text-xl"></i>
-            <span id="holoBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden shadow-lg">0</span>
-        </button>
-    </div>
-
-    <!-- Contenedor Principal con Efecto de Cristal -->
-    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-8 px-4 sm:px-6 relative overflow-hidden">
-        <!-- Efectos de partículas -->
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="particle absolute rounded-full bg-blue-500 bg-opacity-10"></div>
-            <div class="particle absolute rounded-full bg-purple-500 bg-opacity-10"></div>
-            <div class="particle absolute rounded-full bg-blue-400 bg-opacity-10"></div>
-        </div>
-
-        <div class="container mx-auto relative z-10">
-            <!-- Encabezado Futurista -->
-            <header class="mb-10">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                    <div class="relative">
-                        <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 leading-tight">
-                            Gestión de <span class="text-white">Administradores</span>
-                        </h1>
-                        <p class="text-gray-400 mt-3 text-sm md:text-base max-w-2xl">
-                            <span class="text-blue-400">Sistema de control</span> y administración de cuentas privilegiadas con tecnología <span class="text-purple-400">de última generación</span>
-                        </p>
-                        <div class="absolute -top-6 -left-6 w-16 h-16 rounded-full bg-blue-500 bg-opacity-20 blur-xl"></div>
-                    </div>
-
-                    <!-- Búsqueda con efecto neón -->
-                    <form method="GET" action="{{ route('soporte.buscar') }}" class="w-full md:w-auto relative">
-                        <div class="relative flex items-center">
-                            <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-20 blur-md"></div>
-                            <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar administrador..."
-                                   class="relative pl-12 pr-4 py-3 rounded-xl border border-gray-700 bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full md:w-64 text-white placeholder-gray-500 shadow-lg transition-all duration-200">
-                            <i class="fas fa-search absolute left-4 text-blue-400"></i>
-                            <button type="submit"
-                                    class="relative ml-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white px-5 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center group">
-                                <span>Buscar</span>
-                                <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
-                            </button>
-                            @if(request()->has('buscar'))
-                                <a href="{{ route('soporte.buscar') }}"
-                                   class="relative ml-2 bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center">
-                                    <i class="fas fa-times mr-1"></i>
-                                    Limpiar
-                                </a>
-                            @endif
+                    </span>
+                            <span
+                                class="tag-item px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-900/40 text-emerald-300 flex items-center gap-1 border border-emerald-800/50">
+                        <i class="fas fa-tag text-emerald-400 text-[10px]"></i>
+                        criptomonedas
+                        <button type="button" class="ml-1.5 text-emerald-400 hover:text-emerald-200 text-xs">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                            <input type="text" id="tag-input" placeholder="Escribe y presiona Enter..."
+                                   class="tag-input flex-1 min-w-[120px] bg-transparent text-sm text-slate-300 placeholder-slate-500 py-1 outline-none">
                         </div>
-                    </form>
-                </div>
-            </header>
+                        <p class="mt-2 text-xs text-slate-500">Añade hasta 10 etiquetas para mejorar la
+                            clasificación</p>
+                    </div>
 
-            <!-- Grid Principal con Efecto 3D -->
-            <main class="grid grid-cols-1 xl:grid-cols-12 gap-8 transform-style-preserve-3d perspective-1000">
-                <!-- Tarjeta: Formulario de Registro (Efecto de Cristal) -->
-                <section class="xl:col-span-4 bg-gray-800 bg-opacity-60 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700 border-opacity-50 overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-xl">
-                    <!-- Encabezado con gradiente animado -->
-                    <div class="p-5 text-white relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-80 animate-gradient-x"></div>
-                        <div class="relative z-10 flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm">
-                                    <i class="fas {{ isset($adminEditar) ? 'fa-user-edit' : 'fa-user-plus' }} text-xl"></i>
+                    <!-- Multimedia -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-3">Imagen Principal <span
+                                class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <div id="drag-drop-zone"
+                                 class="border-2 border-dashed border-slate-700 rounded-2xl p-8 text-center transition-all duration-300 hover:border-indigo-500 hover:bg-indigo-900/10 cursor-pointer group">
+                                <input type="file" multiple
+                                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                       id="file-upload-input">
+                                <div class="flex flex-col items-center justify-center space-y-4">
+                                    <div
+                                        class="p-4 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/40 group-hover:shadow-indigo-600/60 transition-shadow duration-300">
+                                        <i class="fas fa-cloud-upload-alt text-3xl"></i>
+                                    </div>
+                                    <p class="text-slate-400"><span class="text-indigo-400 font-medium">Haz clic para subir</span>
+                                        o arrastra y suelta archivos aquí</p>
+                                    <p class="text-xs text-slate-500">Formatos: PNG, JPG, GIF, WEBP | Tamaño máximo:
+                                        50MB</p>
+                                </div>
+                            </div>
+                            <div id="upload-preview" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+                                <!-- Preview items would appear here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Programación -->
+                    <div
+                        class="p-6 rounded-xl bg-slate-800/60 border-2 border-slate-700 hover:border-slate-600 transition-colors duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2.5 rounded-lg bg-indigo-900/30 text-indigo-400">
+                                    <i class="fas fa-calendar-alt"></i>
                                 </div>
                                 <div>
-                                    <h2 class="text-lg font-bold">{{ isset($adminEditar) ? 'Editar Administrador' : 'Nuevo Administrador' }}</h2>
-                                    <p class="text-blue-100 text-opacity-80 text-sm">{{ isset($adminEditar) ? 'Modifique los campos necesarios' : 'Complete el formulario para registrar' }}</p>
+                                    <h3 class="text-sm font-medium text-slate-300">Programar publicación</h3>
+                                    <p class="text-xs text-slate-500">Publica automáticamente en fecha y hora
+                                        específicas</p>
                                 </div>
                             </div>
-                            <div class="bg-black bg-opacity-30 text-xs font-semibold px-3 py-1 rounded-full shadow-lg backdrop-blur-sm">
-                                {{ isset($adminEditar) ? 'MODO EDICIÓN' : 'PASO 1/2' }}
+                            <label for="schedule-toggle" class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="schedule-toggle" class="sr-only peer">
+                                <div
+                                    class="w-12 h-6 bg-slate-700 rounded-full peer peer-checked:bg-indigo-600 relative transition-colors duration-300">
+                                    <div
+                                        class="absolute top-0.5 left-0.5 bg-white rounded-full w-5 h-5 transition-transform duration-300 peer-checked:translate-x-6"></div>
+                                </div>
+                            </label>
+                        </div>
+                        <div id="schedule-controls"
+                             class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-0 opacity-0 overflow-hidden transition-all duration-300">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Fecha</label>
+                                <input type="date"
+                                       class="w-full p-3 rounded-lg bg-slate-800 border-2 border-slate-700 text-sm text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Hora</label>
+                                <input type="time"
+                                       class="w-full p-3 rounded-lg bg-slate-800 border-2 border-slate-700 text-sm text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Cuerpo del formulario con scroll personalizado -->
-                    <div class="p-5 overflow-y-auto custom-scroll" style="max-height: calc(100vh - 250px)">
-                        <form method="POST" action="{{ isset($adminEditar) ? route('soporte.update', $adminEditar->id) : route('soporte.store') }}" enctype="multipart/form-data" class="space-y-6">
-                            @csrf
-                            @if(isset($adminEditar))
-                                @method('PUT')
-                            @endif
-
-                            <!-- Foto de Perfil con Efecto Hover 3D -->
-                            <div class="flex flex-col items-center space-y-4">
-                                <div class="relative group cursor-pointer transform-style-preserve-3d">
-                                    <div class="relative overflow-hidden rounded-full w-28 h-28 border-4 border-gray-700 shadow-xl transition-transform duration-700 group-hover:rotate-y-180">
-                                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 opacity-20 rounded-full"></div>
-                                        <img id="fotoPreview"
-                                             src="@if(isset($adminEditar) && $adminEditar->foto_perfil)
-                                                    data:image/jpeg;base64,{{ $adminEditar->foto_perfil }}
-                                                  @else
-                                                    https://ui-avatars.com/api/?name={{ isset($adminEditar) ? urlencode($adminEditar->nombre[0].' '.$adminEditar->apellidos[0]) : 'N+U' }}&background=random&color=fff&size=128
-                                                  @endif"
-                                             class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full">
-                                            <label for="foto_perfil" class="cursor-pointer">
-                                                <i class="fas fa-camera text-white text-2xl"></i>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <label for="foto_perfil" class="absolute -bottom-2 -right-2 bg-gradient-to-r {{ isset($adminEditar) ? 'from-red-500 to-red-600' : 'from-blue-500 to-blue-600' }} text-white p-2 rounded-full cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 flex items-center justify-center w-10 h-10">
-                                        <i class="fas fa-pencil-alt"></i>
-                                        <input type="file" id="foto_perfil" name="foto_perfil" class="hidden" accept="image/*" onchange="previewImage(this)">
-                                    </label>
-                                </div>
-                                <span class="text-xs text-gray-500">Formatos: JPG, PNG (Máx. 2MB)</span>
-                            </div>
-
-                            <!-- Secciones del formulario con acordeón -->
-                            <div class="space-y-6">
-                                <!-- Información Personal -->
-                                <div class="accordion-item" x-data="{ open: true }">
-                                    <button @click="open = !open" type="button" class="flex items-center justify-between w-full group">
-                                        <div class="flex items-center">
-                                            <div class="w-2 h-6 bg-blue-500 rounded-full mr-3 transition-all duration-300" :class="{ 'bg-purple-500': !open }"></div>
-                                            <h3 class="text-sm font-semibold text-white" :class="{ 'text-purple-400': !open }">Información Personal</h3>
-                                        </div>
-                                        <i class="fas fa-chevron-down text-gray-500 transform transition-transform duration-300" :class="{ 'rotate-180': open }"></i>
-                                    </button>
-
-                                    <div x-show="open" x-collapse class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <!-- DNI -->
-                                        <div class="space-y-2">
-                                            <label class="block text-sm font-medium text-gray-400">DNI <span class="text-red-500">*</span></label>
-                                            <div class="relative">
-                                                <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                <input type="text" name="dni" placeholder="Ingrese DNI"
-                                                       value="{{ $adminEditar->dni ?? old('dni') }}"
-                                                       pattern="\d{8}" maxlength="8"
-                                                       onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                       class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                                    <i class="fas fa-id-card text-blue-400 text-sm"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Nombres -->
-                                        <div class="space-y-2">
-                                            <label class="block text-sm font-medium text-gray-400">Nombres <span class="text-red-500">*</span></label>
-                                            <div class="relative">
-                                                <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                <input type="text" name="nombre" placeholder="Ingrese nombres"
-                                                       value="{{ $adminEditar->nombre ?? old('nombre') }}"
-                                                       pattern="[A-Za-zÁ-Úá-ú\s]+" title="Solo se permiten letras y espacios"
-                                                       oninput="this.value = this.value.replace(/[^A-Za-zÁ-Úá-ú\s]/g,'')"
-                                                       class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                            </div>
-                                        </div>
-
-                                        <!-- Apellidos -->
-                                        <div class="space-y-2">
-                                            <label class="block text-sm font-medium text-gray-400">Apellidos <span class="text-red-500">*</span></label>
-                                            <div class="relative">
-                                                <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                <input type="text" name="apellidos" placeholder="Ingrese apellidos"
-                                                       value="{{ $adminEditar->apellidos ?? old('apellidos') }}"
-                                                       pattern="[A-Za-zÁ-Úá-ú\s]+" title="Solo se permiten letras y espacios"
-                                                       oninput="this.value = this.value.replace(/[^A-Za-zÁ-Úá-ú\s]/g,'')"
-                                                       class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                            </div>
-                                        </div>
-
-                                        <!-- Correo Electrónico -->
-                                        <div class="space-y-2">
-                                            <label class="block text-sm font-medium text-gray-400">Correo Electrónico <span class="text-red-500">*</span></label>
-                                            <div class="relative">
-                                                <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                <input type="email" name="usuario" placeholder="ejemplo@dominio.com"
-                                                       value="{{ $adminEditar->usuario ?? old('usuario') }}"
-                                                       pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Ingrese un correo válido"
-                                                       class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                                    <i class="fas fa-envelope text-blue-400 text-sm"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Teléfono -->
-                                        <div class="space-y-2">
-                                            <label class="block text-sm font-medium text-gray-400">Teléfono</label>
-                                            <div class="relative">
-                                                <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                <input type="text" name="telefono" placeholder="Ingrese número"
-                                                       value="{{ $adminEditar->telefono ?? old('telefono') }}"
-                                                       pattern="9\d{8}" maxlength="9"
-                                                       onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                       class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                                    <i class="fas fa-phone text-blue-400 text-sm"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Credenciales de Acceso (solo en modo creación) -->
-                                @unless(isset($adminEditar))
-                                    <div class="accordion-item" x-data="{ open: false }">
-                                        <button @click="open = !open" type="button" class="flex items-center justify-between w-full group">
-                                            <div class="flex items-center">
-                                                <div class="w-2 h-6 bg-blue-500 rounded-full mr-3 transition-all duration-300" :class="{ 'bg-purple-500': !open }"></div>
-                                                <h3 class="text-sm font-semibold text-white" :class="{ 'text-purple-400': !open }">Credenciales de Acceso</h3>
-                                            </div>
-                                            <i class="fas fa-chevron-down text-gray-500 transform transition-transform duration-300" :class="{ 'rotate-180': open }"></i>
-                                        </button>
-
-                                        <div x-show="open" x-collapse class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <!-- Contraseña -->
-                                            <div class="space-y-2">
-                                                <label class="block text-sm font-medium text-gray-400">Contraseña <span class="text-red-500">*</span></label>
-                                                <div class="relative">
-                                                    <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                    <input type="password" id="password" name="password" placeholder="Contraseña"
-                                                           class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                                    <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-blue-400 hover:text-blue-300">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="mt-2">
-                                                    <div class="w-full bg-gray-700 rounded-full h-1.5 overflow-hidden">
-                                                        <div id="strength-bar" class="h-full w-0 transition-all duration-500 ease-out"></div>
-                                                    </div>
-                                                    <div id="strength-hints" class="text-xs text-gray-400 mt-1.5 flex justify-between">
-                                                        <span id="strength-text" class="font-medium">Seguridad</span>
-                                                        <span id="strength-hint" class="text-right"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Confirmar Contraseña -->
-                                            <div class="space-y-2">
-                                                <label class="block text-sm font-medium text-gray-400">Confirmar Contraseña <span class="text-red-500">*</span></label>
-                                                <div class="relative">
-                                                    <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                    <input type="password" name="password_confirmation" placeholder="Repita la contraseña"
-                                                           class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endunless
-
-                                <!-- Configuración de Cuenta -->
-                                <div class="accordion-item" x-data="{ open: true }">
-                                    <button @click="open = !open" type="button" class="flex items-center justify-between w-full group">
-                                        <div class="flex items-center">
-                                            <div class="w-2 h-6 bg-blue-500 rounded-full mr-3 transition-all duration-300" :class="{ 'bg-purple-500': !open }"></div>
-                                            <h3 class="text-sm font-semibold text-white" :class="{ 'text-purple-400': !open }">Configuración de Cuenta</h3>
-                                        </div>
-                                        <i class="fas fa-chevron-down text-gray-500 transform transition-transform duration-300" :class="{ 'rotate-180': open }"></i>
-                                    </button>
-
-                                    <div x-show="open" x-collapse class="mt-4">
-                                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                                            <!-- Toggle Estado -->
-                                            <div class="flex items-center">
-                                                <input type="hidden" name="estado" value="0">
-                                                <label class="relative inline-flex items-center cursor-pointer">
-                                                    <input type="checkbox" name="estado" value="1"
-                                                           class="sr-only peer"
-                                                        {{ ($adminEditar->activo ?? old('estado', true)) ? 'checked' : '' }}>
-                                                    <span class="slider"></span>
-                                                    <span class="ml-3 text-gray-300 font-medium text-sm">Cuenta activa</span>
-                                                </label>
-                                            </div>
-
-                                            <!-- Cargo del usuario -->
-                                            <div class="w-full md:w-48 relative" x-data="{ open: false, search: '{{ $adminEditar->cargo ?? old('cargo') }}', roles: ['Administrador', 'Soporte Técnico', 'Editor', 'Supervisor', 'Auditor'] }">
-                                                <label class="block text-xs font-medium text-gray-400 mb-1">Cargo del usuario</label>
-                                                <div class="relative">
-                                                    <div class="absolute inset-0 bg-blue-500 rounded-xl opacity-10 blur-sm"></div>
-                                                    <input type="text" name="cargo"
-                                                           x-model="search"
-                                                           @focus="open = true"
-                                                           @input="open = true"
-                                                           @click.away="open = false"
-                                                           placeholder="Seleccionar rol..."
-                                                           value="{{ $adminEditar->cargo ?? old('cargo') }}"
-                                                           class="relative w-full px-4 py-2.5 border border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white shadow-sm text-sm">
-                                                    <ul x-show="open && roles.filter(r => r.toLowerCase().includes(search.toLowerCase())).length > 0"
-                                                        class="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-700 rounded-xl shadow-xl max-h-40 overflow-y-auto text-sm"
-                                                        x-transition>
-                                                        <template x-for="role in roles.filter(r => r.toLowerCase().includes(search.toLowerCase()))" :key="role">
-                                                            <li @click="search = role; open = false"
-                                                                class="px-4 py-2.5 hover:bg-gray-700 cursor-pointer transition-all border-b border-gray-700 last:border-0">
-                                                                <span x-text="role" class="text-white"></span>
-                                                            </li>
-                                                        </template>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Botón Enviar con Efecto Hover -->
-                            <button type="submit"
-                                    class="w-full mt-6 bg-gradient-to-r {{ isset($adminEditar) ? 'from-red-500 to-red-600 hover:from-red-400 hover:to-red-500' : 'from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500' }} text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center text-sm group transform hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
-                                <i class="fas {{ isset($adminEditar) ? 'fa-save' : 'fa-user-plus' }} mr-3 text-lg transition-transform duration-300 group-hover:scale-110"></i>
-                                {{ isset($adminEditar) ? 'ACTUALIZAR ADMINISTRADOR' : 'REGISTRAR NUEVO ADMINISTRADOR' }}
-                                <i class="fas fa-arrow-right ml-2 opacity-0 transform -translate-x-2 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300"></i>
+                    <!-- Botones -->
+                    <div class="flex flex-wrap justify-between gap-4 pt-6 border-t border-slate-700/50">
+                        <div class="flex gap-3">
+                            <button type="button"
+                                    class="px-5 py-3 rounded-xl bg-slate-800/60 text-slate-300 hover:bg-slate-700/80 transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-600 border border-slate-700 hover:border-slate-600 flex items-center gap-2">
+                                <i class="fas fa-save"></i>
+                                <span>Guardar Borrador</span>
                             </button>
-                        </form>
-                    </div>
-                </section>
-
-                <!-- Tarjeta: Lista de Administradores (Efecto de Cristal) -->
-                <section class="xl:col-span-8 bg-gray-800 bg-opacity-60 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700 border-opacity-50 overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-xl">
-                    <!-- Encabezado con gradiente animado -->
-                    <div class="p-5 border-b border-gray-700 border-opacity-50 bg-gray-800 bg-opacity-80">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                            <div class="flex items-center">
-                                <div class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm">
-                                    <i class="fas fa-users text-blue-400 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-xl font-bold text-white">Administradores Registrados</h2>
-                                    <p class="text-gray-400 text-sm">Lista completa de cuentas con privilegios</p>
-                                </div>
-                            </div>
-                            <div class="bg-black bg-opacity-30 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm flex items-center">
-                                <i class="fas fa-database mr-2"></i>
-                            </div>
+                            <button type="button"
+                                    class="px-5 py-3 rounded-xl bg-slate-800/60 text-slate-300 hover:bg-slate-700/80 transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-600 border border-slate-700 hover:border-slate-600 flex items-center gap-2">
+                                <i class="fas fa-eye"></i>
+                                <span>Vista Previa</span>
+                            </button>
                         </div>
+                        <button type="submit"
+                                class="px-7 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-indigo-500/20 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-indigo-500/50 flex items-center gap-3 group">
+                            <span>Publicar Noticia</span>
+                            <i class="fas fa-paper-plane group-hover:translate-x-1 transition-transform duration-300"></i>
+                        </button>
                     </div>
+                </form>
+            </div>
+        </div>
 
-                    <!-- Contenedor de la tabla con scroll personalizado -->
-                    <div class="overflow-auto custom-scroll" style="max-height: calc(100vh - 250px)">
-                        <table class="min-w-full divide-y divide-gray-700">
-                            <thead class="bg-gray-800 sticky top-0">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-blue-400 uppercase tracking-wider">Usuario</th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-blue-400 uppercase tracking-wider">Cargo</th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-blue-400 uppercase tracking-wider">Estado</th>
-                                <th class="px-6 py-4 text-right text-xs font-semibold text-blue-400 uppercase tracking-wider">Acciones</th>
+
+        <!-- Noticias Recientes -->
+        <div class="xl:col-span-4">
+            <div
+                class="bg-gray-700 dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-600 hover:shadow-2xl transition-all duration-300 overflow-hidden" style="background-color: rgb(55,64,80);">
+                <div class="flex justify-between items-center p-6 border-b border-gray-600">
+                    <h2 class="text-2xl font-bold text-white">Noticias Recientes</h2>
+                    <div class="flex items-center space-x-3">
+                        <input type="text" placeholder="Buscar..."
+                               class="px-4 py-2 rounded-lg bg-gray-600 border border-gray-600 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 transition-all duration-300"/>
+                        <button
+                            class="p-3 rounded-lg bg-gray-600 border border-gray-600 hover:border-indigo-500 transition-all duration-300">
+                            <i class="fas fa-filter text-white"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-[60vh]" style="background-color: rgb(55,63,79);">
+                    <table class="w-full text-sm text-white divide-y divide-gray-600">
+                        <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-6 py-3">Título</th>
+                            <th class="px-6 py-3 text-center">Categoría</th>
+                            <th class="px-6 py-3 text-center">Estado</th>
+                            <th class="px-6 py-3 text-center">Fecha</th>
+                            <th class="px-6 py-3 text-center">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-gray-800 divide-y divide-gray-600">
+                        <!-- Filas de ejemplo -->
+                        @for ($i = 1; $i <= 10; $i++)
+                            <tr class="hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4">Noticia de Ejemplo Número {{ $i }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="inline-flex items-center px-2 py-1 rounded-full bg-indigo-500 text-white text-xs">Tech</span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="inline-flex items-center px-2 py-1 rounded-full bg-green-500 text-white text-xs">Publicado</span>
+                                </td>
+                                <td class="px-6 py-4 text-center">{{ now()->subDays($i)->format('d/m/Y') }}</td>
+                                <td class="px-6 py-4 text-center space-x-2">
+                                    <button
+                                        class="p-2 rounded-lg bg-gray-600 hover:bg-indigo-500 transition-colors text-white">
+                                        <i class="fas fa-edit"></i></button>
+                                    <button
+                                        class="p-2 rounded-lg bg-gray-600 hover:bg-red-500 transition-colors text-white">
+                                        <i class="fas fa-trash"></i></button>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody class="bg-gray-800 bg-opacity-50 divide-y divide-gray-700">
-                                <tr class="hover:bg-gray-700 hover:bg-opacity-50 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 relative">
-                                                @if($admin->foto_perfil)
-                                                    <img class="h-10 w-10 rounded-full border-2 border-gray-600" src="data:image/jpeg;base64,{{ $admin->foto_perfil }}" alt="Foto">
-                                                @else
-                                                    <img class="h-10 w-10 rounded-full border-2 border-gray-600" src="https://ui-avatars.com/api/?name={{ urlencode($admin->nombre) }}" alt="Avatar">
-                                                @endif
-                                                <div class="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-800 {{ $admin->activo ? 'bg-green-400' : 'bg-gray-500' }}"></div>
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-white">{{ $admin->nombre }} {{ $admin->apellidos }}</div>
-                                                <div class="text-xs text-gray-400">{{ $admin->usuario }}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-blue-500 bg-opacity-20 text-blue-400 border border-blue-400 border-opacity-30">
-                                            {{ $admin->cargo }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full {{ $admin->activo ? 'bg-green-500 bg-opacity-20 text-green-400 border border-green-400 border-opacity-30' : 'bg-gray-500 bg-opacity-20 text-gray-400 border border-gray-400 border-opacity-30' }}">
-                                            {{ $admin->activo ? 'Activo' : 'Inactivo' }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <!-- Botón Editar -->
-                                            <form action="{{ route('soporte.edit', $admin->id) }}" method="GET">
-                                                <button type="submit" class="p-2 rounded-full bg-blue-500 bg-opacity-10 hover:bg-opacity-20 text-blue-400 border border-blue-400 border-opacity-30 transition-all duration-200 transform hover:scale-110" title="Editar">
-                                                    <i class="fas fa-pen fa-sm"></i>
-                                                </button>
-                                            </form>
-                                            <!-- Botón Toggle Estado -->
-                                            <form action="{{ route('soporte.toggle', $admin->id) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="p-2 rounded-full bg-yellow-500 bg-opacity-10 hover:bg-opacity-20 text-yellow-400 border border-yellow-400 border-opacity-30 transition-all duration-200 transform hover:scale-110" title="{{ $admin->activo ? 'Desactivar' : 'Activar' }}">
-                                                    <i class="fas {{ $admin->activo ? 'fa-toggle-on' : 'fa-toggle-off' }} fa-sm"></i>
-                                                </button>
-                                            </form>
-                                            <!-- Botón Eliminar -->
-                                            <form action="{{ route('soporte.eliminarAdministrador', $admin->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro que deseas eliminar este administrador?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="p-2 rounded-full bg-red-500 bg-opacity-10 hover:bg-opacity-20 text-red-400 border border-red-400 border-opacity-30 transition-all duration-200 transform hover:scale-110" title="Eliminar">
-                                                    <i class="fas fa-trash fa-sm"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Paginación Futurista -->
-                    <div class="px-6 py-4 border-t border-gray-700 border-opacity-50 bg-gray-800 bg-opacity-80">
-                        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-                            <div class="text-sm text-gray-400">
-                                Mostrando <span class="font-medium text-white">1</span> a <span class="font-medium text-white">3</span> de <span class="font-medium text-white">8</span> resultados
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <button class="px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 transition-all duration-200 transform hover:-translate-x-0.5">
-                                    <i class="fas fa-chevron-left"></i>
-                                </button>
-                                <button class="px-3.5 py-1.5 rounded-lg bg-blue-500 text-white shadow-lg transform hover:scale-110 transition-all">1</button>
-                                <button class="px-3.5 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 transition-all duration-200">2</button>
-                                <button class="px-3.5 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 transition-all duration-200">3</button>
-                                <button class="px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 transition-all duration-200 transform hover:translate-x-0.5">
-                                    <i class="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
+                        @endfor
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.execCommand('styleWithCSS', false, true);
+            const editor = document.getElementById('editor-content');
+            const toolbarBtns = document.querySelectorAll('.toolbar-btn');
+            const colorPickers = document.querySelectorAll('.color-picker');
+            const headingsSelector = document.querySelector('.headings-selector');
+            const fontSelector = document.querySelector('.font-selector');
+            const fontSizeSelector = document.querySelector('.font-size-selector');
+            const insertLinkBtn = document.querySelector('.insert-link');
+            const insertImageBtn = document.querySelector('.insert-image');
+            const insertYoutubeBtn = document.querySelector('.insert-youtube');
+            const charCount = document.querySelector('.char-count');
+            const wordCount = document.querySelector('.word-count');
+            const undoBtn = document.querySelector('.undo-btn');
+            const redoBtn = document.querySelector('.redo-btn');
+            const hiddenInput = document.getElementById('contenido_final');
+            const insertTableBtn = document.querySelector('.insert-table');
+            const insertEmojiBtn = document.querySelector('.insert-emoji');
+            const clearFormatBtn = document.querySelector('.clear-format');
+            const changeTableColorBtn = document.querySelector('.change-table-color');
 
-    <!-- Estilos personalizados avanzados -->
+            let history = [], step = -1, rangeBackup = null;
+
+            function saveSelection() {
+                const sel = window.getSelection();
+                if (sel.rangeCount) rangeBackup = sel.getRangeAt(0).cloneRange();
+            }
+
+            function restoreSelection() {
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                if (rangeBackup) sel.addRange(rangeBackup); else editor.focus();
+            }
+
+            function saveState() {
+                const html = editor.innerHTML;
+                if (step >= 0 && html === history[step]) return;
+                if (step < history.length - 1) history = history.slice(0, step + 1);
+                history.push(html);
+                step = history.length - 1;
+                hiddenInput.value = html;
+                updateCounts();
+            }
+
+            function updateCounts() {
+                const text = editor.innerText || '';
+                document.querySelector('.char-count').textContent = `Caracteres: ${text.length}`;
+                document.querySelector('.word-count').textContent = `Palabras: ${text.trim() ? text.trim().split(/\s+/).length : 0}`;
+            }
+
+            function exec(cmd, val = null) {
+                document.execCommand(cmd, false, val);
+                editor.focus();
+                saveState();
+            }
+
+            toolbarBtns.forEach(btn => {
+                btn.addEventListener('mousedown', e => e.preventDefault());
+                btn.addEventListener('click', () => exec(btn.dataset.command, btn.dataset.value || null));
+                btn.addEventListener('focus', saveSelection);
+            });
+            colorPickers.forEach(picker => {
+                picker.addEventListener('input', e => exec(e.target.dataset.command, e.target.value));
+                picker.addEventListener('mousedown', saveSelection);
+            });
+            headingsSelector.addEventListener('change', () => exec('formatBlock', `<${headingsSelector.value}>`));
+            fontSelector.addEventListener('change', () => {
+                editor.classList.remove('font-sans', 'font-serif', 'font-mono');
+                editor.classList.add(fontSelector.value);
+                editor.focus();
+                saveState();
+            });
+            fontSizeSelector.addEventListener('change', () => exec('fontSize', fontSizeSelector.value));
+
+            insertLinkBtn.addEventListener('click', async () => {
+                saveSelection();
+                editor.blur();
+                const {value: url} = await Swal.fire({
+                    title: 'Enlace',
+                    input: 'url',
+                    confirmButtonText: 'Insertar',
+                    showCancelButton: true
+                });
+                if (url) {
+                    restoreSelection();
+                    exec('createLink', url);
+                }
+            });
+            insertImageBtn.addEventListener('click', async () => {
+                saveSelection();
+                editor.blur();
+                const {value: src} = await Swal.fire({
+                    title: 'Imagen',
+                    input: 'url',
+                    confirmButtonText: 'Insertar',
+                    showCancelButton: true
+                });
+                if (src) {
+                    restoreSelection();
+                    exec('insertImage', src);
+                }
+            });
+            insertYoutubeBtn.addEventListener('click', async () => {
+                saveSelection();
+                editor.blur();
+                const {value: vid} = await Swal.fire({
+                    title: 'YouTube',
+                    input: 'url',
+                    confirmButtonText: 'Insertar',
+                    showCancelButton: true
+                });
+                if (vid) {
+                    restoreSelection();
+                    const embed = `<iframe width="560" height="315" src="${vid.replace('watch?v=', 'embed/')}" frameborder="0" allowfullscreen></iframe>`;
+                    exec('insertHTML', embed);
+                }
+            });
+            changeTableColorBtn.addEventListener('click', async () => {
+                const selection = window.getSelection();
+                const node = selection.anchorNode?.closest?.('table') || selection.anchorNode?.parentNode?.closest?.('table');
+                if (!node || !node.classList.contains('custom-table')) {
+                    Swal.fire('Selecciona una tabla válida para aplicar colores');
+                    return;
+                }
+
+                const {value: borderColor} = await Swal.fire({
+                    title: 'Color del borde',
+                    input: 'color',
+                    confirmButtonText: 'Siguiente',
+                    showCancelButton: true
+                });
+                if (!borderColor) return;
+
+                const {value: bgColor} = await Swal.fire({
+                    title: 'Color de fondo',
+                    input: 'color',
+                    confirmButtonText: 'Aplicar',
+                    showCancelButton: true
+                });
+                if (!bgColor) return;
+
+                node.querySelectorAll('td').forEach(td => {
+                    td.style.borderColor = borderColor;
+                    td.style.backgroundColor = bgColor;
+                });
+            });
+            insertTableBtn.addEventListener('click', async () => {
+                saveSelection();
+                editor.blur();
+                const {value: rows} = await Swal.fire({
+                    title: 'Filas',
+                    input: 'number',
+                    inputAttributes: {min: 1},
+                    confirmButtonText: 'Siguiente',
+                    showCancelButton: true
+                });
+                if (!rows || rows < 1) return;
+                const {value: cols} = await Swal.fire({
+                    title: 'Columnas',
+                    input: 'number',
+                    inputAttributes: {min: 1},
+                    confirmButtonText: 'Insertar',
+                    showCancelButton: true
+                });
+                if (cols && cols > 0) {
+                    restoreSelection();
+                    let table = '<table class="custom-table" style="border-collapse:collapse;width:100%;margin:1rem 0;">';
+                    for (let i = 0; i < rows; i++) {
+                        table += '<tr>';
+                        for (let j = 0; j < cols; j++) {
+                            table += '<td style="padding:8px;border:1px solid #ccc;">&nbsp;</td>';
+                        }
+                        table += '</tr>';
+                    }
+                    table += '</table>';
+                    exec('insertHTML', table);
+                }
+            });
+
+
+            insertEmojiBtn.addEventListener('click', async () => {
+                saveSelection();
+                editor.blur();
+                const {value: emoji} = await Swal.fire({
+                    title: 'Emoji',
+                    input: 'text',
+                    inputLabel: 'Ingresa un emoji (ej. 😀)',
+                    confirmButtonText: 'Insertar',
+                    showCancelButton: true
+                });
+                if (emoji) {
+                    restoreSelection();
+                    exec('insertText', emoji);
+                }
+            });
+
+            clearFormatBtn.addEventListener('click', () => {
+                exec('removeFormat');
+            });
+            undoBtn.addEventListener('click', () => {
+                if (step > 0) {
+                    step--;
+                    editor.innerHTML = history[step];
+                    hiddenInput.value = history[step];
+                    updateCounts();
+                }
+            });
+            redoBtn.addEventListener('click', () => {
+                if (step < history.length - 1) {
+                    step++;
+                    editor.innerHTML = history[step];
+                    hiddenInput.value = history[step];
+                    updateCounts();
+                }
+            });
+            editor.addEventListener('input', saveState);
+            editor.addEventListener('keydown', e => {
+                if ((e.ctrlKey || e.metaKey) && ['b', 'i', 'u'].includes(e.key)) {
+                    e.preventDefault();
+                    const cmd = e.key === 'b' ? 'bold' : e.key === 'i' ? 'italic' : 'underline';
+                    exec(cmd);
+                }
+            });
+            // init
+            editor.classList.add('font-sans');
+            saveState();
+            updateCounts();
+        });
+    </script>
+
     <style>
-        /* Efectos de partículas */
-        .particle {
-            animation: float 15s infinite ease-in-out;
-        }
-        .particle:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-        .particle:nth-child(2) {
-            width: 400px;
-            height: 400px;
-            bottom: -150px;
-            right: -100px;
-            animation-delay: 3s;
-        }
-        .particle:nth-child(3) {
-            width: 250px;
-            height: 250px;
-            top: 50%;
-            right: 20%;
-            animation-delay: 6s;
+        .editor-content:empty:before {
+            content: attr(data-placeholder);
+            color: #64748b;
+            pointer-events: none;
+            position: absolute;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(10px, 10px) rotate(5deg); }
-            50% { transform: translate(-10px, 5px) rotate(-5deg); }
-            75% { transform: translate(5px, -10px) rotate(3deg); }
+        .editor-content {
+            position: relative;
         }
 
-        /* Scroll personalizado */
-        .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.5);
-            border-radius: 10px;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.7);
+        .editor-content pre {
+            background-color: rgba(30, 41, 59, 0.5);
+            border-radius: .5rem;
+            padding: 1rem;
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            overflow-x: auto;
         }
 
-        /* Animación de gradiente */
-        @keyframes gradient-x {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .animate-gradient-x {
-            background-size: 200% auto;
-            animation: gradient-x 3s ease infinite;
+        .editor-content blockquote {
+            border-left: 4px solid rgba(99, 102, 241, 0.6);
+            background-color: rgba(30, 41, 59, 0.3);
+            color: #cbd5e1;
+            padding: .5rem 1rem;
+            margin: 1rem 0;
+            font-style: italic;
         }
 
-        /* Ping lento para efectos */
-        @keyframes ping-slow {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        .animate-ping-slow {
-            animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-
-        /* Efecto de cristal */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .editor-content code {
+            background-color: rgba(30, 41, 59, 0.7);
+            color: #f43f5e;
+            padding: .125rem .375rem;
+            border-radius: .25rem;
+            font-family: ui-monospace, Menlo, Consolas, monospace;
+            font-size: .9em;
         }
 
-        /* Preservar 3D para efectos */
-        .transform-style-preserve-3d {
-            transform-style: preserve-3d;
-        }
-        .perspective-1000 {
-            perspective: 1000px;
+        .editor-content.font-sans {
+            font-family: ui-sans-serif, system-ui, sans-serif;
         }
 
-        /* Acordeón personalizado */
-        .accordion-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 12px;
-            transition: all 0.3s ease;
+        .editor-content.font-serif {
+            font-family: ui-serif, Georgia, serif;
         }
-        .accordion-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+
+        .editor-content.font-mono {
+            font-family: ui-monospace, Menlo, Consolas, monospace;
+        }
+
+        .color-picker {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .editor-content ol,
+        .editor-content ul {
+            padding-left: 2rem;
+            margin: 1rem 0;
+        }
+
+        .editor-content ol {
+            list-style: decimal;
+        }
+
+        .editor-content ul {
+            list-style: disc;
+        }
+
+        .editor-content li {
+            margin: .25rem 0;
         }
     </style>
 
-    <!-- JavaScript Avanzado -->
-    <script>
-        // Datos falsos para notificaciones
-        const fakeNotifications = [
-            {
-                id: 1,
-                type: 'success',
-                title: 'Registro exitoso',
-                message: 'El administrador Juan Pérez ha sido registrado correctamente en el sistema.',
-                time: 'Hace 5 minutos',
-                read: false,
-                icon: 'fa-user-check'
-            },
-            {
-                id: 2,
-                type: 'info',
-                title: 'Actualización del sistema',
-                message: 'Nueva versión 2.5.3 disponible. Actualice para obtener las últimas características.',
-                time: 'Hace 2 horas',
-                read: false,
-                icon: 'fa-system-update'
-            },
-            {
-                id: 3,
-                type: 'error',
-                title: 'Error de conexión',
-                message: 'Problemas detectados en el servidor de base de datos. Intente nuevamente.',
-                time: 'Hace 1 día',
-                read: true,
-                icon: 'fa-database'
-            },
-            {
-                id: 4,
-                type: 'success',
-                title: 'Copia de seguridad',
-                message: 'La copia de seguridad nocturna se completó exitosamente.',
-                time: 'Ayer, 11:30 PM',
-                read: true,
-                icon: 'fa-cloud-upload-alt'
-            },
-            {
-                id: 5,
-                type: 'info',
-                title: 'Nuevo mensaje',
-                message: 'Tiene un nuevo mensaje del equipo de soporte técnico.',
-                time: 'Ayer, 4:45 PM',
-                read: true,
-                icon: 'fa-envelope'
-            },
-            {
-                id: 6,
-                type: 'warning',
-                title: 'Alerta de seguridad',
-                message: 'Se detectaron 3 intentos fallidos de inicio de sesión en su cuenta.',
-                time: 'Ayer, 3:20 PM',
-                read: true,
-                icon: 'fa-shield-alt'
-            }
-        ];
-
-        // Mostrar notificación holográfica
-        function showHoloNotification(type, title, message) {
-            const holo = document.getElementById('holoNotification');
-            const icon = document.getElementById('holoIcon');
-            const holoTitle = document.getElementById('holoTitle');
-            const holoMessage = document.getElementById('holoMessage');
-            const progress = document.getElementById('holoProgress');
-
-            // Configurar según el tipo
-            let iconClass, bgClass;
-            switch(type) {
-                case 'success':
-                    iconClass = 'fa-check-circle text-green-400';
-                    bgClass = 'from-green-500 to-blue-500';
-                    break;
-                case 'error':
-                    iconClass = 'fa-exclamation-circle text-red-400';
-                    bgClass = 'from-red-500 to-purple-500';
-                    break;
-                case 'warning':
-                    iconClass = 'fa-exclamation-triangle text-yellow-400';
-                    bgClass = 'from-yellow-500 to-orange-500';
-                    break;
-                default:
-                    iconClass = 'fa-info-circle text-blue-400';
-                    bgClass = 'from-blue-500 to-purple-500';
-            }
-
-            // Configurar contenido
-            icon.className = `fas ${iconClass} text-2xl`;
-            holoTitle.textContent = title;
-            holoMessage.textContent = message;
-            holo.className = `holo-notification w-96 bg-opacity-90 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] translate-x-0`;
-            holo.style.background = `linear-gradient(135deg, var(--tw-gradient-stops))`;
-            holo.style.setProperty('--tw-gradient-from', bgClass.split(' to ')[0].replace('from-', ''));
-            holo.style.setProperty('--tw-gradient-to', bgClass.split(' to ')[1]);
-
-            // Animación de progreso
-            progress.style.width = '100%';
-            progress.style.transition = 'width 5s linear';
-            setTimeout(() => {
-                progress.style.width = '0%';
-            }, 50);
-
-            // Auto cerrar después de 5 segundos
-            setTimeout(() => {
-                dismissHolo();
-            }, 5000);
-        }
-
-        // Cerrar notificación holográfica
-        function dismissHolo() {
-            const holo = document.getElementById('holoNotification');
-            holo.className = `holo-notification w-96 bg-opacity-90 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] translate-x-full`;
-        }
-
-        // Alternar panel holográfico
-        function toggleHoloPanel() {
-            const panel = document.getElementById('holoPanel');
-            panel.classList.toggle('translate-x-full');
-            panel.classList.toggle('hidden');
-
-            // Marcar como leídas al abrir
-            if (!panel.classList.contains('translate-x-full')) {
-                fakeNotifications.forEach(n => n.read = true);
-                renderHoloNotifications();
-            }
-        }
-
-        // Renderizar notificaciones en el panel
-        function renderHoloNotifications() {
-            const list = document.getElementById('holoNotificationsList');
-            const unreadCount = fakeNotifications.filter(n => !n.read).length;
-            const badge = document.getElementById('holoBadge');
-
-            // Actualizar badge
-            if (unreadCount > 0) {
-                badge.textContent = unreadCount;
-                badge.classList.remove('hidden');
-                // Animación de notificación
-                document.getElementById('holoButton').classList.add('animate-pulse');
-                setTimeout(() => {
-                    document.getElementById('holoButton').classList.remove('animate-pulse');
-                }, 1000);
-            } else {
-                badge.classList.add('hidden');
-            }
-
-            // Limpiar lista
-            list.innerHTML = '';
-
-            // Agregar notificaciones
-            fakeNotifications.forEach(notification => {
-                const li = document.createElement('li');
-                li.className = notification.read ? 'bg-opacity-0' : 'bg-blue-500 bg-opacity-5 unread';
-
-                let textColor, borderColor, iconColor;
-                switch(notification.type) {
-                    case 'success':
-                        textColor = 'text-green-400';
-                        borderColor = 'border-green-400';
-                        iconColor = 'text-green-400';
-                        break;
-                    case 'error':
-                        textColor = 'text-red-400';
-                        borderColor = 'border-red-400';
-                        iconColor = 'text-red-400';
-                        break;
-                    case 'warning':
-                        textColor = 'text-yellow-400';
-                        borderColor = 'border-yellow-400';
-                        iconColor = 'text-yellow-400';
-                        break;
-                    default:
-                        textColor = 'text-blue-400';
-                        borderColor = 'border-blue-400';
-                        iconColor = 'text-blue-400';
-                }
-
-                li.innerHTML = `
-                    <div class="p-4 hover:bg-white hover:bg-opacity-5 transition-colors cursor-pointer">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mt-1">
-                                <div class="h-10 w-10 rounded-full ${iconColor} bg-opacity-10 border ${borderColor} border-opacity-30 flex items-center justify-center">
-                                    <i class="fas ${notification.icon || 'fa-bell'}"></i>
-                                </div>
-                            </div>
-                            <div class="ml-3 flex-1">
-                                <div class="flex justify-between">
-                                    <h4 class="text-sm font-medium text-white">${notification.title}</h4>
-                                    <span class="text-xs ${textColor}">${notification.time}</span>
-                                </div>
-                                <p class="text-sm text-gray-400 mt-1">${notification.message}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                list.appendChild(li);
-            });
-        }
-
-        // Limpiar todas las notificaciones
-        function clearAllNotifications() {
-            fakeNotifications.forEach(n => n.read = true);
-            renderHoloNotifications();
-            showHoloNotification('success', 'Notificaciones limpiadas', 'Todas las notificaciones han sido marcadas como leídas');
-        }
-
-        // Función para la vista previa de la imagen
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                if (input.files[0].size > 2 * 1024 * 1024) {
-                    showHoloNotification('error', 'Error de carga', 'La imagen no debe superar los 2MB');
-                    input.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('fotoPreview').setAttribute('src', e.target.result);
-                    showHoloNotification('success', 'Imagen cargada', 'La foto de perfil se ha cargado correctamente');
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // Alternar visibilidad de la contraseña
-        function togglePasswordVisibility() {
-            const passwordField = document.getElementById('password');
-            const eyeIcon = passwordField.nextElementSibling.querySelector('i');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
-
-        // Medidor de fuerza de contraseña
-        document.getElementById('password').addEventListener('input', function(e) {
-            const password = e.target.value;
-            const strengthBar = document.getElementById('strength-bar');
-            const strengthText = document.getElementById('strength-text');
-            const strengthHint = document.getElementById('strength-hint');
-
-            // Reiniciar
-            strengthBar.style.width = '0%';
-            strengthBar.className = 'h-full transition-all duration-500 ease-out';
-            strengthText.textContent = 'Seguridad';
-            strengthText.className = 'font-medium text-gray-400';
-            strengthHint.textContent = '';
-
-            if (!password) return;
-
-            // Calcular fuerza
-            let strength = 0;
-            let suggestions = [];
-
-            if (password.length >= 6) strength += 20;
-            if (password.length >= 10) strength += 20;
-            else suggestions.push('Mínimo 10 caracteres');
-
-            if (/[A-Z]/.test(password)) strength += 15;
-            else suggestions.push('Añadir mayúsculas');
-
-            if (/[0-9]/.test(password)) strength += 15;
-            else suggestions.push('Añadir números');
-
-            if (/[^A-Za-z0-9]/.test(password)) strength += 15;
-            else suggestions.push('Añadir símbolos');
-
-            if (/(.)\1{2,}/.test(password)) strength -= 10;
-            if (/123|abc|qwerty/.test(password.toLowerCase())) strength -= 15;
-
-            strength = Math.max(0, Math.min(100, strength));
-            strengthBar.style.width = strength + '%';
-
-            if (strength < 40) {
-                strengthBar.className = 'h-full bg-red-500 transition-all duration-500 ease-out';
-                strengthText.textContent = 'Débil';
-                strengthText.className = 'font-medium text-red-400';
-            } else if (strength < 70) {
-                strengthBar.className = 'h-full bg-yellow-500 transition-all duration-500 ease-out';
-                strengthText.textContent = 'Moderada';
-                strengthText.className = 'font-medium text-yellow-400';
-            } else {
-                strengthBar.className = 'h-full bg-green-500 transition-all duration-500 ease-out';
-                strengthText.textContent = 'Fuerte';
-                strengthText.className = 'font-medium text-green-400';
-            }
-
-            if (suggestions.length > 0 && strength < 70) {
-                strengthHint.textContent = 'Sugerencias: ' + suggestions.join(', ');
-            }
-        });
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            // Renderizar notificaciones
-            renderHoloNotifications();
-
-            // Mostrar notificación de bienvenida
-            setTimeout(() => {
-                showHoloNotification('info', 'Bienvenido al panel', 'Sistema de administración de usuarios cargado correctamente');
-            }, 1000);
-
-            // Mostrar notificaciones aleatorias cada 30 segundos (demo)
-            setInterval(() => {
-                const types = ['success', 'info', 'warning', 'error'];
-                const titles = [
-                    'Nuevo registro',
-                    'Actualización del sistema',
-                    'Alerta de seguridad',
-                    'Copia de seguridad',
-                    'Mensaje importante'
-                ];
-                const messages = [
-                    'Se ha registrado un nuevo administrador en el sistema',
-                    'El rendimiento del servidor es óptimo',
-                    'Se detectaron intentos de acceso no autorizados',
-                    'La última copia de seguridad se completó con éxito',
-                    'Revise los nuevos mensajes en su bandeja'
-                ];
-                const icons = [
-                    'fa-user-plus',
-                    'fa-server',
-                    'fa-shield-alt',
-                    'fa-database',
-                    'fa-envelope'
-                ];
-
-                const randomIndex = Math.floor(Math.random() * types.length);
-                const randomType = types[randomIndex];
-                const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-
-                // Mostrar notificación flotante
-                showHoloNotification(randomType, randomTitle, randomMessage);
-
-                // Agregar a la lista de notificaciones
-                fakeNotifications.unshift({
-                    id: Date.now(),
-                    type: randomType,
-                    title: randomTitle,
-                    message: randomMessage,
-                    time: 'Hace unos segundos',
-                    read: false,
-                    icon: randomIcon
-                });
-
-                // Actualizar lista
-                renderHoloNotifications();
-            }, 30000);
-
-            // Efectos de partículas
-            const particles = document.querySelectorAll('.particle');
-            particles.forEach((particle, index) => {
-                // Posiciones aleatorias
-                const randomX = Math.random() * 20 - 10;
-                const randomY = Math.random() * 20 - 10;
-                particle.style.transform = `translate(${randomX}px, ${randomY}px)`;
-
-                // Tamaños aleatorios
-                const randomSize = Math.random() * 100 + 200;
-                particle.style.width = `${randomSize}px`;
-                particle.style.height = `${randomSize}px`;
-            });
-
-            // Inicializar Alpine.js para componentes interactivos
-            if (typeof Alpine === 'undefined') {
-                console.warn('Alpine.js no está cargado');
-            }
-        });
-
-        // Mostrar notificaciones de sesión si existen
-        @if(session('success'))
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                showHoloNotification('success', 'Operación exitosa', '{{ session('success') }}');
-            }, 1500);
-        });
-        @endif
-
-        @if($errors->any()))
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                @foreach($errors->all() as $error)
-                showHoloNotification('error', 'Error en el formulario', '{{ $error }}');
-                @endforeach
-            }, 2000);
-        });
-        @endif
-    </script>
 @endsection
+
+
+    <style>
+        @keyframes gradient-x {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .animate-gradient-x {
+            background-size: 200% 200%;
+            animation: gradient-x 5s ease infinite;
+        }
+    </style>
