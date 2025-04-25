@@ -100,16 +100,17 @@
                                     <select id="especialidad" name="especialidad" required
                                             class="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-700 text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 appearance-none">
                                         <option value="" disabled selected>Seleccione una especialidad</option>
-                                        <option value="Cardiología" {{ old('especialidad') == 'Cardiología' ? 'selected' : '' }}>Cardiología</option>
-                                        <option value="Dermatología" {{ old('especialidad') == 'Dermatología' ? 'selected' : '' }}>Dermatología</option>
-                                        <option value="Gastroenterología" {{ old('especialidad') == 'Gastroenterología' ? 'selected' : '' }}>Gastroenterología</option>
-                                        <option value="Pediatría" {{ old('especialidad') == 'Pediatría' ? 'selected' : '' }}>Pediatría</option>
-                                        <option value="Neurología" {{ old('especialidad') == 'Neurología' ? 'selected' : '' }}>Neurología</option>
+                                        @foreach($especialidades as $especialidad)
+                                            <option value="{{ $especialidad->nombre }}" {{ old('especialidad') == $especialidad->nombre ? 'selected' : '' }}>
+                                                {{ $especialidad->nombre }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     @error('especialidad')
                                     <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
                                     @enderror
                                 </div>
+
                             </div>
                         </div>
 
@@ -135,7 +136,7 @@
                             </label>
                             <div class="relative">
                                 <input id="password" name="password" type="password" value="{{ old('password') }}"
-                                       class="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400 pr-12"
+                                       class="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-700 text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400 pr-12"
                                        placeholder="Mínimo 8 caracteres" minlength="8" required>
                                 <button type="button" onclick="togglePassword()"
                                         class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-blue-400 transition-colors">

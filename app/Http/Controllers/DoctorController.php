@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use App\Models\Especialidad;
 use App\Models\Noticias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,10 @@ public function mostrar()
     public function doctor()
     {
         $doctores = Doctor::all();
-        return view('vistas.administrador.doctor.AñadirDoctor', compact('doctores'));
+        $especialidades = Especialidad::where('estado', 1)->orderBy('nombre')->get();
+
+        // Aquí le mandamos doctores + especialidades
+        return view('vistas.administrador.doctor.AñadirDoctor', compact('doctores', 'especialidades'));
     }
 
 

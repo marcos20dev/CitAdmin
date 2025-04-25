@@ -106,11 +106,12 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <a href="{{ route('actualizar.Doctor', $doctor->id) }}" class="text-blue-400 hover:text-blue-300 transition-colors">
+                                        <button type="button" onclick="expandirFormulario({{ $doctor->id }})" class="text-blue-400 hover:text-blue-300 transition-colors">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
-                                        </a>
+                                        </button>
+
                                         <form action="{{ route('eliminar.Doctor', $doctor->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')

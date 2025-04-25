@@ -9,5 +9,18 @@ class Noticias extends Model
 {
     use HasFactory;
 
-    protected $filable = ['titulo', 'descripcion', 'foto'];
+    protected $fillable = [
+        'titulo',
+        'descripcion',
+        'foto',
+        'categoria',
+        'etiquetas',
+        'publicada',
+    ];
+
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class, 'noticia_id');
+    }
+
 }

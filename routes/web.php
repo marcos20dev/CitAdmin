@@ -26,6 +26,22 @@ use function Ramsey\Uuid\v1;
 */
 //login adminsitrador
 Route::get('/', InicioController::class)->name('inicio');
+Route::get('/speed-download', function () {
+    $sizeInBytes = 10000000; // 10 MB
+    $data = str_repeat('0', $sizeInBytes);
+
+    return response($data, 200)
+        ->header('Content-Type', 'application/octet-stream')
+        ->header('Content-Length', strlen($data))
+        ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+});
+
+Route::post('/speed-upload', function (Request $request) {
+    return response()->json(['status' => 'ok']); // No hace nada, solo recibe datos
+});
+
+
+
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -86,14 +102,24 @@ Route::middleware(['auth:admin'])->group(function () {
     // Rutas para noticias
     Route::get('menu/noticias', [NoticiaController::class, 'noticias'])->name('noticias');
     Route::post('menu/noticias/agregar', [NoticiaController::class, 'agregar'])->name('agregar');
+    Route::get('/admin/dashboard', [NoticiaController::class, 'dashboardStats'])->name('admin.dashboard');
+
+
+
     Route::put('menu/noticias/{id}/editar', [NoticiaController::class, 'updateNoticia'])->name('actualizar.noticia');
+
     Route::delete('menu/noticias/{id}/eliminar', [NoticiaController::class, 'eliminarNoticia'])->name('eliminar.noticia');
+
     Route::get('mostrar/noticias', [NoticiaController::class, 'mostrar'])->name('noticias.mostrar');
+
+
 
     // Rutas para el doctor
     Route::get('menu/doctor', [DoctorController::class, 'doctor'])->name('añadirdoctor');
     Route::post('menu/doctor/agregar', [DoctorController::class, 'agregar'])->name('agregarDoctor');
     Route::get('menu/doctor/buscar', [DoctorController::class, 'mostrarsearch'])->name('mostrarDoctor');
+
+
 
     Route::put('menu/doctor/{id}/editardoctor', [DoctorController::class, 'update'])->name('actualizar.Doctor');
     Route::delete('menu/doctor/{id}/eliminardoctor', [DoctorController::class, 'eliminarDoctor'])->name('eliminar.Doctor');

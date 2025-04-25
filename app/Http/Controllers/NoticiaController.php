@@ -1,91 +1,115 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Noticias;
 use Illuminate\Http\Request;
+use App\Models\Noticia;
+
 
 class NoticiaController extends Controller
 {
-    public function noticias()
+    public function noticias(Request $request)
     {
-        $noticias = Noticias::all(); // Obtener todas las noticias desde la base de datos
-        return view('vistas.administrador.noticias.AñadirNoticia', compact('noticias'));
+        $noticias = Noticias::latest()->take(10)->get(); // o paginate si quieres
+
+        $totalVisitas = Noticias::sum('vistas');
+        $totalNoticias = Noticias::where('publicada', 1)->count();
+        $totalComentarios = Noticias::sum('comentarios');
+        $totalCompartidas = Noticias::sum('compartidos');
+        $totalNoPublicadas = Noticias::where('publicada', 0)->count();
+
+        $noticiaEdit = null;
+        if ($request->has('edit')) {
+            $noticiaEdit = Noticias::find($request->edit);
+        }
+
+        return view('vistas.administrador.noticias.AñadirNoticia', compact(
+            'noticias', 'totalVisitas', 'totalNoticias', 'totalComentarios', 'totalCompartidas', 'totalNoPublicadas', 'noticiaEdit'
+        ));
     }
+
+
+
     public function mostrar()
     {
         $noticias = Noticias::orderBy('created_at', 'desc')->paginate(10);
         return view('vistas.administrador.noticias.mostrarnoticias', compact('noticias'));
     }
-    public function agregar(Request $request){
-
-        // Validar la solicitud y los datos del formulario
-        $request->validate([
-            'titulo' => 'required|unique:noticias,titulo',
-            'descripcion' => 'required',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Asegúrate de tener una regla de validación para la foto
-            // Otras reglas de validación según sea necesario
-        ]);
-
-        // Crear una nueva instancia del modelo Noticias
-        $noticia = new Noticias();
 
 
-        $noticia->titulo = $request->titulo;
-        $noticia->descripcion = $request->descripcion;
+      public function dashboardStats()
+    {
+        $totalVisitas = Noticias::sum('vistas');
+        $totalNoticias = Noticias::count();
+        $totalComentarios = Noticias::sum('comentarios');
+        $totalCompartidas = Noticias::sum('compartidos');
 
-        // Verificar si se cargó un archivo de imagen y procesarlo si es necesario
-        if ($request->hasFile('foto')) {
-            // Leer el archivo de imagen en base64
-            $imagen = $request->file('foto');
-            $base64Image = base64_encode(file_get_contents($imagen));
-
-            // Asignar la imagen en formato base64 a la propiedad correspondiente en el modelo Noticias
-            $noticia->foto = $base64Image;
-        }
-
-        // Guardar la noticia en la base de datos
-        $noticia->save();
-
-        // Redirigir a la página deseada después de guardar la noticia
-        return back();
+        return view('vistas.administrador.dashboard', compact(
+            'totalVisitas', 'totalNoticias', 'totalComentarios', 'totalCompartidas'
+        ));
     }
 
+    public function agregar(Request $request)
+    {
+        // Validar entrada
+        $request->validate([
+            'title' => 'required|max:200|unique:noticias,titulo',
+            'category' => 'required|string',
+            'contenido' => 'required|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:51200',
+            'publicada' => 'nullable|in:1',
+            'tags' => 'nullable|string',
+        ]);
+
+        // Crear instancia
+        $noticia = new Noticias();
+        $noticia->titulo = $request->input('title');
+        $noticia->categoria = $request->input('category');
+        $noticia->descripcion = $request->input('contenido');
+        $noticia->etiquetas = $request->input('tags');
+        $noticia->publicada = $request->has('publicada');
+
+        // Imagen sin usar GD
+        if ($request->hasFile('foto')) {
+            $imagen = $request->file('foto');
+            $contenido = file_get_contents($imagen->getRealPath());
+
+            // Limitar manualmente el tamaño si fuera necesario (ejemplo: 300 KB)
+            $maxBytes = 300 * 1024;
+            if (strlen($contenido) > $maxBytes) {
+                $contenido = substr($contenido, 0, $maxBytes);
+            }
+
+            $noticia->foto = base64_encode($contenido);
+        }
+
+        $noticia->save();
+
+        return redirect()->back()->with('publicada', 'Tu noticia se ha publicado correctamente.');
+    }
 
 
     public function updateNoticia(Request $request, $id)
     {
-        $noticia = Noticias::findOrFail($id); // Buscar la noticia por su ID
+        $noticia = Noticias::findOrFail($id);
 
-        // Validar la solicitud y los datos del formulario
-        $request->validate([
-            'titulo' => 'required',
-            'descripcion' => 'required',
-            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Modificar la regla de validación para la foto
-            // Otras reglas de validación según sea necesario
-        ]);
+        $noticia->titulo = $request->input('title');
+        $noticia->categoria = $request->input('category');
+        $noticia->descripcion = $request->input('contenido');
+        $noticia->etiquetas = $request->input('tags'); // ← usar como string plano
+        $noticia->publicada = $request->has('publicada');
 
-        // Actualizar los campos de la noticia con los datos del formulario
-        $noticia->titulo = $request->titulo;
-        $noticia->descripcion = $request->descripcion;
-
-        // Verificar si se ha enviado una nueva imagen
         if ($request->hasFile('foto')) {
-            // Obtener el archivo de imagen
-            $imagen = $request->file('foto');
-
-            // Convertir la imagen a base64
-            $base64Image = base64_encode(file_get_contents($imagen));
-
-            // Actualizar la propiedad de la imagen con el nuevo valor en base64
-            $noticia->foto = $base64Image;
+            $noticia->foto = base64_encode(file_get_contents($request->file('foto')->getRealPath()));
         }
 
-        // Guardar los cambios en la base de datos
         $noticia->save();
 
-        return redirect()->route('noticias')->with('success', 'Noticia actualizada exitosamente');
+        return redirect()->route('noticias')->with('success', 'Noticia actualizada correctamente.');
     }
+
+
+
 
     public function eliminarNoticia($id)
     {

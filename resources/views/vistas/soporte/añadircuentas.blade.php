@@ -7,7 +7,6 @@
 @endsection
 
 @section('soprote')
-    <!-- Notificaciones flotantes -->
     <div id="successNotification" class="notification hidden fixed top-24 right-6 w-80 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-lg flex items-center justify-between animate-slideIn">
         <div class="flex items-center">
             <i class="fas fa-check-circle mr-2"></i>
@@ -17,7 +16,6 @@
             <i class="fas fa-times"></i>
         </button>
     </div>
-
     <div id="errorNotification" class="notification hidden fixed top-24 right-6 w-80 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg flex items-center justify-between animate-slideIn">
         <div class="flex items-center">
             <i class="fas fa-exclamation-circle mr-2"></i>
@@ -29,8 +27,8 @@
     </div>
 
     <!-- Contenedor principal -->
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
-        <div class="container mx-auto px-4">
+    <div class="min-h-screen w-full bg-gradient-to-br from-gray-50 to-blue-50 p-6 overflow-hidden">
+
             <!-- Encabezado de la página -->
             <header class="mb-8 bg-transparent">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -59,7 +57,6 @@
 
                 </div>
             </header>
-
 
             <!-- Contenido principal (Grid) -->
             <main class="grid grid-cols-1 xl:grid-cols-12 gap-6">
@@ -390,8 +387,8 @@
                     </div>
                 </section>
             </main>
-        </div>
     </div>
+
 
     <!-- Estilos personalizados -->
     <style>
