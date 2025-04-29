@@ -42,33 +42,43 @@ class HorarioController extends Controller
 
     public function store(Request $request)
     {
-        $intervalos = json_decode($request->input('intervalos'));
-        $dni_doctor = $request->input('dni');
-        $fecha = $request->input('fecha');
-        $intervaloTiempo = $request->input('intervalo');
+        try {
+            $intervalos = $request->input('intervalos'); // ← ya es array
+            $dni_doctor = $request->input('dni');
+            $fecha = $request->input('fecha');
+            $intervaloTiempo = $request->input('intervalo');
 
-        $doctor = Doctor::where('dni', $dni_doctor)->first();
+            $doctor = Doctor::where('dni', $dni_doctor)->first();
 
-        if (!$doctor) {
-            return response()->json(['success' => false, 'message' => 'Doctor no encontrado'], 404);
-        }
+            if (!$doctor) {
+                return response()->json(['success' => false, 'message' => 'Doctor no encontrado'], 404);
+            }
 
-        foreach ($intervalos as $intervalo) {
-            Horario::create([
-                'doctor_id' => $doctor->id,
-                'dni_doctor' => $dni_doctor,
-                'fecha' => $fecha,
-                'hora' => $intervalo,
-                'intervalo' => $intervaloTiempo,
+            foreach ($intervalos['intervalos'] as $intervalo) {
+                Horario::create([
+                    'doctor_id' => $doctor->id,
+                    'dni_doctor' => $dni_doctor,
+                    'fecha' => $fecha,
+                    'hora' => $intervalo,
+                    'intervalo' => $intervaloTiempo,
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Horarios registrados exitosamente',
+                'redirect' => route('horarios.mostrar')
             ]);
-        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Horarios registrados exitosamente',
-            'redirect' => route('horarios.mostrar')
-        ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al registrar los horarios. Revisa los registros de error.'
+            ], 500);
+        }
     }
+
 
     public function duplicate($id)
     {
